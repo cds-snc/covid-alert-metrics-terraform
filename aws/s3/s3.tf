@@ -10,47 +10,13 @@ locals {
   unmasked_metrics_bucket_name = "unmasked-metrics-${random_string.bucket_random_id.result}-${var.env}"
 }
 
-data "aws_caller_identity" "current" {}
 
-resource "aws_s3_bucket" "masked_metrics" {
-
-  # Versioning on this resource is handled through git
-  # tfsec:ignore:AWS077
-
-  bucket = local.masked_metrics_bucket_name
-
-  server_side_encryption_configuration {
-    rule {
-      apply_server_side_encryption_by_default {
-        sse_algorithm = "AES256"
-      }
-    }
-  }
-
-  logging {
-    target_bucket = "cbs-satellite-account-bucket${data.aws_caller_identity.current.account_id}"
-    target_prefix = "${data.aws_caller_identity.current.account_id}/s3_access_logs/${local.masked_metrics_bucket_name}/"
-  }
-
+module "masked_metrics" { 
+  source = "../modules/s3"
+  name = local.masked_metrics_bucket_name
 }
 
-resource "aws_s3_bucket" "unmasked_metrics" {
-
-  # Versioning on this resource is handled through git
-  # tfsec:ignore:AWS077
-
-  bucket = local.unmasked_metrics_bucket_name
-  server_side_encryption_configuration {
-    rule {
-      apply_server_side_encryption_by_default {
-        sse_algorithm = "AES256"
-      }
-    }
-  }
-
-  logging {
-    target_bucket = "cbs-satellite-account-bucket${data.aws_caller_identity.current.account_id}"
-    target_prefix = "${data.aws_caller_identity.current.account_id}/s3_access_logs/${local.unmasked_metrics_bucket_name}/"
-  }
-
+module "unmasked_metrics" { 
+  source = "../modules/s3"
+  name = local.unmasked_metrics_bucket_name
 }

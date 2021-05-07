@@ -1,6 +1,6 @@
 module "unmasked_metrics" {
   
-  source = "./modules/lambda"
+  source = "../modules/lambda"
   name = "unmasked_metrics"
   repository_url = var.csv_etl_repository_url
   tag = var.csv_etl_tag
@@ -18,7 +18,7 @@ module "unmasked_metrics" {
 
 module "masked_metrics" {
 
-  source = "./modules/lambda"
+  source = "../modules/lambda"
   name = "masked_metrics"
   repository_url = var.csv_etl_repository_url
   tag = var.csv_etl_tag
