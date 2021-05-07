@@ -1,26 +1,15 @@
 ###
-# Policies
-### 
-
-variable "vpc_networking_policy" {
-  type = string
-}
-
-variable "write_csv_buckets_arn" {
-  type = string
-}
-variable "pull_csv_image_arn" {
-  type = string
-}
-
-###
-# Container Inputs
+# ECR Input
 ###
 variable "csv_etl_repository_url" {
   type = string
 }
 
 variable "csv_etl_tag" {
+  type = string
+}
+
+variable "create_csv_ecr_arn" {
   type = string
 }
 
@@ -47,3 +36,13 @@ variable "masked_metrics_bucket" {
 variable "unmasked_metrics_bucket" { 
   type = string
 }
+
+variable "unmasked_metrics_s3_arn" { 
+  type = string
+
+}
+
+variable "masked_metrics_s3_arn" { 
+  type = string
+}
+
