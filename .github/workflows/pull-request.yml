@@ -12,7 +12,7 @@ defaults:
     shell: bash
 
 env:
-  TERRAFORM_VERSION: 0.14.4
+  TERRAFORM_VERSION: 0.14.2
   TERRAGRUNT_VERSION: v0.26.0
 
 jobs:
