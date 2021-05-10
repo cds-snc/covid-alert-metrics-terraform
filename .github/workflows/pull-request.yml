@@ -62,7 +62,7 @@ jobs:
         id: plan
         run: |
           cd env/staging/${{matrix.module_name}}
-          ../../../bin/terragrunt plan --terragrunt-non-interactive --terragrunt-log-level warn
+          ../../../bin/terragrunt plan --terragrunt-non-interactive
         continue-on-error: false
 
       - uses: actions/github-script@0.9.0
