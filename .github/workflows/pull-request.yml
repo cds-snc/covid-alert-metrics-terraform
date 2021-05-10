@@ -7,10 +7,6 @@ on:
       - "env/staging/**"
       - ".github/workflows/*"
 
-defaults:
-  run:
-    shell: bash
-
 env:
   TERRAFORM_VERSION: 0.14.2
   TERRAGRUNT_VERSION: v0.26.0
@@ -22,6 +18,13 @@ jobs:
       AWS_ACCESS_KEY_ID: ${{ secrets.STAGING_AWS_ACCESS_KEY_ID }}
       AWS_SECRET_ACCESS_KEY: ${{ secrets.STAGING_AWS_SECRET_ACCESS_KEY }}
       AWS_REGION: ca-central-1
+    strategy:
+      matrix:
+        include:
+          - module_name: ecr
+          - module_name: s3
+          - module_name: network
+          - module_name: etl_lambda
 
     steps:
       - name: Checkout
@@ -40,19 +43,22 @@ jobs:
           chmod +x bin/terragrunt
           echo "bin" >> $GITHUB_PATH
 
-      - name: Plan aws/ecr
+      - name: Validate Module 
+        id: validate-module
+        run: | 
+          cd env/staging/${{ matrix.module_name }}
+          tg validate -no-color
+        continue-on-error: false
+
+      - name: Check Formatting
+        id: check-formatting
+        run: tg fmt -check -no-color
+        continue-on-error: true
+
+      - name: Plan module
+        id: plan-module
         run: |
-          cd env/staging/ecr
+          cd env/staging/${{matrix.module_name}}
           ../../../bin/terragrunt plan --terragrunt-non-interactive
-      - name: Plan aws/s3
-        run: |
-          cd env/staging/s3
-          ../../../bin/terragrunt plan --terragrunt-non-interactive
-      - name: Plan aws/network
-        run: |
-          cd env/staging/network
-          ../../../bin/terragrunt plan --terragrunt-non-interactive
-      - name: Plan aws/etl_lambda
-        run: |
-          cd env/staging/etl_lambda
-          ../../../bin/terragrunt plan --terragrunt-non-interactive
+        continue-on-error: false
+        
