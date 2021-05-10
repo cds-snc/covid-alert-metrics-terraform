@@ -62,7 +62,7 @@ jobs:
         id: plan
         run: |
           cd env/staging/${{matrix.module_name}}
-          OP=$(terragrunt plan -no-color --terragrunt-non-interactive --terragrunt-log-level warn | tee tempfile)
+          OP=$(terragrunt plan --terragrunt-non-interactive --terragrunt-log-level warn -no-color | tee tempfile)
           echo "::set-output name=stdout::$(cat tempfile)"
         continue-on-error: true
 
