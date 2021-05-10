@@ -20,13 +20,13 @@ terraform {
   }
 
   after_hook "rm_terraform_tf" {
-    commands     = get_terraform_commands_that_need_vars()
+    commands     = concat(get_terraform_commands_that_need_vars(), ["validate"])
     execute      = ["rm", "${get_terragrunt_dir()}/provider.tf"]
     run_on_error = true
   }
 
   after_hook "rm_common_variables_tf" {
-    commands     = get_terraform_commands_that_need_vars()
+    commands     = concat(get_terraform_commands_that_need_vars(), ["validate"])
     execute      = ["rm", "${get_terragrunt_dir()}/common_variables.tf"]
     run_on_error = true
   }

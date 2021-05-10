@@ -62,8 +62,8 @@ data "aws_iam_policy_document" "etl_policies" {
     ]
 
     resources = [
-      var.unmasked_metric_log_arn,
-      var.masked_metric_log_arn
+      module.masked_metrics.log_group_arn,
+      module.unmasked_metrics.log_group_arn
     ]
   }
 
