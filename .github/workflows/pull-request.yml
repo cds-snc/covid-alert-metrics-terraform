@@ -62,7 +62,8 @@ jobs:
         id: plan
         run: |
           cd env/staging/${{matrix.module_name}}
-          terragrunt plan -no-color --terragrunt-non-interactive
+          OP=$(terragrunt plan -no-color --terragrunt-non-interactive | tee tempfile)
+          echo "::set-output stdout=$(cat tempfile)"
         continue-on-error: true
 
       - uses: actions/github-script@0.9.0
