@@ -35,7 +35,6 @@ jobs:
         uses: hashicorp/setup-terraform@v1.2.1
         with:
           terraform_version: ${{ env.TERRAFORM_VERSION }}
-          terraform_wrapper: false
 
       - name: Setup Terragrunt
         run: |
@@ -62,8 +61,7 @@ jobs:
         id: plan
         run: |
           cd env/staging/${{matrix.module_name}}
-          OP=$(../../../bin/terragrunt plan --terragrunt-non-interactive | tee /dev/tty)
-          echo "::set-output stdout=$OP"
+          ../../../bin/terragrunt plan --terragrunt-non-interactive
         continue-on-error: true
 
       - uses: actions/github-script@0.9.0
