@@ -47,12 +47,14 @@ jobs:
         id: validate-module
         run: | 
           cd env/staging/${{ matrix.module_name }}
-          tg validate -no-color
+          ../../../bin/terragrunt validate -no-color
         continue-on-error: false
 
       - name: Check Formatting
         id: check-formatting
-        run: tg fmt -check -no-color
+        run: |
+          cd env/staging/${{ matrix.module_name }}
+          ../../../bin/terragrunt fmt -check -no-color
         continue-on-error: true
 
       - name: Plan module
