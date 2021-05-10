@@ -52,16 +52,22 @@ jobs:
         continue-on-error: false
 
       - name: Check Formatting
-        id: check-formatting
+        id: fmt
         run: |
           cd env/staging/${{ matrix.module_name }}
           ../../../bin/terragrunt fmt -check -no-color
         continue-on-error: true
 
       - name: Plan module
-        id: plan-module
+        id: plan
         run: |
           cd env/staging/${{matrix.module_name}}
           ../../../bin/terragrunt plan --terragrunt-non-interactive
         continue-on-error: false
-        
+
+      - name: Check Success
+        if: ${{ steps.fmt.outcome == 'failure' || steps.plan.outcome == 'failure' }}
+        run: |
+          echo "steps.fmt.outcome == ${{ steps.fmt.outcome }}"
+          echo "steps.plan.outcome == ${{ steps.plan.outcome }}"
+          exit 1
