@@ -36,7 +36,7 @@ jobs:
           echo "$GITHUB_WORKSPACE/bin" >> $GITHUB_PATH
 
       - name: Lint HCL files
-        run:
+        run: |
           cd env
           terragrunt hclfmt --terragrunt-check
 
