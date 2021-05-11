@@ -2,7 +2,8 @@
 # ECR Input
 ###
 variable "csv_etl_repository_url" {
-  type = string
+  type        = string
+  description = "ECR Repository url for etl images"
 }
 
 variable "csv_etl_tag" {
