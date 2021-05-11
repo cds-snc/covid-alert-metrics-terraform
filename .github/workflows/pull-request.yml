@@ -90,7 +90,7 @@ jobs:
         id: plan
         run: |
           cd env/staging/${{matrix.module_name}}
-          terragrunt plan --terragrunt-non-interactive --terragrunt-log-level warn -no-color | tee tempfile
+          terragrunt plan --terragrunt-non-interactive --terragrunt-log-level warn -no-color |& tee tempfile
           plan_output=$(cat tempfile)
           plan_output="${plan_output//'%'/'%25'}"
           plan_output="${plan_output//$'\n'/'%0A'}"
