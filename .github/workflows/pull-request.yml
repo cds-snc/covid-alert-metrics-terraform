@@ -109,12 +109,13 @@ jobs:
             #### Terraform Format and Style 🖌\`${{ steps.fmt.outcome }}\`
             #### Terraform Plan 📖\`${{ steps.plan.outcome }}\`
 
-            <details><summary>Show Plan</summary>
+            <details>
+              <summary>Show Plan</summary>
 
-            \`\`\`${process.env.PLAN}\`\`\`
-
-            </details>
-            `;
+              \`\`\`
+              ${process.env.PLAN}
+              \`\`\`
+            </details>`;
 
 
             github.issues.createComment({
