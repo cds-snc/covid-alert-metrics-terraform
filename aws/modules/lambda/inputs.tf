@@ -1,16 +1,16 @@
-variable "name" { 
+variable "name" {
   type = string
 }
 
-variable "repository_url" { 
+variable "repository_url" {
   type = string
 }
 
-variable "tag" { 
+variable "tag" {
   type = string
 }
 
-variable "role_arn" { 
+variable "role_arn" {
   type = string
 }
 
@@ -18,14 +18,14 @@ variable "timeout" {
   type = string
 }
 
-variable "security_group_id" { 
+variable "security_group_id" {
   type = string
 }
 
-variable "subnet_id" { 
+variable "subnet_id" {
   type = string
 }
 
-variable "env_variables" { 
+variable "env_variables" {
   type = map(string)
 }

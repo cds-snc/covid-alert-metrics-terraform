@@ -6,17 +6,17 @@ resource "random_string" "bucket_random_id" {
 }
 
 locals {
-  masked_metrics_bucket_name = "masked-metrics-${random_string.bucket_random_id.result}-${var.env}"
+  masked_metrics_bucket_name   = "masked-metrics-${random_string.bucket_random_id.result}-${var.env}"
   unmasked_metrics_bucket_name = "unmasked-metrics-${random_string.bucket_random_id.result}-${var.env}"
 }
 
 
-module "masked_metrics" { 
+module "masked_metrics" {
   source = "../modules/s3"
-  name = local.masked_metrics_bucket_name
+  name   = local.masked_metrics_bucket_name
 }
 
-module "unmasked_metrics" { 
+module "unmasked_metrics" {
   source = "../modules/s3"
-  name = local.unmasked_metrics_bucket_name
+  name   = local.unmasked_metrics_bucket_name
 }

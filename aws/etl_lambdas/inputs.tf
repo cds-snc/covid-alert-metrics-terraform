@@ -29,20 +29,20 @@ variable "metrics_private_subnet_id" {
 # Buckets
 ###
 
-variable "masked_metrics_bucket" { 
+variable "masked_metrics_bucket" {
   type = string
 }
 
-variable "unmasked_metrics_bucket" { 
+variable "unmasked_metrics_bucket" {
   type = string
 }
 
-variable "unmasked_metrics_s3_arn" { 
+variable "unmasked_metrics_s3_arn" {
   type = string
 
 }
 
-variable "masked_metrics_s3_arn" { 
+variable "masked_metrics_s3_arn" {
   type = string
 }
 

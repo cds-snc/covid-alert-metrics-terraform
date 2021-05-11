@@ -1,9 +1,9 @@
-resource "aws_default_route_table" "default" { 
+resource "aws_default_route_table" "default" {
   default_route_table_id = aws_vpc.main.default_route_table_id
 
   route = []
 
-  tags = { 
+  tags = {
     name = "${var.name}_default_route_table"
   }
 }
