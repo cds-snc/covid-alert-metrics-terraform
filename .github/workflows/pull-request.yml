@@ -62,8 +62,12 @@ jobs:
         id: plan
         run: |
           cd env/staging/${{matrix.module_name}}
-          OP=$(terragrunt plan --terragrunt-non-interactive --terragrunt-log-level warn -no-color | tee tempfile)
-          echo "::set-output name=stdout::$(cat tempfile)"
+          terragrunt plan --terragrunt-non-interactive --terragrunt-log-level warn -no-color | tee tempfile
+          plan_output=$(cat tempfile)
+          plan_output="${plan_output//'%'/'%25'}"
+          plan_output="${plan_output//$'\n'/'%0A'}"
+          plan_output="${plan_output//$'\r'/'%0D'}"
+          echo "::set-output name=stdout::$plan_output"
         continue-on-error: true
 
       - uses: actions/github-script@0.9.0
