@@ -41,6 +41,7 @@ inputs = {
 
   csv_etl_repository_url = dependency.ecr.outputs.create_csv_repository_url
   csv_etl_tag            = "latest"
+  create_csv_repository_arn     = depenency.ecr.outputs.create_csv_repository_arn
 
   csv_etl_sg_id             = dependency.network.outputs.csv_etl_sg_id
   metrics_private_subnet_id = dependency.network.outputs.private_subnet_id

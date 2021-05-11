@@ -10,7 +10,7 @@ variable "csv_etl_tag" {
   type = string
 }
 
-variable "create_csv_ecr_arn" {
+variable "create_csv_repository_arn" {
   type = string
 }
 
