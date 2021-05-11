@@ -8,7 +8,7 @@ inputs = {
   region     = "ca-central-1"
 }
 
-terraform { 
+terraform {
   before_hook "copy_terraform_tf" {
     commands = ["init-from-module"]
     execute  = ["cp", "${get_parent_terragrunt_dir()}/provider.tf", "."]
@@ -39,10 +39,10 @@ remote_state {
     if_exists = "overwrite_terragrunt"
   }
   config = {
-    encrypt             = true
-    bucket              = "cds-terraform-en-metrics-${local.vars.inputs.env}-tf"
-    dynamodb_table      = "terraform-state-lock-dynamo"
-    region              = "ca-central-1"
-    key                 = "${path_relative_to_include()}/terraform.tfstate"
+    encrypt        = true
+    bucket         = "cds-terraform-en-metrics-${local.vars.inputs.env}-tf"
+    dynamodb_table = "terraform-state-lock-dynamo"
+    region         = "ca-central-1"
+    key            = "${path_relative_to_include()}/terraform.tfstate"
   }
 }
