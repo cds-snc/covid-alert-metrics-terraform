@@ -3,6 +3,7 @@
 ###
 variable "csv_etl_repository_url" {
   type = string
+  description = "ECR Repository url for etl images"
 }
 
 variable "csv_etl_tag" {
