@@ -48,7 +48,7 @@ data "aws_iam_policy_document" "etl_policies" {
       "ecr:BatchGetImage"
     ]
     resources = [
-      var.create_csv_ecr_arn
+      var.create_csv_repository_arn
     ]
   }
 
