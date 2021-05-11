@@ -12,6 +12,34 @@ env:
   TERRAGRUNT_VERSION: v0.29.2
 
 jobs:
+  terragrunt-hcl-check:
+    runs-on: ubuntu-latest
+    env:
+      AWS_ACCESS_KEY_ID: ${{ secrets.STAGING_AWS_ACCESS_KEY_ID }}
+      AWS_SECRET_ACCESS_KEY: ${{ secrets.STAGING_AWS_SECRET_ACCESS_KEY }}
+      AWS_REGION: ca-central-1
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v1.2.1
+        with:
+          terraform_version: ${{ env.TERRAFORM_VERSION }}
+          terraform_wrapper: false
+
+      - name: Setup Terragrunt
+        run: |
+          mkdir bin
+          wget -O bin/terragrunt https://github.com/gruntwork-io/terragrunt/releases/download/$TERRAGRUNT_VERSION/terragrunt_linux_amd64
+          chmod +x bin/terragrunt
+          echo "$GITHUB_WORKSPACE/bin" >> $GITHUB_PATH
+
+      - name: Lint HCL files
+        run:
+          cd env
+          terragrunt hclfmt --terragrunt-check
+
   terraform-plan-staging:
     runs-on: ubuntu-latest
     env:
@@ -46,7 +74,7 @@ jobs:
 
       - name: Validate Module 
         id: validate-module
-        run: | 
+        run: |
           cd env/staging/${{ matrix.module_name }}
           terragrunt validate -no-color
         continue-on-error: false
@@ -85,7 +113,8 @@ jobs:
 
             \`\`\`${process.env.PLAN}\`\`\`
 
-            </details>`;
+            </details>
+            `;
 
 
             github.issues.createComment({
