@@ -33,7 +33,7 @@ data "aws_iam_policy_document" "etl_policies" {
     actions = [
       "dynamodb:GetRecords",
       "dynamodb:GetShardIterator",
-      "dyanmodb:ListShards"
+      "dynamodb:ListShards"
     ]
     resources = [
       data.aws_dynamodb_table.aggregate_metrics.arn
