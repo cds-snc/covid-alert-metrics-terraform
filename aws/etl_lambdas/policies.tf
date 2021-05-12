@@ -5,7 +5,7 @@ resource "aws_iam_role" "metrics_csv" {
 
 resource "aws_iam_role_policy_attachment" "etl_policies" {
   role       = aws_iam_role.metrics_csv.name
-  policy_arn = data.aws_iam_policy_document.etl_policies.json
+  policy_arn = aws_iam_policy.etl_policies.arn
 }
 
 data "aws_iam_policy_document" "service_principal" {
@@ -99,4 +99,10 @@ data "aws_iam_policy_document" "etl_policies" {
 
   }
 
+}
+
+resource "aws_iam_policy" "etl_policies" {
+  name   = "EtlLambdaAccess"
+  path   = "/"
+  policy = data.aws_iam_policy_document.etl_policies.json
 }
