@@ -31,9 +31,11 @@ data "aws_iam_policy_document" "etl_policies" {
 
     effect = "Allow"
     actions = [
-      "dynamodb:GetRecords",
-      "dynamodb:GetShardIterator",
-      "dynamodb:ListShards"
+      "dynamodb:GetItem",
+      "dynamodb:BatchGetItem",
+      "dynamodb:Scan",
+      "dynamodb:Query",
+      "dynamodb:ConditionCheckItem"
     ]
     resources = [
       data.aws_dynamodb_table.aggregate_metrics.arn
