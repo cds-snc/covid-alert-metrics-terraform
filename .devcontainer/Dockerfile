@@ -3,6 +3,8 @@ FROM mcr.microsoft.com/vscode/devcontainers/base:buster
 ARG USERNAME=vscode
 
 # Set these in devcontainer.json
+ARG OPA_VERSION
+ARG OPA_CHECKSUM
 ARG TERRAFORM_VERSION
 ARG TERRAFORM_CHECKSUM
 ARG TERRAGRUNT_VERSION
@@ -32,7 +34,13 @@ RUN curl -Lo terragrunt https://github.com/gruntwork-io/terragrunt/releases/down
 RUN curl -Lo tfsec https://github.com/tfsec/tfsec/releases/download/v"${TFSEC_VERSION}"/tfsec-linux-"$(dpkg --print-architecture)" \
     && echo "${TFSEC_CHECKSUM} tfsec" | sha256sum --check \
     && chmod +x tfsec \
-    && mv tfsec /usr/local/bin/    
+    && mv tfsec /usr/local/bin/
+
+# Install OPA
+RUN curl -Lo opa https://github.com/open-policy-agent/opa/releases/download/v"${OPA_VERSION}"/opa_linux_"$(dpkg --print-architecture)" \
+    && echo "${OPA_CHECKSUM} opa" | sha256sum --check \
+    && chmod +x opa \
+    && mv opa /usr/local/bin/
 
 # Setup aliases and autocomplete
 RUN echo "\n\
