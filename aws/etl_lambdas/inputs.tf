@@ -1,11 +1,11 @@
 ###
 # Lambda Configuration
 ### 
-variable "unmasked_metrics_environtment_variables" {
+variable "unmasked_metrics_environment_variables" {
   type = map(string)
 }
 
-variable "masked_metrics_environtment_variables" {
+variable "masked_metrics_environment_variables" {
   type = map(string)
 }
 

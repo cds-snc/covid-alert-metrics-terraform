@@ -13,7 +13,7 @@ module "unmasked_metrics" {
   env_variables = merge({
     MASK_DATA   = "false"
     BUCKET_NAME = var.unmasked_metrics_bucket
-  }, var.unmasked_metrics_environtment_variables)
+  }, var.unmasked_metrics_environment_variables)
 
 }
 
@@ -32,6 +32,6 @@ module "masked_metrics" {
   env_variables = merge({
     MASK_DATA   = "true"
     BUCKET_NAME = var.masked_metrics_bucket
-  }, var.masked_metrics_environtment_variables)
+  }, var.masked_metrics_environment_variables)
 
 }

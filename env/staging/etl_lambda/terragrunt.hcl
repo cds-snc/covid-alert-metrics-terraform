@@ -52,11 +52,11 @@ inputs = {
   unmasked_metrics_bucket = dependency.s3.outputs.unmasked_metrics_id
   memory_size = 1024
 
-  masked_metrics_environtment_variables = {
+  masked_metrics_environment_variables = {
     ENV = "staging"
   }
 
-  unmasked_metrics_environtment_variables = {
+  unmasked_metrics_environment_variables = {
     ENV = "staging"
   }
 
