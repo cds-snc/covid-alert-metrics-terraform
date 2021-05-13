@@ -56,20 +56,22 @@ data "aws_iam_policy_document" "etl_policies" {
 
   statement {
 
-    effect = "Allow"
+    effect = "Allow lambdas to write to logs"
 
     actions = [
+      "logs:CreateLogGroup",
       "logs:CreateLogStream",
       "logs:PutLogEvents"
     ]
 
     resources = [
-      module.masked_metrics.log_group_arn,
-      module.unmasked_metrics.log_group_arn
+      "*"
     ]
   }
 
   statement {
+
+    sid = "Allow lambda to create network interfaces"
 
     effect = "Allow"
 
@@ -87,6 +89,8 @@ data "aws_iam_policy_document" "etl_policies" {
 
   statement {
 
+    sid = "Allow lambda to write to S3 Buckets"
+
     effect = "Allow"
     actions = [
       "s3:PutObject",
@@ -94,7 +98,9 @@ data "aws_iam_policy_document" "etl_policies" {
     ]
     resources = [
       var.unmasked_metrics_s3_arn,
-      var.masked_metrics_s3_arn
+      "${var.unmasked_metrics_s3_arn}/*",
+      var.masked_metrics_s3_arn,
+      "${var.masked_metrics_s3_arn}/*"
     ]
 
   }
