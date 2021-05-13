@@ -8,11 +8,12 @@ module "unmasked_metrics" {
   timeout           = 900
   security_group_id = var.csv_etl_sg_id
   subnet_id         = var.metrics_private_subnet_id
+  memory_size       = var.memory_size
 
-  env_variables = {
+  env_variables = merge({
     MASK_DATA   = "false"
     BUCKET_NAME = var.unmasked_metrics_bucket
-  }
+  }, var.unmasked_metrics_environment_variables)
 
 }
 
@@ -26,10 +27,11 @@ module "masked_metrics" {
   timeout           = 900
   security_group_id = var.csv_etl_sg_id
   subnet_id         = var.metrics_private_subnet_id
+  memory_size       = var.memory_size
 
-  env_variables = {
+  env_variables = merge({
     MASK_DATA   = "true"
     BUCKET_NAME = var.masked_metrics_bucket
-  }
+  }, var.masked_metrics_environment_variables)
 
 }

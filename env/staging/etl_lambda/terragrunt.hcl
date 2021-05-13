@@ -50,6 +50,16 @@ inputs = {
   masked_metrics_s3_arn   = dependency.s3.outputs.masked_metrics_arn
   masked_metrics_bucket   = dependency.s3.outputs.masked_metrics_id
   unmasked_metrics_bucket = dependency.s3.outputs.unmasked_metrics_id
+  memory_size             = 1024
+
+  masked_metrics_environment_variables = {
+    ENV = "staging"
+  }
+
+  unmasked_metrics_environment_variables = {
+    ENV = "staging"
+  }
+
 }
 
 include {

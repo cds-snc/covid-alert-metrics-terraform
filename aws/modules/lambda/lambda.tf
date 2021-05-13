@@ -11,6 +11,8 @@ resource "aws_lambda_function" "lambda" {
 
   timeout = 900
 
+  memory_size = var.memory_size
+
   role = var.role_arn
 
   vpc_config {
