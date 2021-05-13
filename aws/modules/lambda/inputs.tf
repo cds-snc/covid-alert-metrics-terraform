@@ -29,3 +29,7 @@ variable "subnet_id" {
 variable "env_variables" {
   type = map(string)
 }
+
+variable "memory_size" {
+  type = number
+}

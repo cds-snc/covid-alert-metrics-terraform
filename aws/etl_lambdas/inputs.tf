@@ -1,4 +1,19 @@
 ###
+# Lambda Configuration
+### 
+variable "unmasked_metrics_environtment_variables" {
+  type = map(string)
+}
+
+variable "masked_metrics_environtment_variables" {
+  type = map(string)
+}
+
+variable "memory_size" {
+  type = number
+}
+
+###
 # ECR Input
 ###
 variable "csv_etl_repository_url" {
@@ -46,4 +61,3 @@ variable "unmasked_metrics_s3_arn" {
 variable "masked_metrics_s3_arn" {
   type = string
 }
-
