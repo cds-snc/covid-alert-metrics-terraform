@@ -29,8 +29,6 @@ data "aws_iam_policy_document" "etl_policies" {
 
   statement {
 
-    sid = "Allow lambdas to read dynamodb table aggregate_metrics"
-
     effect = "Allow"
 
     actions = [
@@ -48,8 +46,6 @@ data "aws_iam_policy_document" "etl_policies" {
 
   statement {
 
-    sid = "Allow lambda to pull container images"
-
     effect = "Allow"
 
     actions = [
@@ -62,8 +58,6 @@ data "aws_iam_policy_document" "etl_policies" {
   }
 
   statement {
-
-    sid = "Allow lambdas to write to logs"
 
     effect = "Allow"
 
@@ -80,8 +74,6 @@ data "aws_iam_policy_document" "etl_policies" {
 
   statement {
 
-    sid = "Allow lambda to create network interfaces"
-
     effect = "Allow"
 
     actions = [
@@ -97,8 +89,6 @@ data "aws_iam_policy_document" "etl_policies" {
   }
 
   statement {
-
-    sid = "Allow lambda to write to S3 Buckets"
 
     effect = "Allow"
     actions = [
