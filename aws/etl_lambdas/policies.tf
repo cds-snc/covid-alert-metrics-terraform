@@ -29,7 +29,10 @@ data "aws_iam_policy_document" "etl_policies" {
 
   statement {
 
+    sid = "Allow lambdas to read dynamodb table aggregate_metrics"
+
     effect = "Allow"
+
     actions = [
       "dynamodb:GetItem",
       "dynamodb:BatchGetItem",
@@ -44,7 +47,11 @@ data "aws_iam_policy_document" "etl_policies" {
   }
 
   statement {
+
+    sid = "Allow lambda to pull container images"
+
     effect = "Allow"
+
     actions = [
       "ecr:GetDownloadUrlForlayer",
       "ecr:BatchGetImage"
@@ -56,7 +63,9 @@ data "aws_iam_policy_document" "etl_policies" {
 
   statement {
 
-    effect = "Allow lambdas to write to logs"
+    sid = "Allow lambdas to write to logs"
+
+    effect = "Allow"
 
     actions = [
       "logs:CreateLogGroup",
