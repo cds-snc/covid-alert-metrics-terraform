@@ -100,6 +100,7 @@ jobs:
           set -o pipefail
           cd env/staging/${{matrix.module_name}}
           terragrunt plan --terragrunt-non-interactive --terragrunt-log-level warn -no-color -out="$GITHUB_WORKSPACE/tfplan.binary" |& tee tempfile
+          terragrunt show -json "$GITHUB_WORKSPACE/tfplan.binary" > tfplan.json
           plan_output=$(cat tempfile)
           plan_output="${plan_output//'%'/'%25'}"
           plan_output="${plan_output//$'\n'/'%0A'}"
@@ -110,7 +111,6 @@ jobs:
       - name: Check plan changes
         id: check-changes
         run: |
-          terragrunt show -json "$GITHUB_WORKSPACE/tfplan.binary" > tfplan.json
           no_changes=$(opa eval --format pretty --data .github/workflows/policy/no-changes.rego --input tfplan.json "data.terraform.analysis.no_changes")
           echo "::set-output name=no-changes::$no_changes"
 
