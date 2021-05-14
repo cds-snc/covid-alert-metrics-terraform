@@ -53,11 +53,11 @@ inputs = {
   memory_size             = 1024
 
   masked_metrics_environment_variables = {
-    ENV = "staging"
+    ENVIRONMENT = "staging"
   }
 
   unmasked_metrics_environment_variables = {
-    ENV = "staging"
+    ENVIRONMENT = "staging"
   }
 
 }

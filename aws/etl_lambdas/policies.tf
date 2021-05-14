@@ -29,7 +29,10 @@ data "aws_iam_policy_document" "etl_policies" {
 
   statement {
 
+    sid = "Allow lambdas to read dynamodb table aggregate_metrics"
+
     effect = "Allow"
+
     actions = [
       "dynamodb:GetItem",
       "dynamodb:BatchGetItem",
@@ -44,7 +47,11 @@ data "aws_iam_policy_document" "etl_policies" {
   }
 
   statement {
+
+    sid = "Allow lambda to pull container images"
+
     effect = "Allow"
+
     actions = [
       "ecr:GetDownloadUrlForlayer",
       "ecr:BatchGetImage"
@@ -56,20 +63,24 @@ data "aws_iam_policy_document" "etl_policies" {
 
   statement {
 
+    sid = "Allow lambdas to write to logs"
+
     effect = "Allow"
 
     actions = [
+      "logs:CreateLogGroup",
       "logs:CreateLogStream",
       "logs:PutLogEvents"
     ]
 
     resources = [
-      module.masked_metrics.log_group_arn,
-      module.unmasked_metrics.log_group_arn
+      "*"
     ]
   }
 
   statement {
+
+    sid = "Allow lambda to create network interfaces"
 
     effect = "Allow"
 
@@ -87,6 +98,8 @@ data "aws_iam_policy_document" "etl_policies" {
 
   statement {
 
+    sid = "Allow lambda to write to S3 Buckets"
+
     effect = "Allow"
     actions = [
       "s3:PutObject",
@@ -94,7 +107,9 @@ data "aws_iam_policy_document" "etl_policies" {
     ]
     resources = [
       var.unmasked_metrics_s3_arn,
-      var.masked_metrics_s3_arn
+      "${var.unmasked_metrics_s3_arn}/*",
+      var.masked_metrics_s3_arn,
+      "${var.masked_metrics_s3_arn}/*"
     ]
 
   }
