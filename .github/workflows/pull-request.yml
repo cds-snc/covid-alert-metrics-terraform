@@ -116,7 +116,7 @@ jobs:
 
       # Create plan comment for PRs if there are changes or the format/plan steps failed
       - uses: actions/github-script@0.9.0
-        if: ${{ github.event_name == 'pull_request' && (steps.check-changes.no-changes != 'true' || steps.fmt.outcome == 'failure' || steps.plan.outcome == 'failure') }}
+        if: ${{ github.event_name == 'pull_request' && (steps.check-changes.outputs.no-changes != 'true' || steps.fmt.outcome == 'failure' || steps.plan.outcome == 'failure') }}
         env:
           PLAN: "${{ steps.plan.outputs.stdout }}"
         with:
