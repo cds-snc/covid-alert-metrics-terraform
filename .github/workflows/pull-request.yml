@@ -5,14 +5,15 @@ on:
     paths:
       - "aws/**"
       - "env/staging/**"
-      - ".github/workflows/*"
+      - ".github/workflows/**"
 
 env:
+  OPA_VERSION: v0.28.0
   TERRAFORM_VERSION: 0.14.2
   TERRAGRUNT_VERSION: v0.29.2
 
 jobs:
-  terragrunt-hcl-check:
+  lint:
     runs-on: ubuntu-latest
     env:
       AWS_ACCESS_KEY_ID: ${{ secrets.STAGING_AWS_ACCESS_KEY_ID }}
@@ -28,17 +29,23 @@ jobs:
           terraform_version: ${{ env.TERRAFORM_VERSION }}
           terraform_wrapper: false
 
-      - name: Setup Terragrunt
+      - name: Setup Terragrunt and OPA
         run: |
           mkdir bin
           wget -O bin/terragrunt https://github.com/gruntwork-io/terragrunt/releases/download/$TERRAGRUNT_VERSION/terragrunt_linux_amd64
-          chmod +x bin/terragrunt
+          wget -O bin/opa https://github.com/open-policy-agent/opa/releases/download/$OPA_VERSION/opa_linux_amd64
+          chmod +x bin/*
           echo "$GITHUB_WORKSPACE/bin" >> $GITHUB_PATH
 
       - name: Lint HCL files
         run: |
           cd env
           terragrunt hclfmt --terragrunt-check
+
+      - name: Lint Rego files
+        run: |
+          cd .github/workflows/policy
+          opa check *.rego
 
   terraform-plan-staging:
     runs-on: ubuntu-latest
@@ -65,11 +72,12 @@ jobs:
           terraform_version: ${{ env.TERRAFORM_VERSION }}
           terraform_wrapper: false
 
-      - name: Setup Terragrunt
+      - name: Setup Terragrunt and OPA
         run: |
           mkdir bin
           wget -O bin/terragrunt https://github.com/gruntwork-io/terragrunt/releases/download/$TERRAGRUNT_VERSION/terragrunt_linux_amd64
-          chmod +x bin/terragrunt
+          wget -O bin/opa https://github.com/open-policy-agent/opa/releases/download/$OPA_VERSION/opa_linux_amd64
+          chmod +x bin/*
           echo "$GITHUB_WORKSPACE/bin" >> $GITHUB_PATH
 
       - name: Validate Module 
@@ -89,8 +97,9 @@ jobs:
       - name: Plan module
         id: plan
         run: |
+          set -o pipefail
           cd env/staging/${{matrix.module_name}}
-          terragrunt plan --terragrunt-non-interactive --terragrunt-log-level warn -no-color |& tee tempfile
+          terragrunt plan --terragrunt-non-interactive --terragrunt-log-level warn -no-color -out="$GITHUB_WORKSPACE/tfplan.binary" |& tee tempfile
           plan_output=$(cat tempfile)
           plan_output="${plan_output//'%'/'%25'}"
           plan_output="${plan_output//$'\n'/'%0A'}"
@@ -98,8 +107,16 @@ jobs:
           echo "::set-output name=stdout::$plan_output"
         continue-on-error: true
 
+      - name: Check plan changes
+        id: check-changes
+        run: |
+          terragrunt show -json "$GITHUB_WORKSPACE/tfplan.binary" > tfplan.json
+          no_changes=$(opa eval --format pretty --data .github/workflows/policy/no-changes.rego --input tfplan.json "data.terraform.analysis.no_changes")
+          echo "::set-output name=no-changes::$no_changes"
+
+      # Create plan comment for PRs if there are changes or the format/plan steps failed
       - uses: actions/github-script@0.9.0
-        if: github.event_name == 'pull_request'
+        if: ${{ github.event_name == 'pull_request' && (steps.check-changes.no-changes != 'true' || steps.fmt.outcome == 'failure' || steps.plan.outcome == 'failure') }}
         env:
           PLAN: "${{ steps.plan.outputs.stdout }}"
         with:

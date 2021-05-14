@@ -6,6 +6,11 @@ import input as tfplan
 # Policy: check there are no resource or output changes
 #######################################################
 
+no_changes {
+	no_change_resource
+	no_change_output
+}
+
 no_change_resource {
 	count_resouce_changes("create") == 0
 	count_resouce_changes("update") == 0
