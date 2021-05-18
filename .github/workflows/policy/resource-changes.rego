@@ -3,7 +3,7 @@ package terraform.analysis
 import input as tfplan
 
 #######################################################
-# Policy: check there are no resource or output changes
+# Policy: check for resource changes in the TF plan
 #######################################################
 
 no_changes {
@@ -12,15 +12,27 @@ no_changes {
 }
 
 no_change_resource {
-	count_resouce_changes("create") == 0
-	count_resouce_changes("update") == 0
-	count_resouce_changes("delete") == 0
+	resource_changes.create == 0
+	resource_changes.update == 0
+	resource_changes.delete == 0
 }
 
 no_change_output {
-	count_output_changes("create") == 0
-	count_output_changes("update") == 0
-	count_output_changes("delete") == 0
+	output_changes.create == 0
+	output_changes.update == 0
+	output_changes.delete == 0
+}
+
+resource_changes := {
+	"create": count_resouce_changes("create"),
+	"update": count_resouce_changes("update"),
+	"delete": count_resouce_changes("delete"),
+}
+
+output_changes := {
+	"create": count_output_changes("create"),
+	"update": count_output_changes("update"),
+	"delete": count_output_changes("delete"),
 }
 
 count_resouce_changes(action) = num {

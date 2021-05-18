@@ -111,8 +111,14 @@ jobs:
       - name: Check plan changes
         id: check-changes
         run: |
-          no_changes=$(opa eval --format pretty --data .github/workflows/policy/no-changes.rego --input "$GITHUB_WORKSPACE/tfplan.json" "data.terraform.analysis.no_changes")
+          no_changes=$(opa eval --format pretty --data .github/workflows/policy/resource-changes.rego --input "$GITHUB_WORKSPACE/tfplan.json" "data.terraform.analysis.no_changes")
+          creates=$(opa eval --format pretty --data .github/workflows/policy/resource-changes.rego --input "$GITHUB_WORKSPACE/tfplan.json" "data.terraform.analysis.resource_changes.create")
+          updates=$(opa eval --format pretty --data .github/workflows/policy/resource-changes.rego --input "$GITHUB_WORKSPACE/tfplan.json" "data.terraform.analysis.resource_changes.update")
+          deletes=$(opa eval --format pretty --data .github/workflows/policy/resource-changes.rego --input "$GITHUB_WORKSPACE/tfplan.json" "data.terraform.analysis.resource_changes.delete")
           echo "::set-output name=no-changes::$no_changes"
+          echo "::set-output name=creates::$creates"
+          echo "::set-output name=updates::$updates"
+          echo "::set-output name=deletes::$deletes"
 
       # Create plan comment for PRs if there are changes or the format/plan steps failed
       - uses: actions/github-script@0.9.0
@@ -122,9 +128,17 @@ jobs:
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
-            const output = `### Module: ${{ matrix.module_name }}
-            #### Terraform Format and Style 🖌\`${{ steps.fmt.outcome }}\`
-            #### Terraform Plan 📖\`${{ steps.plan.outcome }}\`
+            const iconFormat = '${{ steps.fmt.outcome }}' === 'success' ? '✅' : '❌';
+            const iconPlan = '${{ steps.plan.outcome }}' === 'success' ? '✅' : '❌';
+            const deleteWarning = '${{ steps.check-changes.outputs.deletes }}' === '0' ? '' : '**⚠ &nbsp; WARNING:** resources will be destroyed by this change!';
+            const output = `## Module: ${{ matrix.module_name }}
+            **${iconFormat} &nbsp; Terraform Format:** \`${{ steps.fmt.outcome }}\`
+            **${iconPlan} &nbsp; Terraform Plan:** \`${{ steps.plan.outcome }}\`  
+
+            ${deleteWarning}
+            \`\`\`terraform
+            Plan: ${{ steps.check-changes.outputs.creates }} to add, ${{ steps.check-changes.outputs.updates }} to change, ${{ steps.check-changes.outputs.deletes }} to destroy
+            \`\`\`
 
             <details>
               <summary>Show Plan</summary>
@@ -133,7 +147,6 @@ jobs:
               ${process.env.PLAN}
               \`\`\`
             </details>`;
-
 
             github.issues.createComment({
               issue_number: context.issue.number,
