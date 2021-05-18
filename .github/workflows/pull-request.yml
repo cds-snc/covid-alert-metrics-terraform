@@ -130,7 +130,7 @@ jobs:
           script: |
             const iconFormat = '${{ steps.fmt.outcome }}' === 'success' ? '✅' : '❌';
             const iconPlan = '${{ steps.plan.outcome }}' === 'success' ? '✅' : '❌';
-            const deleteWarning = '${{ steps.check-changes.outputs.deletes }}' === '0' ? '' : '**⚠ &nbsp; WARNING:** resources will be deleted by this change!';
+            const deleteWarning = '${{ steps.check-changes.outputs.deletes }}' === '0' ? '' : '**⚠ &nbsp; WARNING:** resources will be destroyed by this change!';
             const output = `## Module: ${{ matrix.module_name }}
             **${iconFormat} &nbsp; Terraform Format:** \`${{ steps.fmt.outcome }}\`
             **${iconPlan} &nbsp; Terraform Plan:** \`${{ steps.plan.outcome }}\`  
