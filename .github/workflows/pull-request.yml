@@ -136,9 +136,8 @@ jobs:
             **${iconPlan} &nbsp; Terraform Plan:** \`${{ steps.plan.outcome }}\`  
 
             ${deleteWarning}
-            \`\`\`sh
-            # Resource changes
-            Creates: ${{ steps.check-changes.outputs.creates }}   —   Updates: ${{ steps.check-changes.outputs.updates }}   —   Deletes: ${{ steps.check-changes.outputs.deletes }}
+            \`\`\`terraform
+            Plan: ${{ steps.check-changes.outputs.creates }} to add, ${{ steps.check-changes.outputs.updates }} to change, ${{ steps.check-changes.outputs.deletes }} to destroy
             \`\`\`
 
             <details>
