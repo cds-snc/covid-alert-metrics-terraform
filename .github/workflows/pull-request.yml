@@ -111,8 +111,14 @@ jobs:
       - name: Check plan changes
         id: check-changes
         run: |
-          no_changes=$(opa eval --format pretty --data .github/workflows/policy/no-changes.rego --input "$GITHUB_WORKSPACE/tfplan.json" "data.terraform.analysis.no_changes")
+          no_changes=$(opa eval --format pretty --data .github/workflows/policy/resource-changes.rego --input "$GITHUB_WORKSPACE/tfplan.json" "data.terraform.analysis.no_changes")
+          creates=$(opa eval --format pretty --data .github/workflows/policy/resource-changes.rego --input "$GITHUB_WORKSPACE/tfplan.json" "data.terraform.analysis.resource_changes.create")
+          updates=$(opa eval --format pretty --data .github/workflows/policy/resource-changes.rego --input "$GITHUB_WORKSPACE/tfplan.json" "data.terraform.analysis.resource_changes.update")
+          deletes=$(opa eval --format pretty --data .github/workflows/policy/resource-changes.rego --input "$GITHUB_WORKSPACE/tfplan.json" "data.terraform.analysis.resource_changes.delete")
           echo "::set-output name=no-changes::$no_changes"
+          echo "::set-output name=creates::$creates"
+          echo "::set-output name=updates::$updates"
+          echo "::set-output name=deletes::$deletes"
 
       # Create plan comment for PRs if there are changes or the format/plan steps failed
       - uses: actions/github-script@0.9.0
@@ -122,9 +128,15 @@ jobs:
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
+            const iconFormat = '${{ steps.fmt.outcome }}' === 'success' ? '✅' : '❌';
+            const iconPlan = '${{ steps.plan.outcome }}' === 'success' ? '✅' : '❌';
             const output = `### Module: ${{ matrix.module_name }}
-            #### Terraform Format and Style 🖌\`${{ steps.fmt.outcome }}\`
-            #### Terraform Plan 📖\`${{ steps.plan.outcome }}\`
+            #### ${iconFormat} Terraform Format: \`${{ steps.fmt.outcome }}\`
+            #### ${iconPlan} Terraform Plan: \`${{ steps.plan.outcome }}\`
+
+            \`\`\`
+              Creates: ${{ steps.check-changes.outputs.creates }}   —   Updates: ${{ steps.check-changes.outputs.updates }}   —   Deletes: ${{ steps.check-changes.outputs.deletes }}
+            \`\`\`
 
             <details>
               <summary>Show Plan</summary>
@@ -133,7 +145,6 @@ jobs:
               ${process.env.PLAN}
               \`\`\`
             </details>`;
-
 
             github.issues.createComment({
               issue_number: context.issue.number,
