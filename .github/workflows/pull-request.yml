@@ -13,11 +13,10 @@ env:
   TERRAGRUNT_VERSION: v0.29.2
 
 jobs:
-  terraform-plan-staging:
+  terragrunt-plan:
     runs-on: ubuntu-latest
     env:
       AWS_REGION: ca-central-1
-      INFRASTRUCTURE_VERSION: "1.0.2"
     strategy:
       fail-fast: false
       matrix:
@@ -54,6 +53,12 @@ jobs:
           wget -O bin/opa https://github.com/open-policy-agent/opa/releases/download/$OPA_VERSION/opa_linux_amd64
           chmod +x bin/*
           echo "$GITHUB_WORKSPACE/bin" >> $GITHUB_PATH
+
+      - name: Set Prod Version
+        if: ${ matrix.environment == 'production' }
+        run: |
+          INFRASTRUCTURE_VERSION=`cat ./.github/workflows/manifest/prod_version.txt`
+          echo "INFRASTRUCTURE_VERSION=$INFRASTRUCTURE_VERSION" >> $GITHUB_ENV
 
       - name: Validate Module 
         id: validate-module
