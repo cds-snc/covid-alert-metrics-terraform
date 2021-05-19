@@ -35,9 +35,9 @@ jobs:
           echo "$GITHUB_WORKSPACE/bin" >> $GITHUB_PATH
 
       - name: Set Prod Version
-          run: |
-            INFRASTRUCTURE_VERSION=`cat ./.github/workflows/manifest/prod_version.txt`
-            echo "INFRASTRUCTURE_VERSION=$INFRASTRUCTURE_VERSION" >> $GITHUB_ENV
+        run: |
+          INFRASTRUCTURE_VERSION=`cat ./.github/workflows/manifest/prod_version.txt`
+          echo "INFRASTRUCTURE_VERSION=$INFRASTRUCTURE_VERSION" >> $GITHUB_ENV
 
       - name: Apply All production
         run: |
