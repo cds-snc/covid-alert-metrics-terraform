@@ -39,10 +39,10 @@ jobs:
           - module_name: network
             environment: production
 
-          - module_name: etl_lambda
+          - module_name: etl_lambdas
             environment: staging
 
-          - module_name: etl_lambda
+          - module_name: etl_lambdas
             environment: production
     steps:
       - name: Checkout
