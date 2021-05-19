@@ -42,6 +42,8 @@ jobs:
           - module_name: etl_lambda
             environment: staging
 
+          - module_name: etl_lambda
+            environment: production
     steps:
       - name: Checkout
         uses: actions/checkout@v2
