@@ -71,8 +71,8 @@ jobs:
       - name: Plan module
         id: plan
         env:
-          AWS_ACCESS_KEY_ID: ${{ secrets[format("{0}_AWS_ACCESS_KEY_ID",matrix.environment])}}
-          AWS_SECRET_ACCESS_KEY: ${{ secrets[format("{0}_AWS_SECRET_ACCESS_KEY",matrix.environment])}}
+          AWS_ACCESS_KEY_ID: ${{ secrets[format('{0}_AWS_ACCESS_KEY_ID',matrix.environment)] }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets[format('{0}_AWS_SECRET_ACCESS_KEY',matrix.environment)] }}
         run: |
           set -o pipefail
           cd env/${{ matrix.environment }}/${{matrix.module_name}}
