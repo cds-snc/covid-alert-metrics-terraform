@@ -23,28 +23,18 @@ jobs:
         include:
           - module_name: ecr
             environment: staging
-            access_key_id: ${{ secrets.STAGING_AWS_ACCESS_KEY_ID }}
-            secret_access_key: ${{ secrets.STAGING_AWS_SECRET_ACCESS_KEY }}
 
           - module_name: ecr
             environment: production
-            access_key_id: ${{ secrets.PRODUCTION_AWS_ACCESS_KEY_ID }}
-            secret_access_key: ${{ secrets.PRODUCTION_AWS_SECRET_ACCESS_KEY }}
 
           - module_name: s3
             environment: staging
-            access_key_id: ${{ secrets.STAGING_AWS_ACCESS_KEY_ID }}
-            secret_access_key: ${{ secrets.STAGING_AWS_SECRET_ACCESS_KEY }}
 
           - module_name: network
             environment: staging
-            access_key_id: ${{ secrets.STAGING_AWS_ACCESS_KEY_ID }}
-            secret_access_key: ${{ secrets.STAGING_AWS_SECRET_ACCESS_KEY }}
 
           - module_name: etl_lambda
             environment: staging
-            access_key_id: ${{ secrets.STAGING_AWS_ACCESS_KEY_ID }}
-            secret_access_key: ${{ secrets.STAGING_AWS_SECRET_ACCESS_KEY }}
 
     steps:
       - name: Checkout
@@ -81,8 +71,8 @@ jobs:
       - name: Plan module
         id: plan
         env:
-          AWS_ACCESS_KEY_ID: ${{ matrix.access_key_id}}
-          AWS_ACCESS_KEY: ${{ matrix.secret_access_key}}
+          AWS_ACCESS_KEY_ID: ${{ secrets["{0}_AWS_ACCESS_KEY_ID",matrix.environment]}}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets["{0}_AWS_SECRET_ACCESS_KEY",matrix.environment]}}
         run: |
           set -o pipefail
           cd env/${{ matrix.environment }}/${{matrix.module_name}}
