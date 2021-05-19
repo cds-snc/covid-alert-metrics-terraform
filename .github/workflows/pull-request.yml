@@ -62,7 +62,7 @@ jobs:
           AWS_SECRET_ACCESS_KEY: ${{ secrets[format('{0}_AWS_SECRET_ACCESS_KEY',matrix.environment)] }}
         run: |
           cd env/${{ matrix.environment }}/${{ matrix.module_name }}
-          terragrunt validate -no-color
+          terragrunt validate --terragrunt-non-interactive -no-color
         continue-on-error: false
 
       - name: Check Formatting
@@ -72,7 +72,7 @@ jobs:
           AWS_SECRET_ACCESS_KEY: ${{ secrets[format('{0}_AWS_SECRET_ACCESS_KEY',matrix.environment)] }}
         run: |
           cd env/${{ matrix.environment }}/${{ matrix.module_name }}
-          terragrunt fmt -check -no-color
+          terragrunt fmt --terragrunt-non-interactive -check -no-color
         continue-on-error: true
 
       - name: Plan module
