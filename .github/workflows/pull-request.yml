@@ -30,8 +30,14 @@ jobs:
           - module_name: s3
             environment: staging
 
+          - module_name: s3
+            environment: production
+
           - module_name: network
             environment: staging
+
+          - module_name: network
+            environment: production
 
           - module_name: etl_lambda
             environment: staging
