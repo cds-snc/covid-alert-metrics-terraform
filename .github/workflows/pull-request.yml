@@ -55,7 +55,7 @@ jobs:
           echo "$GITHUB_WORKSPACE/bin" >> $GITHUB_PATH
 
       - name: Set Prod Version
-        if: ${ matrix.environment == 'production' }
+        if: ${{ matrix.environment == 'production' }}
         run: |
           INFRASTRUCTURE_VERSION=`cat ./.github/workflows/manifest/prod_version.txt`
           echo "INFRASTRUCTURE_VERSION=$INFRASTRUCTURE_VERSION" >> $GITHUB_ENV
