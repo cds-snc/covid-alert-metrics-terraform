@@ -39,7 +39,7 @@ jobs:
           - module_name: network
             environment: production
 
-          - module_name: etl_lambda
+          - module_name: etl_lambdas
             environment: staging
 
     steps:
@@ -156,3 +156,4 @@ jobs:
           echo "steps.fmt.outcome == ${{ steps.fmt.outcome }}"
           echo "steps.plan.outcome == ${{ steps.plan.outcome }}"
           exit 1
+
