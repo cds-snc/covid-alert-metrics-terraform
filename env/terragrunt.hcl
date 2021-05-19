@@ -8,30 +8,6 @@ inputs = {
   region     = "ca-central-1"
 }
 
-terraform {
-  before_hook "copy_terraform_tf" {
-    commands = ["init-from-module"]
-    execute  = ["cp", "${get_parent_terragrunt_dir()}/provider.tf", "${get_terragrunt_dir()}"]
-  }
-
-  before_hook "copy_common_variables_tf" {
-    commands = ["init-from-module"]
-    execute  = ["cp", "${get_parent_terragrunt_dir()}/common_variables.tf", "${get_terragrunt_dir()}"]
-  }
-
-  after_hook "rm_terraform_tf" {
-    commands     = concat(get_terraform_commands_that_need_vars(), ["validate"])
-    execute      = ["rm", "${get_terragrunt_dir()}/provider.tf"]
-    run_on_error = true
-  }
-
-  after_hook "rm_common_variables_tf" {
-    commands     = concat(get_terraform_commands_that_need_vars(), ["validate"])
-    execute      = ["rm", "${get_terragrunt_dir()}/common_variables.tf"]
-    run_on_error = true
-  }
-}
-
 remote_state {
   backend = "s3"
   generate = {
@@ -45,4 +21,47 @@ remote_state {
     region         = "ca-central-1"
     key            = "${path_relative_to_include()}/terraform.tfstate"
   }
+}
+
+generate "provider" {
+  path      = "provider.tf"
+  if_exists = "overwrite"
+  contents  = <<EOF
+terraform {
+  required_version = "= 0.14.2"
+  required_providers {
+    aws = {
+      source  = "hashicorp/aws"
+      version = "~> 3.0"
+    }
+  }
+}
+
+provider "aws" {
+  region              = var.region
+  allowed_account_ids = [var.account_id]
+}
+EOF
+}
+
+generate "common_variables" {
+  path      = "common_variables.tf"
+  if_exists = "overwrite"
+  contents  = <<EOF
+
+variable "account_id" {
+  description = "(Required) The account ID to perform actions on."
+  type        = string
+}
+
+variable "env" {
+  description = "(Required) The current running environment"
+  type        = string
+}
+
+variable "region" {
+  description = "(Required) The region to build infra in"
+  type        = string
+}
+EOF
 }
