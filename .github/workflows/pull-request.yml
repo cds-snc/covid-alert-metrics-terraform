@@ -4,7 +4,7 @@ on:
   pull_request:
     paths:
       - "aws/**"
-      - "env/staging/**"
+      - "env/**"
       - ".github/workflows/**"
 
 env:
@@ -13,54 +13,29 @@ env:
   TERRAGRUNT_VERSION: v0.29.2
 
 jobs:
-  lint:
-    runs-on: ubuntu-latest
-    env:
-      AWS_ACCESS_KEY_ID: ${{ secrets.STAGING_AWS_ACCESS_KEY_ID }}
-      AWS_SECRET_ACCESS_KEY: ${{ secrets.STAGING_AWS_SECRET_ACCESS_KEY }}
-      AWS_REGION: ca-central-1
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v2
-
-      - name: Setup Terraform
-        uses: hashicorp/setup-terraform@v1.2.1
-        with:
-          terraform_version: ${{ env.TERRAFORM_VERSION }}
-          terraform_wrapper: false
-
-      - name: Setup Terragrunt and OPA
-        run: |
-          mkdir bin
-          wget -O bin/terragrunt https://github.com/gruntwork-io/terragrunt/releases/download/$TERRAGRUNT_VERSION/terragrunt_linux_amd64
-          wget -O bin/opa https://github.com/open-policy-agent/opa/releases/download/$OPA_VERSION/opa_linux_amd64
-          chmod +x bin/*
-          echo "$GITHUB_WORKSPACE/bin" >> $GITHUB_PATH
-
-      - name: Lint HCL files
-        run: |
-          cd env
-          terragrunt hclfmt --terragrunt-check
-
-      - name: Lint Rego files
-        run: |
-          cd .github/workflows/policy
-          opa check *.rego
-
   terraform-plan-staging:
     runs-on: ubuntu-latest
     env:
-      AWS_ACCESS_KEY_ID: ${{ secrets.STAGING_AWS_ACCESS_KEY_ID }}
-      AWS_SECRET_ACCESS_KEY: ${{ secrets.STAGING_AWS_SECRET_ACCESS_KEY }}
       AWS_REGION: ca-central-1
+      INFRASTRUCTURE_VERSION: "1.0.0"
     strategy:
       fail-fast: false
       matrix:
         include:
           - module_name: ecr
+            environment: staging
+
+          # - module_name: ecr
+          #   environment: production
+
           - module_name: s3
+            environment: staging
+
           - module_name: network
+            environment: staging
+
           - module_name: etl_lambda
+            environment: staging
 
     steps:
       - name: Checkout
@@ -82,23 +57,32 @@ jobs:
 
       - name: Validate Module 
         id: validate-module
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets[format('{0}_AWS_ACCESS_KEY_ID',matrix.environment)] }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets[format('{0}_AWS_SECRET_ACCESS_KEY',matrix.environment)] }}
         run: |
-          cd env/staging/${{ matrix.module_name }}
-          terragrunt validate -no-color
+          cd env/${{ matrix.environment }}/${{ matrix.module_name }}
+          terragrunt validate --terragrunt-non-interactive -no-color
         continue-on-error: false
 
       - name: Check Formatting
         id: fmt
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets[format('{0}_AWS_ACCESS_KEY_ID',matrix.environment)] }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets[format('{0}_AWS_SECRET_ACCESS_KEY',matrix.environment)] }}
         run: |
-          cd env/staging/${{ matrix.module_name }}
-          terragrunt fmt -check -no-color
+          cd env/${{ matrix.environment }}/${{ matrix.module_name }}
+          terragrunt fmt --terragrunt-non-interactive -check -no-color
         continue-on-error: true
 
       - name: Plan module
         id: plan
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets[format('{0}_AWS_ACCESS_KEY_ID',matrix.environment)] }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets[format('{0}_AWS_SECRET_ACCESS_KEY',matrix.environment)] }}
         run: |
           set -o pipefail
-          cd env/staging/${{matrix.module_name}}
+          cd env/${{ matrix.environment }}/${{matrix.module_name}}
           terragrunt plan --terragrunt-non-interactive --terragrunt-log-level warn -no-color -out="$GITHUB_WORKSPACE/tfplan.binary" |& tee tempfile
           terragrunt show -json "$GITHUB_WORKSPACE/tfplan.binary" > "$GITHUB_WORKSPACE/tfplan.json"
           plan_output=$(cat tempfile)
@@ -131,7 +115,7 @@ jobs:
             const iconFormat = '${{ steps.fmt.outcome }}' === 'success' ? '✅' : '❌';
             const iconPlan = '${{ steps.plan.outcome }}' === 'success' ? '✅' : '❌';
             const deleteWarning = '${{ steps.check-changes.outputs.deletes }}' === '0' ? '' : '**⚠ &nbsp; WARNING:** resources will be destroyed by this change!';
-            const output = `## Module: ${{ matrix.module_name }}
+            const output = `## <span style="text-transform:uppercase">${{ matrix.environment }}</span> Module: ${{ matrix.module_name }}
             **${iconFormat} &nbsp; Terraform Format:** \`${{ steps.fmt.outcome }}\`
             **${iconPlan} &nbsp; Terraform Plan:** \`${{ steps.plan.outcome }}\`  
 

@@ -11,12 +11,12 @@ inputs = {
 terraform {
   before_hook "copy_terraform_tf" {
     commands = ["init-from-module"]
-    execute  = ["cp", "${get_parent_terragrunt_dir()}/provider.tf", "."]
+    execute  = ["cp", "${get_parent_terragrunt_dir()}/provider.tf", "${get_terragrunt_dir()}"]
   }
 
   before_hook "copy_common_variables_tf" {
     commands = ["init-from-module"]
-    execute  = ["cp", "${get_parent_terragrunt_dir()}/common_variables.tf", "."]
+    execute  = ["cp", "${get_parent_terragrunt_dir()}/common_variables.tf", "${get_terragrunt_dir()}"]
   }
 
   after_hook "rm_terraform_tf" {
