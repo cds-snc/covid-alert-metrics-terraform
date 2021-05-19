@@ -56,6 +56,9 @@ jobs:
 
       - name: Validate Module 
         id: validate-module
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets[format('{0}_AWS_ACCESS_KEY_ID',matrix.environment)] }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets[format('{0}_AWS_SECRET_ACCESS_KEY',matrix.environment)] }}
         run: |
           cd env/${{ matrix.environment }}/${{ matrix.module_name }}
           terragrunt validate -no-color
@@ -63,6 +66,9 @@ jobs:
 
       - name: Check Formatting
         id: fmt
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets[format('{0}_AWS_ACCESS_KEY_ID',matrix.environment)] }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets[format('{0}_AWS_SECRET_ACCESS_KEY',matrix.environment)] }}
         run: |
           cd env/${{ matrix.module_name }}/${{ matrix.module_name }}
           terragrunt fmt -check -no-color
