@@ -104,7 +104,22 @@ data "aws_iam_policy_document" "etl_policies" {
 
   }
 
+  statement {
+    effect = "Allow"
+    actions = [
+      "elasticfilesystem:ClientWrite",
+      "elasticfilesystem:ClientMount",
+      "elasticfilesystem:DescribeMountTargets",
+
+    ]
+    resources = [
+      module.masked_metrics.efs_arn,
+      module.unmasked_metrics.efs_arn
+    ]
+  }
+
 }
+
 
 resource "aws_iam_policy" "etl_policies" {
   name   = "EtlLambdaAccess"

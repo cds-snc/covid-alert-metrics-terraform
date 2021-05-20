@@ -1,6 +1,6 @@
 resource "aws_efs_file_system" "efs_for_lambda" {
 
-  tags      = {
+  tags = {
     Name = "${var.name}_efs"
   }
 

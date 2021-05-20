@@ -10,3 +10,7 @@ output "function_name" {
 output "log_group_arn" {
   value = aws_cloudwatch_log_group.metric_log.arn
 }
+
+output "efs_arn" {
+  value = aws_efs_file_system.efs_for_lambda.arn
+}
