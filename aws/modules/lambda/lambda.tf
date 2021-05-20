@@ -1,6 +1,7 @@
 
 locals {
-  image_uri = "${var.repository_url}:${var.tag}"
+  image_uri  = "${var.repository_url}:${var.tag}"
+  mount_path = "/mnt/efs"
 }
 
 resource "aws_lambda_function" "lambda" {
@@ -21,8 +22,18 @@ resource "aws_lambda_function" "lambda" {
   }
 
   environment {
-    variables = var.env_variables
+    variables = merge({
+      TMP_PATH = local.mount_path
+      },
+    var.env_variables)
   }
+
+  file_system_config {
+    arn              = aws_efs_access_point.access_point_for_lambda.arn
+    local_mount_path = local.mount_path
+  }
+
+  depends_on = [aws_efs_mount_target.mt]
 }
 
 resource "aws_cloudwatch_log_group" "metric_log" {
