@@ -1,5 +1,9 @@
 resource "aws_efs_file_system" "efs_for_lambda" {
-  tags      = "${var.name}_efs"
+
+  tags      = {
+    Name = "${var.name}_efs"
+  }
+
   encrypted = true
 }
 
