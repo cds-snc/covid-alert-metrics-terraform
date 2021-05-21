@@ -11,8 +11,8 @@ resource "aws_security_group" "efs" {
   }
 }
 
-resource "aws_security_group_rule" "nfs_ingress" {
-  description              = "Allow communication to NFS"
+resource "aws_security_group_rule" "efs_ingress" {
+  description              = "Allow communication to EFS from the lambda sg"
   type                     = "ingress"
   from_port                = 2049
   to_port                  = 2049
