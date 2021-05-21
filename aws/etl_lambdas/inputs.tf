@@ -37,6 +37,10 @@ variable "csv_etl_sg_id" {
   type = string
 }
 
+variable "efs_sg_id" {
+  type = string
+}
+
 variable "metrics_private_subnet_id" {
   type = string
 }
