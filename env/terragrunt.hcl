@@ -26,42 +26,11 @@ remote_state {
 generate "provider" {
   path      = "provider.tf"
   if_exists = "overwrite"
-  contents  = <<EOF
-terraform {
-  required_version = "= 0.14.2"
-  required_providers {
-    aws = {
-      source  = "hashicorp/aws"
-      version = "~> 3.0"
-    }
-  }
-}
-
-provider "aws" {
-  region              = var.region
-  allowed_account_ids = [var.account_id]
-}
-EOF
+  contents  = file("./common/provider.tf")
 }
 
 generate "common_variables" {
   path      = "common_variables.tf"
   if_exists = "overwrite"
-  contents  = <<EOF
-
-variable "account_id" {
-  description = "(Required) The account ID to perform actions on."
-  type        = string
-}
-
-variable "env" {
-  description = "(Required) The current running environment"
-  type        = string
-}
-
-variable "region" {
-  description = "(Required) The region to build infra in"
-  type        = string
-}
-EOF
+  contents  = file("./common/common_variables.tf")
 }
