@@ -69,5 +69,5 @@ include {
 }
 
 terraform {
-  source = "../../../aws/etl_lambdas"
+  source = "../../../aws//etl_lambdas"
 }
