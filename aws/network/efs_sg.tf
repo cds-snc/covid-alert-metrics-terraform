@@ -1,12 +1,12 @@
-resource "aws_security_group" "efs" { 
+resource "aws_security_group" "efs" {
   description = "Used by EFS"
-  vpc_id = aws_vpc.main.id
+  vpc_id      = aws_vpc.main.id
 
-  tags = { 
+  tags = {
     Name = "${var.name}_efs_sg"
   }
 
-  lifecycle { 
+  lifecycle {
     create_before_destroy = true
   }
 }

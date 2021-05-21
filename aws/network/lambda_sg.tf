@@ -22,12 +22,12 @@ resource "aws_security_group_rule" "inet_egress" {
   security_group_id = aws_security_group.lambda.id
 }
 
-resource "aws_security_group_rule" "efs_egress" { 
-  description = "Allow lambda to egress to efs"
-  type = "egress"
-  to_port = 2049
-  from_port = 2049
-  protocol = "tcp"
-  security_group_id = aws_security_group.lambda.id
+resource "aws_security_group_rule" "efs_egress" {
+  description              = "Allow lambda to egress to efs"
+  type                     = "egress"
+  to_port                  = 2049
+  from_port                = 2049
+  protocol                 = "tcp"
+  security_group_id        = aws_security_group.lambda.id
   source_security_group_id = aws_security_group.efs.id
 }
