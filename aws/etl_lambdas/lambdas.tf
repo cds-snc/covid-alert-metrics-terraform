@@ -7,6 +7,7 @@ module "unmasked_metrics" {
   role_arn          = aws_iam_role.metrics_csv.arn
   timeout           = 900
   security_group_id = var.csv_etl_sg_id
+  efs_sg_id         = var.efs_sg_id
   subnet_id         = var.metrics_private_subnet_id
   memory_size       = var.memory_size
 
@@ -26,6 +27,7 @@ module "masked_metrics" {
   role_arn          = aws_iam_role.metrics_csv.arn
   timeout           = 900
   security_group_id = var.csv_etl_sg_id
+  efs_sg_id         = var.efs_sg_id
   subnet_id         = var.metrics_private_subnet_id
   memory_size       = var.memory_size
 
