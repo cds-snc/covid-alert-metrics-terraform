@@ -8,6 +8,15 @@ resource "aws_iam_role_policy_attachment" "etl_policies" {
   policy_arn = aws_iam_policy.etl_policies.arn
 }
 
+data "aws_iam_policy" "lambda_insights" {
+  name = "CloudWatchLambdaInsightsExecutionRolePolicy"
+}
+
+resource "aws_iam_role_policy_attachment" "lambda_insights" {
+  role       = aws_iam_role.metrics_csv.name
+  policy_arn = data.aws_iam_policy.lambda_insights.arn
+}
+
 data "aws_iam_policy_document" "service_principal" {
   statement {
     effect = "Allow"
