@@ -13,7 +13,7 @@ data "aws_iam_policy" "lambda_insights" {
 }
 
 resource "aws_iam_role_policy_attachment" "lambda_insights" {
-  role = aws_iam_role.metrics_csv.name
+  role       = aws_iam_role.metrics_csv.name
   policy_arn = data.aws_iam_policy.lambda_insights.arn
 }
 
