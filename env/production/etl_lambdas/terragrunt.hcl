@@ -41,7 +41,7 @@ dependency "s3" {
 inputs = {
 
   csv_etl_repository_url    = dependency.ecr.outputs.create_csv_repository_url
-  csv_etl_tag               = "91fd3b2d417d587819eaa35f3c707d4a00f6f40f"
+  csv_etl_tag               = "5efe6f2e414e63ffe94d562a18fd035bb3ac0fed"
   create_csv_repository_arn = dependency.ecr.outputs.create_csv_repository_arn
 
   csv_etl_sg_id             = dependency.network.outputs.csv_etl_sg_id
