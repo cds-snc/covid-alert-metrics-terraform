@@ -10,6 +10,7 @@ dependency "network" {
   mock_outputs = {
     csv_etl_sg_id     = ""
     private_subnet_id = ""
+    efs_sg_id         = ""
   }
 }
 
@@ -44,6 +45,7 @@ inputs = {
   create_csv_repository_arn = dependency.ecr.outputs.create_csv_repository_arn
 
   csv_etl_sg_id             = dependency.network.outputs.csv_etl_sg_id
+  efs_sg_id                 = dependency.network.outputs.efs_sg_id
   metrics_private_subnet_id = dependency.network.outputs.private_subnet_id
 
   unmasked_metrics_s3_arn = dependency.s3.outputs.unmasked_metrics_arn
