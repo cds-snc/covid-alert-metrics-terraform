@@ -47,6 +47,9 @@ jobs:
 
           - module_name: sqs
             environment: staging
+
+          - module_name: sqs
+            environment: production
     steps:
       - name: Checkout
         uses: actions/checkout@v2
