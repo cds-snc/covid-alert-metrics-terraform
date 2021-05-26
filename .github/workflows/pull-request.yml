@@ -50,6 +50,9 @@ jobs:
 
           - module_name: sqs
             environment: production
+
+          - module_name: dynamodb
+            environment: staging
     steps:
       - name: Checkout
         uses: actions/checkout@v2
