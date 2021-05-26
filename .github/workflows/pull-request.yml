@@ -53,6 +53,10 @@ jobs:
 
           - module_name: dynamodb
             environment: staging
+
+          - module_name: dynamodb
+            environment: production
+
     steps:
       - name: Checkout
         uses: actions/checkout@v2
