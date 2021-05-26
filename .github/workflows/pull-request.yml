@@ -44,6 +44,9 @@ jobs:
 
           - module_name: etl_lambdas
             environment: production
+
+          - module_name: sqs
+            environment: staging
     steps:
       - name: Checkout
         uses: actions/checkout@v2
