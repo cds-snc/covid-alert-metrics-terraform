@@ -7,33 +7,14 @@ on:
       - "env/**"
       - ".github/workflows/**"
 
+env:
+  OPA_VERSION: v0.28.0
+  TERRAFORM_VERSION: 0.14.2
+  TERRAGRUNT_VERSION: v0.29.2
+
 jobs:
-  setup:
-    env:
-      OPA_VERSION: v0.28.0
-      TERRAFORM_VERSION: 0.14.2
-      TERRAGRUNT_VERSION: v0.29.2
-    runs-on: ubuntu-latest
-    steps: 
-      - name: Checkout
-        uses: actions/checkout@v2
-
-      - name: Setup Terraform
-        uses: hashicorp/setup-terraform@v1.2.1
-        with:
-          terraform_version: ${{ env.TERRAFORM_VERSION }}
-          terraform_wrapper: false
-
-      - name: Setup Terragrunt and OPA
-        run: |
-          mkdir bin
-          wget -O bin/terragrunt https://github.com/gruntwork-io/terragrunt/releases/download/$TERRAGRUNT_VERSION/terragrunt_linux_amd64
-          wget -O bin/opa https://github.com/open-policy-agent/opa/releases/download/$OPA_VERSION/opa_linux_amd64
-          chmod +x bin/*
-          echo "$GITHUB_WORKSPACE/bin" >> $GITHUB_PATH
 
   tg-plan-dependencies:
-    needs: setup
     runs-on: ubuntu-latest
     env:
       AWS_REGION: ca-central-1
@@ -72,6 +53,23 @@ jobs:
             environment: production
 
     steps:
+
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v1.2.1
+        with:
+          terraform_version: ${{ env.TERRAFORM_VERSION }}
+          terraform_wrapper: false
+
+      - name: Setup Terragrunt and OPA
+        run: |
+          mkdir bin
+          wget -O bin/terragrunt https://github.com/gruntwork-io/terragrunt/releases/download/$TERRAGRUNT_VERSION/terragrunt_linux_amd64
+          wget -O bin/opa https://github.com/open-policy-agent/opa/releases/download/$OPA_VERSION/opa_linux_amd64
+          chmod +x bin/*
+          echo "$GITHUB_WORKSPACE/bin" >> $GITHUB_PATH
 
       - name: Set Prod Version
         if: ${{ matrix.environment == 'production' }}
@@ -175,6 +173,22 @@ jobs:
 
     steps:
 
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v1.2.1
+        with:
+          terraform_version: ${{ env.TERRAFORM_VERSION }}
+          terraform_wrapper: false
+
+      - name: Setup Terragrunt and OPA
+        run: |
+          mkdir bin
+          wget -O bin/terragrunt https://github.com/gruntwork-io/terragrunt/releases/download/$TERRAGRUNT_VERSION/terragrunt_linux_amd64
+          wget -O bin/opa https://github.com/open-policy-agent/opa/releases/download/$OPA_VERSION/opa_linux_amd64
+          chmod +x bin/*
+          echo "$GITHUB_WORKSPACE/bin" >> $GITHUB_PATH
       - name: Set Prod Version
         if: ${{ matrix.environment == 'production' }}
         run: |
