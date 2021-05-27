@@ -25,21 +25,21 @@ module.exports = (github, context, steps, matrix) => {
 
   const output = `## <span style="text-transform:uppercase">${ environment }</span> Module: ${ moduleName }
 
-  **${iconFormat} &nbsp; Terraform Format:** \`${ fmtOutcome }\`
-  **${iconPlan} &nbsp; Terraform Plan:** \`${ planOutcome }\`  
+**${iconFormat} &nbsp; Terraform Format:** \`${ fmtOutcome }\`
+**${iconPlan} &nbsp; Terraform Plan:** \`${ planOutcome }\`  
 
-  ${deleteWarning}
-  \`\`\`terraform
-  Plan: ${ creates } to add, ${ updates } to change, ${ deletes } to destroy
-  \`\`\`
+${deleteWarning}
+\`\`\`terraform
+Plan: ${ creates } to add, ${ updates } to change, ${ deletes } to destroy
+\`\`\`
 
-  <details>
-    <summary>Show Plan</summary>
+<details>
+<summary>Show Plan</summary>
 
-    \`\`\`terraform
-    ${plan}
-    \`\`\`
-  </details>`;
+\`\`\`terraform
+${plan}
+\`\`\`
+</details>`;
   console.log(output)
   github.issues.createComment({
     issue_number: context.issue.number,
