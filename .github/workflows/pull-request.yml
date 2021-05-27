@@ -148,7 +148,7 @@ jobs:
             };
             console.log(JSON.stringify(s, null, ' '));
             console.log(JSON.stringify(m, null, ' '));
-            script({github, context, s, m});
+            script(github, context, s, m);
 
 
       - name: Check Success
