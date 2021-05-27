@@ -55,12 +55,12 @@ inputs = {
   memory_size             = 10240
 
   masked_metrics_environment_variables = {
-    ENVIRONMENT = "production",
+    ENVIRONMENT    = "production",
     IN_MEMORY_DATA = "true"
   }
 
   unmasked_metrics_environment_variables = {
-    ENVIRONMENT = "production",
+    ENVIRONMENT    = "production",
     IN_MEMORY_DATA = "true"
   }
 
