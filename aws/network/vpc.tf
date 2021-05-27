@@ -6,6 +6,7 @@ resource "aws_vpc" "main" {
 
   tags = {
     Name = "${var.name}_vpc"
+    foo  = "bar"
   }
 
 }
