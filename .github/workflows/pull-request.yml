@@ -146,6 +146,8 @@ jobs:
               environment: "${{ matrix.environment }}",
               moduleName: "${{ matrix.module_name }}"
             };
+            console.log(JSON.stringify(s, null, ''));
+            console.log(JSON.stringify(m, null, ''));
             script({github, context, s, m});
 
 
