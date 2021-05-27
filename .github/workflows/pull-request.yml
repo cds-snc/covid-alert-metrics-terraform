@@ -135,7 +135,7 @@ jobs:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
             const script = require(`./scripts/comment_plan.js`);
-            const s = {
+            /*const s = {
               fmtOutcome: ${{ steps.fmt.outcome }},
               planOutcome: ${{ steps.plan.outcome}},
               deletes: ${{ steps.check-changes.outputs.deletes}},
@@ -145,7 +145,7 @@ jobs:
             const m = {
               environment: ${{ matrix.environment }},
               moduleName: ${{ matrix.module_name }}
-            };
+            };*/
             script({github, context, s, m});
 
 
