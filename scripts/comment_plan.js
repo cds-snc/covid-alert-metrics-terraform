@@ -17,6 +17,11 @@ module.exports = (github, context, steps, matrix) => {
   const iconFormat = fmtOutcome === 'success' ? '✅' : '❌';
   const iconPlan = planOutcome === 'success' ? '✅' : '❌';
 
+  const plan = process.env
+                      .PLAN
+                      .split('\n')
+                      .map(x => `    ${x}`)
+                      .join('\n');
 
   const output = `## <span style="text-transform:uppercase">${ environment }</span> Module: ${ moduleName }
 
@@ -32,7 +37,7 @@ module.exports = (github, context, steps, matrix) => {
     <summary>Show Plan</summary>
 
     \`\`\`terraform
-    ${process.env.PLAN}
+    ${plan}
     \`\`\`
   </details>`;
   console.log(output)
