@@ -1,5 +1,7 @@
 module.exports = ({github, context, steps, matrix}) => {
 
+  console.log(JSON.stringify(steps, null, ' '));
+  console.log(JSON.stringify(matrix, null, ' '));
   const fmtOutcome = steps.fmtOutcome
   const planOutcome = steps.planOutcome
 
