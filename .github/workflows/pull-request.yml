@@ -134,7 +134,7 @@ jobs:
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
-            const script = require('scripts/foo.js');
+            const script = require('./scripts/foo.js');
             console.log(script());
             /*const script = require(`./scripts/comment_plan.js`);
             const s = {
