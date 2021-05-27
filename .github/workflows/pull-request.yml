@@ -255,15 +255,15 @@ jobs:
           script: |
             const script = require('./scripts/comment_plan.js');
             const s = {
-              fmtOutcome: ${{ steps.fmt.outcome }},
-              planOutcome: ${{ steps.plan.outcome}},
-              deletes: ${{ steps.check-changes.outputs.deletes}},
-              creates: ${{ steps.check-changes.outputs.creates}},
-              updates: ${{ steps.check-changes.outputs.updates}}
+              fmtOutcome: "${{ steps.fmt.outcome }}",
+              planOutcome: "${{ steps.plan.outcome}}",
+              deletes: "${{ steps.check-changes.outputs.deletes}}",
+              creates: "${{ steps.check-changes.outputs.creates}}",
+              updates: "${{ steps.check-changes.outputs.updates}}"
             };
             const m = {
-              environment: ${{ matrix.environment }},
-              moduleName: ${{ matrix.module_name }}
+              environment: "${{ matrix.environment }}",
+              moduleName: "${{ matrix.module_name }}"
             };
             script({github, context, s, m});
 
