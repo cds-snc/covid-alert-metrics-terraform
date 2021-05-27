@@ -1,4 +1,4 @@
-module.exports = ({github, steps, matrix, plan}) => {
+module.exports = ({github, steps, matrix}) => {
 
   const fmtOutcome = steps.fmtOutcome
   const planOutcome = steps.planOutcome
@@ -30,7 +30,7 @@ module.exports = ({github, steps, matrix, plan}) => {
     <summary>Show Plan</summary>
 
     \`\`\`terraform
-    ${ plan }
+    ${ process.env.PLAN }
     \`\`\`
   </details>`;
 

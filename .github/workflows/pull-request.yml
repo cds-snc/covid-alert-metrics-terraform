@@ -262,8 +262,7 @@ jobs:
             },{
               environment: ${{ matrix.environment }},
               moduleName: ${{ matrix.module_name }}
-            },
-            process.env.PLAN})
+            }})
 
 
       - name: Check Success
