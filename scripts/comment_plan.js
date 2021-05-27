@@ -1,5 +1,7 @@
 module.exports = ({github, context, steps, matrix}) => {
 
+  console.log(JSON.stringify(steps,null, ' '))
+  console.log(JSON.stringify(matrix,null, ' '))
   const fmtOutcome = steps.fmtOutcome
   const planOutcome = steps.planOutcome
 
@@ -12,7 +14,7 @@ module.exports = ({github, context, steps, matrix}) => {
   const environment = matrix.environment
   const moduleName = matrix.moduleName
 
-  const iconFormat =  fmtOutcome === 'success' ? '✅' : '❌';
+  const iconFormat = fmtOutcome === 'success' ? '✅' : '❌';
   const iconPlan = planOutcome === 'success' ? '✅' : '❌';
 
 
