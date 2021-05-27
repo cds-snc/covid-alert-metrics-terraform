@@ -32,10 +32,10 @@ module.exports = (github, context, steps, matrix) => {
     <summary>Show Plan</summary>
 
     \`\`\`terraform
-    ${ process.env.PLAN }
+    ${process.env.PLAN}
     \`\`\`
   </details>`;
-
+  console.log(output)
   github.issues.createComment({
     issue_number: context.issue.number,
     owner: context.repo.owner,
