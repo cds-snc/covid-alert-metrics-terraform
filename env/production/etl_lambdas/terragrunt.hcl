@@ -56,12 +56,12 @@ inputs = {
 
   masked_metrics_environment_variables = {
     ENVIRONMENT    = "production",
-    IN_MEMORY_DATA = "true"
+    IN_MEMORY_DATA = "True"
   }
 
   unmasked_metrics_environment_variables = {
     ENVIRONMENT    = "production",
-    IN_MEMORY_DATA = "true"
+    IN_MEMORY_DATA = "True"
   }
 
 }
