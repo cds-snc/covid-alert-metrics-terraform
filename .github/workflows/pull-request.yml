@@ -267,7 +267,7 @@ jobs:
               environment: "${{ matrix.environment }}",
               moduleName: "${{ matrix.module_name }}"
             };
-            script({github, context, s, m});
+            script(github, context, s, m);
 
 
       - name: Check Success
