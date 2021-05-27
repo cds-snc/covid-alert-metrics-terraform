@@ -1,4 +1,4 @@
-module.exports = ({github, steps, matrix}) => {
+module.exports = ({github, context, steps, matrix}) => {
 
   const fmtOutcome = steps.fmtOutcome
   const planOutcome = steps.planOutcome
@@ -19,7 +19,7 @@ module.exports = ({github, steps, matrix}) => {
   const output = `## <span style="text-transform:uppercase">${ environment }</span> Module: ${ moduleName }
 
   **${iconFormat} &nbsp; Terraform Format:** \`${ fmtOutcome }\`
-  **${iconPlan} &nbsp; Terraform Plan:** \`${ ps.planOutcome }\`  
+  **${iconPlan} &nbsp; Terraform Plan:** \`${ planOutcome }\`  
 
   ${deleteWarning}
   \`\`\`terraform
