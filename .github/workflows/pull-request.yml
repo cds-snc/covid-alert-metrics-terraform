@@ -252,7 +252,7 @@ jobs:
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
-            const script = require('./scripts/comment_plan.js');
+            const script = require('.github/workflows/scripts/comment_plan.js');
             const s = {
               fmtOutcome: ${{ steps.fmt.outcome }},
               planOutcome: ${{ steps.plan.outcome}},
