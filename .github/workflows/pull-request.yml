@@ -134,8 +134,10 @@ jobs:
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
-            const script = require(`./scripts/comment_plan.js`);
-            /*const s = {
+            const script = require('scripts/foo.js');
+            console.log(script());
+            /*const script = require(`./scripts/comment_plan.js`);
+            const s = {
               fmtOutcome: ${{ steps.fmt.outcome }},
               planOutcome: ${{ steps.plan.outcome}},
               deletes: ${{ steps.check-changes.outputs.deletes}},
@@ -145,8 +147,8 @@ jobs:
             const m = {
               environment: ${{ matrix.environment }},
               moduleName: ${{ matrix.module_name }}
-            };*/
-            script({github, context, s, m});
+            };
+            script({github, context, s, m});*/
 
 
       - name: Check Success
