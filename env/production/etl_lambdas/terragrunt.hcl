@@ -41,7 +41,7 @@ dependency "s3" {
 inputs = {
 
   csv_etl_repository_url    = dependency.ecr.outputs.create_csv_repository_url
-  csv_etl_tag               = "249939545bd98906dd4a4aaf69280d24b1f8c817"
+  csv_etl_tag               = "6fbb890e8a7cdfd19d3b3de1ed8885f5ac7442ef"
   create_csv_repository_arn = dependency.ecr.outputs.create_csv_repository_arn
 
   csv_etl_sg_id             = dependency.network.outputs.csv_etl_sg_id
@@ -55,11 +55,13 @@ inputs = {
   memory_size             = 10240
 
   masked_metrics_environment_variables = {
-    ENVIRONMENT = "production"
+    ENVIRONMENT = "production",
+    IN_MEMORY_DATA = "true"
   }
 
   unmasked_metrics_environment_variables = {
-    ENVIRONMENT = "production"
+    ENVIRONMENT = "production",
+    IN_MEMORY_DATA = "true"
   }
 
 }
