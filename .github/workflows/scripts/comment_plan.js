@@ -23,7 +23,7 @@ module.exports = ({github, steps, matrix}) => {
 
   ${deleteWarning}
   \`\`\`terraform
-  Plan: ${ creates }} to add, ${ updates } to change, ${ deletes } to destroy
+  Plan: ${ creates } to add, ${ updates } to change, ${ deletes } to destroy
   \`\`\`
 
   <details>
