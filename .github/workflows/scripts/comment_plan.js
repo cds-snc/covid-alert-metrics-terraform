@@ -41,4 +41,4 @@ module.exports = ({github, context, steps, matrix}) => {
     body: output
   })
 
-}
+};
