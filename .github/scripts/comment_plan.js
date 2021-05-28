@@ -1,7 +1,5 @@
 module.exports = (github, context, steps, matrix) => {
 
-  console.log(JSON.stringify(steps, null, ' '));
-  console.log(JSON.stringify(matrix, null, ' '));
   const fmtOutcome = steps.fmtOutcome
   const planOutcome = steps.planOutcome
 
@@ -17,12 +15,6 @@ module.exports = (github, context, steps, matrix) => {
   const iconFormat = fmtOutcome === 'success' ? '✅' : '❌';
   const iconPlan = planOutcome === 'success' ? '✅' : '❌';
 
-  const plan = process.env
-                      .PLAN
-                      .split('\n')
-                      .map(x => `    ${x}`)
-                      .join('\n');
-
   const output = `## <span style="text-transform:uppercase">${ environment }</span> Module: ${ moduleName }
 
 **${iconFormat} &nbsp; Terraform Format:** \`${ fmtOutcome }\`
@@ -37,10 +29,10 @@ Plan: ${ creates } to add, ${ updates } to change, ${ deletes } to destroy
 <summary>Show Plan</summary>
 
 \`\`\`terraform
-${plan}
+${ process.env.PLAN }
 \`\`\`
 </details>`;
-  console.log(output)
+
   github.issues.createComment({
     issue_number: context.issue.number,
     owner: context.repo.owner,
