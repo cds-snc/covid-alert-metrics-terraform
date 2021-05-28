@@ -171,10 +171,10 @@ jobs:
           - module_name: etl_lambdas
             environment: production
 
-          - module_name: backoff_retry
+          - module_name: backoff_retry_lambda
             environment: staging
 
-          - module_name: backoff_retry
+          - module_name: backoff_retry_lambda
             environment: production
 
     steps:
@@ -251,7 +251,7 @@ jobs:
           echo "::set-output name=deletes::$deletes"
 
       # Create plan comment for PRs if there are changes or the format/plan steps failed
-      - uses: actions/github-script@0.9.0
+      - uses: actions/github-script@v4
         if: ${{ github.event_name == 'pull_request' && (steps.check-changes.outputs.no-changes != 'true' || steps.fmt.outcome == 'failure' || steps.plan.outcome == 'failure') }}
         env:
           PLAN: "${{ steps.plan.outputs.stdout }}"
