@@ -35,7 +35,7 @@ inputs = {
   dead_letter_queue_url = dependency.sqs.outputs.dead_letter_queue_url
   metrics_key_arn       = dependency.sqs.outputs.metrics_key_arn
 
-  "backoff_retry_max_avg_duration" = 3000
+  backoff_retry_max_avg_duration = 3000
 }
 
 terraform {

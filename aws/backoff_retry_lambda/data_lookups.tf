@@ -1,5 +1,8 @@
 data "aws_vpc" "covid_alert" {
-  id = "vpc-06fbc7337b116cce1"
+  filter {
+    name   = "tag:Name"
+    values = ["CovidShield"]
+  }
 }
 
 data "aws_vpc_endpoint" "dynamodb" {
@@ -8,7 +11,8 @@ data "aws_vpc_endpoint" "dynamodb" {
 }
 
 data "aws_security_group" "privatelink" {
-  id = "sg-0e0070c8141ce36a5"
+  name   = "privatelink"
+  vpc_id = data.aws_vpc.covid_alert.id
 }
 
 data "aws_subnet_ids" "private" {
@@ -19,6 +23,6 @@ data "aws_subnet_ids" "private" {
   }
 }
 
-data "aws_sns_topic" "alert_critical" { 
+data "aws_sns_topic" "alert_critical" {
   name = "alert-critical"
 }
