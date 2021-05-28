@@ -134,7 +134,7 @@ jobs:
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
-            const script = require(`./scripts/comment_plan.js`);
+            const script = require("./.github/scripts/comment_plan.js");
             const s = {
               fmtOutcome: "${{ steps.fmt.outcome }}",
               planOutcome: "${{ steps.plan.outcome}}",
@@ -146,10 +146,7 @@ jobs:
               environment: "${{ matrix.environment }}",
               moduleName: "${{ matrix.module_name }}"
             };
-            console.log(JSON.stringify(s, null, ' '));
-            console.log(JSON.stringify(m, null, ' '));
             script(github, context, s, m);
-
 
       - name: Check Success
         if: ${{ steps.fmt.outcome == 'failure' || steps.plan.outcome == 'failure' }}
@@ -255,7 +252,7 @@ jobs:
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
-            const script = require('./scripts/comment_plan.js');
+            const script = require("./.github/scripts/comment_plan.js");
             const s = {
               fmtOutcome: "${{ steps.fmt.outcome }}",
               planOutcome: "${{ steps.plan.outcome}}",
@@ -269,11 +266,9 @@ jobs:
             };
             script(github, context, s, m);
 
-
       - name: Check Success
         if: ${{ steps.fmt.outcome == 'failure' || steps.plan.outcome == 'failure' }}
         run: |
           echo "steps.fmt.outcome == ${{ steps.fmt.outcome }}"
           echo "steps.plan.outcome == ${{ steps.plan.outcome }}"
           exit 1
-
