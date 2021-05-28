@@ -27,7 +27,7 @@ resource "aws_iam_policy" "backoff_retry" {
   policy = data.aws_iam_policy_document.backoff_retry.json
 }
 
-data "aws_iam_policy_document" "backoff_retry" { 
+data "aws_iam_policy_document" "backoff_retry" {
 
   statement {
     effect = "Allow"
