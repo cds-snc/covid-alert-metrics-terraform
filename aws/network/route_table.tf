@@ -5,7 +5,6 @@ resource "aws_default_route_table" "default" {
 
   tags = {
     name = "${var.name}_default_route_table"
-    foo  = "bar"
   }
 }
 
