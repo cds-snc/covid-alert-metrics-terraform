@@ -22,5 +22,6 @@ jobs:
 
       - name: Scan the Terraform files
         run: |
+          snyk config set api=${{ secrets.SNYK_TOKEN }}
           snyk iac test aws
           snyk iac test env/common
