@@ -18,7 +18,7 @@ jobs:
         uses: actions/checkout@v2
 
       - name: Install Snyk
-        run: npm install -g snyk@${{ env.SNYK_VERSION }}
+        run: sudo npm install -g snyk@${{ env.SNYK_VERSION }}
 
       - name: Scan the Terraform files
         run: |
