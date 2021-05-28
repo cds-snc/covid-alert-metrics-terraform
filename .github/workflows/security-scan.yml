@@ -1,0 +1,26 @@
+name: "Security scan using Snyk CLI"
+
+on:
+  pull_request:
+    paths:
+      - "aws/**"
+      - "env/common/**"
+      - ".github/workflows/**"
+
+env:
+  SNYK_VERSION: 1.618.0
+
+jobs:
+  security-scan:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Install Snyk
+        run: npm install -g snyk@${{ env.SNYK_VERSION }}
+
+      - name: Scan the Terraform files
+        run: |
+          snyk iac test aws
+          snyk iac test env/common
