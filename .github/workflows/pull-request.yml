@@ -171,10 +171,10 @@ jobs:
           - module_name: etl_lambdas
             environment: production
 
-          - module_name: backoff_retry
+          - module_name: backoff_retry_lambda
             environment: staging
 
-          - module_name: backoff_retry
+          - module_name: backoff_retry_lambda
             environment: production
 
     steps:
