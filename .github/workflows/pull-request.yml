@@ -171,6 +171,12 @@ jobs:
           - module_name: etl_lambdas
             environment: production
 
+          - module_name: backoff_retry
+            environment: staging
+
+          - module_name: backoff_retry
+            environment: production
+
     steps:
 
       - name: Checkout
