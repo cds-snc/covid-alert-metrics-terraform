@@ -1,0 +1,5 @@
+{
+  "TERRAFORM_VERSION" : "0.14.2",
+  "TERRAGRUNT" : "v0.29.2",
+  "OPA_VERIONS": "v0.28.0"
+}

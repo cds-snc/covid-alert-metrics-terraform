@@ -1,0 +1,35 @@
+name: "Pull requests"
+
+on:
+  pull_request:
+    paths:
+      - "aws/**"
+      - "env/**"
+      - ".github/workflows/**"
+
+jobs:
+  blast-radius:
+    runs-on: "ubuntu-latest"
+
+    steps:
+      - name: Get changed files
+        id: changed-files
+        uses: jitterbit/get-changed-files@v1
+        with:
+          format: 'json'
+
+      - name: Get Blast Radius
+        id: blast-radius
+        run: echo "::set_output name=blast_radius::$(./scripts/get_blast_radius.sh)" 
+      
+      - name: warn_on_2
+        if: ${steps.bast-radius.outputs.blast_radius == 2}
+        run: echo "::set_warning ::Blast Radius of 2"
+
+
+      - name: fail_on_3
+        if: ${steps.bast-radius.outputs.blast_radius > 2}
+        run: echo "::set_error ::Blast Raidus of 3"
+          
+          
+          

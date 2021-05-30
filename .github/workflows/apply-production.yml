@@ -5,10 +5,6 @@ on:
     branches:
       - main
 
-env:
-  TERRAFORM_VERSION: 0.14.2
-  TERRAGRUNT_VERSION: v0.29.2
-
 jobs:
   terragrunt-apply-all-production:
     if: github.ref == 'refs/heads/main' && github.event_name == 'push'
@@ -20,6 +16,11 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v2
+
+      - name: Setup Environment Variables
+        run: |
+          ./scripts/setenv.sh TERRAFORM_VERSION >> $GITHUB_ENV
+          ./scripts/setenv.sh TERRAGRUNT_VERSION >> $GITHUB_ENV
 
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v1.2.1
