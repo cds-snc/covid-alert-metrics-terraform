@@ -1,3 +1,3 @@
 #!/bin/bash
 
-echo "$1=$(jq -r ."$1" ./manifest/versions.json)" 
+echo "$1=$(jq -r ."$1" .github/workflows/manifest/versions.json)"
