@@ -262,3 +262,20 @@ jobs:
           echo "steps.fmt.outcome == ${{ steps.fmt.outcome }}"
           echo "steps.plan.outcome == ${{ steps.plan.outcome }}"
           exit 1
+
+  comment-end:
+    if: always()
+    needs: [tg-plan-dependents]
+    runs-on: ubuntu-latest
+    steps:
+
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - uses: actions/github-script@v4
+        env:
+          PLAN: "${{ steps.plan.outputs.stdout }}"
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            require("./.github/scripts/comment_end.js")(github, context);
