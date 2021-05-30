@@ -105,7 +105,7 @@ jobs:
         run: |
           set -o pipefail
           cd env/${{ matrix.environment }}/${{matrix.module_name}}
-          ../../../${{ env.scripts }}/plan_module.sh
+          ../../../${{ env.SCRIPTS }}/plan_module.sh
         continue-on-error: true
 
       - name: Check plan changes
@@ -223,7 +223,7 @@ jobs:
         run: |
           set -o pipefail
           cd env/${{ matrix.environment }}/${{matrix.module_name}}
-          ../../../${{ env.scripts }}/plan_module.sh
+          ../../../${{ env.SCRIPTS }}/plan_module.sh
         continue-on-error: true
 
       - name: Check plan changes
