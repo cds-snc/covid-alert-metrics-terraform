@@ -7,6 +7,9 @@ on:
       - "env/**"
       - ".github/workflows/**"
 
+env:
+  SCRIPTS: ./.github/workflows/scripts
+
 jobs:
 
   tg-plan-dependencies:
@@ -55,9 +58,9 @@ jobs:
 
       - name: Setup Environment Variables
         run: |
-          ./scripts/setenv.sh TERRAFORM_VERSION >> $GITHUB_ENV
-          ./scripts/setenv.sh TERRAGRUNT_VERSION >> $GITHUB_EN
-          ./scripts/setenv.sh OPA_VERSION >> $GITHUB_ENV
+          ${{ env.SCRIPTS }}/setenv.sh TERRAFORM_VERSION >> $GITHUB_ENV
+          ${{ env.SCRIPTS }}/setenv.sh TERRAGRUNT_VERSION >> $GITHUB_EN
+          ${{ env.SCRIPTS }}/setenv.sh OPA_VERSION >> $GITHUB_ENV
 
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v1.2.1
@@ -67,12 +70,12 @@ jobs:
 
       - name: Setup Terragrunt and OPA
         run: |
-          ./scripts/setup_tg_opa.sh
+          ${{ env.SCRIPTS }}/setup_tg_opa.sh
           echo "$GITHUB_WORKSPACE/bin" >> $GITHUB_PATH
 
       - name: Set Prod Version
         if: ${{ matrix.environment == 'production' }}
-        run: ./scripts/get_infra_version.sh >> $GITHUB_ENV
+        run: ${{ env.SCRIPTS }}/get_infra_version.sh >> $GITHUB_ENV
 
       - name: Validate Module 
         id: validate-module
@@ -102,16 +105,16 @@ jobs:
         run: |
           set -o pipefail
           cd env/${{ matrix.environment }}/${{matrix.module_name}}
-          ./scripts/plan_module.sh
+          ${{ env.SCRIPTS }}/plan_module.sh
         continue-on-error: true
 
       - name: Check plan changes
         id: check-changes
         run: |
-          ./scripts/opa_eval.sh no_changes .no_changes
-          ./scripts/opa_eval.sh creates .resource_changes.create
-          ./scripts/opa_eval.sh updates .resource_changes.update
-          ./scripts/opa_eval.sh deletes .resource_changes.delete
+          ${{ env.SCRIPTS }}/opa_eval.sh no_changes .no_changes
+          ${{ env.SCRIPTS }}/opa_eval.sh creates .resource_changes.create
+          ${{ env.SCRIPTS }}/opa_eval.sh updates .resource_changes.update
+          ${{ env.SCRIPTS }}/opa_eval.sh deletes .resource_changes.delete
 
       # Create plan comment for PRs if there are changes or the format/plan steps failed
       - uses: actions/github-script@v4
@@ -171,9 +174,9 @@ jobs:
 
       - name: Setup Environment Variables
         run: |
-          ./scripts/setenv.sh TERRAFORM_VERSION >> $GITHUB_ENV
-          ./scripts/setenv.sh TERRAGRUNT_VERSION >> $GITHUB_ENV
-          ./scripts/setenv.sh OPA_VERSION >> $GITHUB_ENV
+          ${{ env.SCRIPTS }}/setenv.sh TERRAFORM_VERSION >> $GITHUB_ENV
+          ${{ env.SCRIPTS }}/setenv.sh TERRAGRUNT_VERSION >> $GITHUB_ENV
+          ${{ env.SCRIPTS }}/setenv.sh OPA_VERSION >> $GITHUB_ENV
 
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v1.2.1
@@ -183,7 +186,7 @@ jobs:
 
       - name: Setup Terragrunt and OPA
         run: |
-          ./scripts/setup_tg_opa.sh
+          ${{ env.SCRIPTS }}/setup_tg_opa.sh
           echo "$GITHUB_WORKSPACE/bin" >> $GITHUB_PATH
       
       - name: Set Prod Version
@@ -220,16 +223,16 @@ jobs:
         run: |
           set -o pipefail
           cd env/${{ matrix.environment }}/${{matrix.module_name}}
-          ./scripts/plan_module.sh
+          ${{ env.SCRIPTS }}/plan_module.sh
         continue-on-error: true
 
       - name: Check plan changes
         id: check-changes
         run: |
-          ./scripts/opa_eval.sh no_changes .no_changes
-          ./scripts/opa_eval.sh creates .resource_changes.create
-          ./scripts/opa_eval.sh updates .resource_changes.update
-          ./scripts/opa_eval.sh deletes .resource_changes.delete
+          ${{ env.SCRIPTS }}/opa_eval.sh no_changes .no_changes
+          ${{ env.SCRIPTS }}/opa_eval.sh creates .resource_changes.create
+          ${{ env.SCRIPTS }}/opa_eval.sh updates .resource_changes.update
+          ${{ env.SCRIPTS }}/opa_eval.sh deletes .resource_changes.delete
 
       # Create plan comment for PRs if there are changes or the format/plan steps failed
       - uses: actions/github-script@v4

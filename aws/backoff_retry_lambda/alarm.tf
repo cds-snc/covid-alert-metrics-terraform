@@ -1,7 +1,7 @@
 resource "aws_cloudwatch_metric_alarm" "backoff_retry_average_duration" {
   alarm_name          = "save-metrics-average-duration"
   comparison_operator = "GreaterThanThreshold"
-  evaluation_periods  = "1"
+  evaluation_periods   = "1"
   metric_name         = "Duration"
   namespace           = "AWS/Lambda"
   period              = "60"

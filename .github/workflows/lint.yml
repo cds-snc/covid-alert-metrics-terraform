@@ -7,9 +7,7 @@ on:
       - ".github/workflows/**"
 
 env:
-  OPA_VERSION: v0.28.0
-  TERRAFORM_VERSION: 0.14.2
-  TERRAGRUNT_VERSION: v0.29.2
+  SCRIPTS: ./.github/workflows/scripts
 
 jobs:
   lint:
@@ -22,6 +20,12 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
 
+      - name: Setup Environment Variables
+        run: |
+          ${{ env.SCRIPTS }}/setenv.sh TERRAFORM_VERSION >> $GITHUB_ENV
+          ${{ env.SCRIPTS }}/setenv.sh TERRAGRUNT_VERSION >> $GITHUB_EN
+          ${{ env.SCRIPTS }}/setenv.sh OPA_VERSION >> $GITHUB_ENV
+
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v1.2.1
         with:
@@ -30,10 +34,7 @@ jobs:
 
       - name: Setup Terragrunt and OPA
         run: |
-          mkdir bin
-          wget -O bin/terragrunt https://github.com/gruntwork-io/terragrunt/releases/download/$TERRAGRUNT_VERSION/terragrunt_linux_amd64
-          wget -O bin/opa https://github.com/open-policy-agent/opa/releases/download/$OPA_VERSION/opa_linux_amd64
-          chmod +x bin/*
+          ${{ env.SCRIPTS }}/setup_tg_opa.sh
           echo "$GITHUB_WORKSPACE/bin" >> $GITHUB_PATH
 
       - name: Lint HCL files
