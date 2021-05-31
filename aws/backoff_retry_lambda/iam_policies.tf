@@ -1,29 +1,7 @@
-# aggregator_metrics_put
-
-data "aws_iam_policy_document" "aggregate_metrics_update" {
-  statement {
-    effect = "Allow"
-
-    actions = [
-      "dynamodb:UpdateItem"
-    ]
-
-    resources = [
-      var.aggregate_metrics_arn
-    ]
-  }
-
+resource "aws_iam_role" "backoff" {
+  name               = "backoff_lambda_role"
+  assume_role_policy = data.aws_iam_policy_document.service_principal.json
 }
-
-
-resource "aws_iam_policy" "aggregate_metrics_update" {
-  name   = "CovidAlertAggregateMetricsUpdateItem"
-  path   = "/"
-  policy = data.aws_iam_policy_document.aggregate_metrics_update.json
-}
-
-
-# assume_role
 
 data "aws_iam_policy_document" "service_principal" {
   statement {
@@ -38,9 +16,31 @@ data "aws_iam_policy_document" "service_principal" {
   }
 }
 
-# write_logs
+resource "aws_iam_role_policy_attachment" "backoff_retry" {
+  role       = aws_iam_role.backoff.name
+  policy_arn = aws_iam_policy.backoff_retry.arn
+}
 
-data "aws_iam_policy_document" "write_logs" {
+resource "aws_iam_policy" "backoff_retry" {
+  name   = "CovidAlertAggregateMetricsUpdateItem"
+  path   = "/"
+  policy = data.aws_iam_policy_document.backoff_retry.json
+}
+
+data "aws_iam_policy_document" "backoff_retry" {
+
+  statement {
+    effect = "Allow"
+
+    actions = [
+      "dynamodb:UpdateItem"
+    ]
+
+    resources = [
+      var.aggregate_metrics_arn
+    ]
+  }
+
   statement {
 
     effect = "Allow"
@@ -54,17 +54,7 @@ data "aws_iam_policy_document" "write_logs" {
       "arn:aws:logs:*:*:*"
     ]
   }
-}
 
-resource "aws_iam_policy" "write_logs" {
-  name   = "CovidAlertLogWriter"
-  path   = "/"
-  policy = data.aws_iam_policy_document.write_logs.json
-}
-
-# vpc_networking
-
-data "aws_iam_policy_document" "vpc_networking" {
   statement {
 
     effect = "Allow"
@@ -80,16 +70,7 @@ data "aws_iam_policy_document" "vpc_networking" {
     ]
 
   }
-}
 
-resource "aws_iam_policy" "vpc_networking" {
-  name   = "CovidAlertVplNetworking"
-  path   = "/"
-  policy = data.aws_iam_policy_document.vpc_networking.json
-}
-
-# Read write and encrypt to deadletter queue
-data "aws_iam_policy_document" "read_write_and_encrypt_deadletter_queue" {
   statement {
 
     effect = "Allow"
@@ -109,10 +90,4 @@ data "aws_iam_policy_document" "read_write_and_encrypt_deadletter_queue" {
 
   }
 
-}
-
-resource "aws_iam_policy" "read_write_and_encrypt_deadletter_queue" {
-  name   = "CovidAlertReadWriteAndEncryptDeadletterQueue"
-  path   = "/"
-  policy = data.aws_iam_policy_document.read_write_and_encrypt_deadletter_queue.json
 }
