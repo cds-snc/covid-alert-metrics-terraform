@@ -22,7 +22,7 @@ resource "aws_iam_role_policy_attachment" "backoff_retry" {
 }
 
 resource "aws_iam_policy" "backoff_retry" {
-  name   = "CovidAlertAggregateMetricsUpdateItem"
+  name   = "CovidAlertBackoffRetryLambda"
   path   = "/"
   policy = data.aws_iam_policy_document.backoff_retry.json
 }
