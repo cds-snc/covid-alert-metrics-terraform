@@ -1,9 +1,7 @@
 data "aws_caller_identity" "current" {}
 
 resource "aws_s3_bucket" "masked_metrics" {
-
-  # Versioning on this resource is handled through git
-  # tfsec:ignore:AWS077
+  # checkov:skip=CKV_AWS_21:Versioning on this resource is handled through git
 
   bucket = var.name
 

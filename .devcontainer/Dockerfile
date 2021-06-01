@@ -9,12 +9,10 @@ ARG TERRAFORM_VERSION
 ARG TERRAFORM_CHECKSUM
 ARG TERRAGRUNT_VERSION
 ARG TERRAGRUNT_CHECKSUM
-ARG TFSEC_VERSION
-ARG TFSEC_CHECKSUM
 
 # Install packages
 RUN apt-get update && export DEBIAN_FRONTEND=noninteractive \
-    && apt-get -y install --no-install-recommends awscli ca-certificates curl git gnupg2 jq make openssh-client vim zsh \
+    && apt-get -y install --no-install-recommends awscli ca-certificates curl git gnupg2 jq make openssh-client python3-pip vim zsh \
     && apt-get autoremove -y && apt-get clean -y 
 
 # Install Terraform
@@ -30,11 +28,9 @@ RUN curl -Lo terragrunt https://github.com/gruntwork-io/terragrunt/releases/down
     && chmod +x terragrunt \
     && mv terragrunt /usr/local/bin/
 
-# Install tfsec
-RUN curl -Lo tfsec https://github.com/tfsec/tfsec/releases/download/v"${TFSEC_VERSION}"/tfsec-linux-"$(dpkg --print-architecture)" \
-    && echo "${TFSEC_CHECKSUM} tfsec" | sha256sum --check \
-    && chmod +x tfsec \
-    && mv tfsec /usr/local/bin/
+# Install Checkov
+RUN pip3 install --upgrade requests setuptools \
+    && pip3 install --upgrade botocore checkov
 
 # Install OPA
 RUN curl -Lo opa https://github.com/open-policy-agent/opa/releases/download/v"${OPA_VERSION}"/opa_linux_"$(dpkg --print-architecture)" \
