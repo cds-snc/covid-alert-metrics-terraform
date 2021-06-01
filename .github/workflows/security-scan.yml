@@ -10,9 +10,6 @@ on:
       - "env/common/**"
       - ".github/workflows/**"
 
-env:
-  CHECKOV_VERSION: 00cc657f4d415593e5c8897bc87f490497ccb5f9 # v12.641.0
-
 jobs:
   security-scan:
     runs-on: ubuntu-latest
@@ -22,7 +19,7 @@ jobs:
 
       - name: Checkov security scan
         id: checkov
-        uses: bridgecrewio/checkov-action@${{ env.CHECKOV_VERSION }}
+        uses: bridgecrewio/checkov-action@00cc657f4d415593e5c8897bc87f490497ccb5f9 # v12.641.0
         with:
           directory: .
           soft_fail: true
