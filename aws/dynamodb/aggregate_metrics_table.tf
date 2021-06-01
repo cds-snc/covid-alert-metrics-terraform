@@ -23,4 +23,10 @@ resource "aws_dynamodb_table" "aggregate_metrics" {
     enabled = true
   }
 
+  global_secondary_index {
+    name               = "IdentifierIndex"
+    hash_key           = "identifier"
+    projection_type    = "ALL"
+  }
+
 }
