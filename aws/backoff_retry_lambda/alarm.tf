@@ -1,5 +1,5 @@
 resource "aws_cloudwatch_metric_alarm" "backoff_retry_average_duration" {
-  alarm_name          = "save-metrics-average-duration"
+  alarm_name          = "backoff-retry--average-duration"
   comparison_operator = "GreaterThanThreshold"
   evaluation_periods  = "1"
   metric_name         = "Duration"

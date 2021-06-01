@@ -19,8 +19,19 @@ resource "aws_dynamodb_table" "aggregate_metrics" {
     type = "S"
   }
 
+  attribute {
+    name = "identifier"
+    type = "S"
+  }
+
   point_in_time_recovery {
     enabled = true
+  }
+
+  global_secondary_index {
+    name            = "IdentifierIndex"
+    hash_key        = "identifier"
+    projection_type = "ALL"
   }
 
 }
