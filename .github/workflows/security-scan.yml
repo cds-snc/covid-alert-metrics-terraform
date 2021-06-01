@@ -1,0 +1,31 @@
+name: "Security scan"
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    paths:
+      - "aws/**"
+      - "env/common/**"
+      - ".github/workflows/**"
+
+env:
+  CHECKOV_VERSION: 00cc657f4d415593e5c8897bc87f490497ccb5f9 # v12.641.0
+
+jobs:
+  security-scan:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Checkov security scan
+        id: checkov
+        uses: bridgecrewio/checkov-action@${{ env.CHECKOV_VERSION }}
+        with:
+          directory: .
+          soft_fail: true
+          framework: terraform
+          output_format: cli
+          download_external_modules: true
