@@ -52,6 +52,9 @@ jobs:
           - module_name: dynamodb
             environment: production
 
+          - module_name: cloudwatch_alarms
+            environment: staging            
+
     steps:
 
       - name: Checkout
