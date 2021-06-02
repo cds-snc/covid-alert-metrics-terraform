@@ -53,7 +53,10 @@ jobs:
             environment: production
 
           - module_name: cloudwatch_alarms
-            environment: staging            
+            environment: staging
+
+          - module_name: cloudwatch_alarms
+            environment: production
 
     steps:
 
