@@ -4,6 +4,7 @@ inputs = {
   sns_topic_critical_name  = "alert-critical"
 
   feature_api_alarms              = true
+  api_gateway_400_error_threshold = 100
   api_gateway_500_error_threshold = 100
   api_gateway_min_invocations     = 100
   api_gateway_max_invocations     = 65000
