@@ -19,6 +19,11 @@ variable "feature_api_alarms" {
   default     = true
 }
 
+variable "api_gateway_400_error_threshold" {
+  description = "Maximum sum of 4xx errors in a 60 second period before an alarm triggers"
+  type        = string
+}
+
 variable "api_gateway_500_error_threshold" {
   description = "Maximum sum of 5xx errors in a 60 second period before an alarm triggers"
   type        = string
