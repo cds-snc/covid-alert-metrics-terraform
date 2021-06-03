@@ -45,3 +45,6 @@ jobs:
         run: |
           cd .github/workflows/policy
           opa check *.rego
+
+      - name: Check prod Terragrunt uses tagged modules
+        run: .github/workflows/scripts/check-terragrunt-tagged.sh env/production
