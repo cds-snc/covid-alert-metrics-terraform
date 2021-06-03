@@ -2,7 +2,7 @@
 set -euo pipefail
 
 TERRAGRUNT_DIR=$1
-MISSING_TAGGED_MODULE=$(grep -LR "git::https://github.com/cds-snc/covid-alert-metrics-terraform//aws/" "$TERRAGRUNT_DIR"/*/terragrunt.hcl)
+MISSING_TAGGED_MODULE=$(find "$TERRAGRUNT_DIR" -maxdepth 2 -name "terragrunt.hcl" -exec grep -L "git::https://github.com/cds-snc/covid-alert-metrics-terraform//aws/" {} \;)
 
 if [[ -n "$MISSING_TAGGED_MODULE" ]]; then
     echo "ERROR - found Teragrunt configuration in \"$TERRAGRUNT_DIR\" without a tagged module:"
