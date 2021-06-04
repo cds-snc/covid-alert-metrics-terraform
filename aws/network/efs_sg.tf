@@ -1,4 +1,6 @@
 resource "aws_security_group" "efs" {
+  # checkov:skip=CKV2_AWS_5:Used as a source_security_group_id by other SG rules
+
   description = "Used by EFS"
   vpc_id      = aws_vpc.main.id
 
