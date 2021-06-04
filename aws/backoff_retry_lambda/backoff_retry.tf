@@ -5,6 +5,10 @@ data "archive_file" "lambda_backoff_retry" {
 }
 
 resource "aws_lambda_function" "backoff_retry" {
+  # checkov:skip=CKV_AWS_50:X-ray tracing only required during function debug
+  # checkov:skip=CKV_AWS_115:Reserved concurrency not required by backoff_retry (not latency sensitive)
+  # checkov:skip=CKV_AWS_116:Dead Letter Queue is handled by backoff_retry function code
+
   function_name = "backoff_retry"
   filename      = "/tmp/lambda_backoff_retry.js.zip"
 
