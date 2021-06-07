@@ -8,7 +8,6 @@ resource "aws_lambda_function" "lambda" {
   # checkov:skip=CKV_AWS_50:X-ray tracing only required during function debug
   # checkov:skip=CKV_AWS_115:Reserved concurrency not required (not latency sensitive)
   # checkov:skip=CKV_AWS_116:Dead Letter Queue not required (twice-a-day EventBridge invocation on predictable data)
-
   function_name = var.name
 
   package_type = "Image"
