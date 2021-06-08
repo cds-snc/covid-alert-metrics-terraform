@@ -1,5 +1,5 @@
 resource "aws_efs_file_system" "efs_for_lambda" {
-
+  # checkov:skip=CKV2_AWS_18:Backup not required as EFS only holds ephemeral data
   tags = {
     Name = "${var.name}_efs"
   }

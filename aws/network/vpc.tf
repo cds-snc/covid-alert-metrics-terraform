@@ -1,5 +1,4 @@
 resource "aws_vpc" "main" {
-
   cidr_block           = "10.0.0.0/16"
   enable_dns_support   = true
   enable_dns_hostnames = true
@@ -25,6 +24,7 @@ resource "aws_nat_gateway" "nat_gateway" {
 }
 
 resource "aws_eip" "lambda" {
+  # checkov:skip=CKV2_AWS_19:EIP is used by NAT Gateway
   vpc = true
 }
 

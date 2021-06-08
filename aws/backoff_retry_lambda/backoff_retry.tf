@@ -8,7 +8,6 @@ resource "aws_lambda_function" "backoff_retry" {
   # checkov:skip=CKV_AWS_50:X-ray tracing only required during function debug
   # checkov:skip=CKV_AWS_115:Reserved concurrency not required by backoff_retry (not latency sensitive)
   # checkov:skip=CKV_AWS_116:Dead Letter Queue is handled by backoff_retry function code
-
   function_name = "backoff_retry"
   filename      = "/tmp/lambda_backoff_retry.js.zip"
 
@@ -36,6 +35,7 @@ resource "aws_lambda_event_source_mapping" "dead_letters" {
 }
 
 resource "aws_cloudwatch_log_group" "backoff_log_group" {
+  # checkov:skip=CKV_AWS_158:Encryption using default CloudWatch service key is acceptable
   name              = "/aws/lambda/${aws_lambda_function.backoff_retry.function_name}"
   retention_in_days = 14
 }

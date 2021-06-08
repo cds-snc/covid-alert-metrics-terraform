@@ -2,7 +2,6 @@ data "aws_caller_identity" "current" {}
 
 resource "aws_s3_bucket" "masked_metrics" {
   # checkov:skip=CKV_AWS_21:Versioning on this resource is handled through git
-
   bucket = var.name
 
   server_side_encryption_configuration {

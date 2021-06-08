@@ -1,5 +1,5 @@
 resource "aws_dynamodb_table" "raw_metrics" {
-
+  # checkov:skip=CKV_AWS_28:RAW metrics are discarded after 24 hours (no backup required)
   name         = "raw_metrics"
   billing_mode = "PAY_PER_REQUEST"
   hash_key     = "uuid"
