@@ -54,7 +54,7 @@ data "aws_iam_policy_document" "vpc_metrics_flow_logs_write" {
 
     resources = [
       aws_cloudwatch_log_group.vpc_metrics_flow_logs.arn,
-      "${aws_cloudwatch_log_group.vpc_metrics_flow_logs.arn}/*"
+      "${aws_cloudwatch_log_group.vpc_metrics_flow_logs.arn}:log-stream:*"
     ]
   }
 }
