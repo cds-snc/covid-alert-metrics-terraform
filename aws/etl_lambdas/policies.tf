@@ -77,7 +77,10 @@ data "aws_iam_policy_document" "etl_policies" {
     ]
 
     resources = [
-      "*"
+      module.masked_metrics.log_group_arn,
+      module.unmasked_metrics.log_group_arn,
+      "${module.masked_metrics.log_group_arn}:log-stream:*",
+      "${module.unmasked_metrics.log_group_arn}:log-stream:*"
     ]
   }
 
@@ -91,6 +94,7 @@ data "aws_iam_policy_document" "etl_policies" {
       "ec2:DeleteNetworkInterface"
     ]
 
+    # checkov:skip=CKV_AWS_111:DescribeNetworkInterfaces only supports "*" resources
     resources = [
       "*"
     ]
