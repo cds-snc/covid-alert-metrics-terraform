@@ -41,12 +41,12 @@ dependency "s3" {
 }
 
 inputs = {
-  subnet_id = dependency.network.outputs.private_subnet_id
-  sg_id                   = dependency.network.outputs.csv_etl_sg_id
-  unmasked_metrics_s3_arn = dependency.s3.outputs.unmasked_metrics_arn
-  masked_metrics_s3_arn   = dependency.s3.outputs.masked_metrics_arn
-  masked_metrics_bucket   = dependency.s3.outputs.masked_metrics_id
-  unmasked_metrics_bucket = dependency.s3.outputs.unmasked_metrics_id
+  subnet_id                 = dependency.network.outputs.private_subnet_id
+  sg_id                     = dependency.network.outputs.csv_etl_sg_id
+  unmasked_metrics_s3_arn   = dependency.s3.outputs.unmasked_metrics_arn
+  masked_metrics_s3_arn     = dependency.s3.outputs.masked_metrics_arn
+  masked_metrics_bucket     = dependency.s3.outputs.masked_metrics_id
+  unmasked_metrics_bucket   = dependency.s3.outputs.unmasked_metrics_id
   csv_etl_repository_url    = dependency.ecr.outputs.create_csv_repository_url
   create_csv_repository_arn = dependency.ecr.outputs.create_csv_repository_arn
 }
