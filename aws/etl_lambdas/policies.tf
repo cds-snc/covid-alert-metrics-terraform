@@ -77,7 +77,10 @@ data "aws_iam_policy_document" "etl_policies" {
     ]
 
     resources = [
-      "*"
+      module.masked_metrics.log_group_arn,
+      module.unmasked_metrics.log_group_arn,
+      "${module.masked_metrics.log_group_arn}:log-stream:*",
+      "${module.unmasked_metrics.log_group_arn}:log-stream:*"
     ]
   }
 
@@ -87,8 +90,21 @@ data "aws_iam_policy_document" "etl_policies" {
 
     actions = [
       "ec2:CreateNetworkInterface",
-      "ec2:DescribeNetworkInterfaces",
       "ec2:DeleteNetworkInterface"
+    ]
+
+    resources = [
+      "arn:aws:ec2:${var.region}:${var.account_id}:network-interface/*"
+    ]
+
+  }
+
+  statement {
+
+    effect = "Allow"
+
+    actions = [
+      "ec2:DescribeNetworkInterfaces"
     ]
 
     resources = [
