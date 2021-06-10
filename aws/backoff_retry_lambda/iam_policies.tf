@@ -65,7 +65,7 @@ data "aws_iam_policy_document" "backoff_retry" {
     ]
 
     resources = [
-      "arn:aws:ec2:${data.aws_region.current.name}:${data.aws_caller_identity.current.account_id}:network-interface/*"
+      "arn:aws:ec2:${var.region}:${var.account_id}:network-interface/*"
     ]
 
   }
