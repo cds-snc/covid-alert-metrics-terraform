@@ -61,11 +61,23 @@ data "aws_iam_policy_document" "backoff_retry" {
 
     actions = [
       "ec2:CreateNetworkInterface",
-      "ec2:DescribeNetworkInterfaces",
       "ec2:DeleteNetworkInterface"
     ]
 
-    # checkov:skip=CKV_AWS_111::DescribeNetworkInterfaces only supports "*" resources
+    resources = [
+      "arn:aws:ec2:${var.region}:${var.account_id}:network-interface/*"
+    ]
+
+  }
+
+  statement {
+
+    effect = "Allow"
+
+    actions = [
+      "ec2:DescribeNetworkInterfaces"
+    ]
+
     resources = [
       "*"
     ]

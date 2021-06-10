@@ -22,7 +22,6 @@ jobs:
         uses: bridgecrewio/checkov-action@00cc657f4d415593e5c8897bc87f490497ccb5f9 # v12.641.0
         with:
           directory: .
-          soft_fail: true
           framework: terraform
           output_format: cli
           download_external_modules: true
