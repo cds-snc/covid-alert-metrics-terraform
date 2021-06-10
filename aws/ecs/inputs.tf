@@ -1,15 +1,15 @@
-variable "cpu_units" { 
-  type = number
+variable "cpu_units" {
+  type    = number
   default = 512
 }
 
-variable "memory" { 
-  type = number
+variable "memory" {
+  type    = number
   default = 1024
 }
 
-variable "min_capacity" { 
-  type = number
+variable "min_capacity" {
+  type    = number
   default = 1
 }
 
@@ -17,7 +17,7 @@ variable "sg_id" {
   type = string
 }
 
-variable "subnet_id" { 
+variable "subnet_id" {
   type = string
 }
 
