@@ -3,9 +3,11 @@ locals {
 }
 
 inputs = {
-  account_id = "${local.vars.inputs.account_id}"
-  env        = "${local.vars.inputs.env}"
-  region     = "ca-central-1"
+  account_id        = "${local.vars.inputs.account_id}"
+  env               = "${local.vars.inputs.env}"
+  region            = "ca-central-1"
+  billing_tag_key   = "${local.vars.inputs.billing_tag_key}"
+  billing_tag_value = "${local.vars.inputs.billing_tag_value}"
 }
 
 remote_state {

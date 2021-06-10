@@ -14,3 +14,11 @@ variable "region" {
   description = "(Required) The region to build infra in"
   type        = string
 }
+
+variable "billing_tag_key" {
+  type = string
+}
+
+variable "billing_tag_value" {
+  type = string
+}
