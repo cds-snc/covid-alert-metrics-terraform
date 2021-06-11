@@ -54,3 +54,11 @@ variable "csv_etl_repository_url" {
 variable "create_csv_repository_arn" {
   type = string
 }
+
+variable "billing_tag_key" {
+  type = string
+}
+
+variable "billing_tag_value" {
+  type = string
+}

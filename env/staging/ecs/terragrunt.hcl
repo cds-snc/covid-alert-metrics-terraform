@@ -49,6 +49,8 @@ inputs = {
   unmasked_metrics_bucket   = dependency.s3.outputs.unmasked_metrics_id
   csv_etl_repository_url    = dependency.ecr.outputs.create_csv_repository_url
   create_csv_repository_arn = dependency.ecr.outputs.create_csv_repository_arn
+  billing_tag_key           = "CostCentre"
+  billing_tag_value         = "CovidShield"
 }
 
 terraform {
