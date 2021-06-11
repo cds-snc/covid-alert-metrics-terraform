@@ -1,23 +1,10 @@
-resource "aws_iam_role" "metrics" {
-  name               = "metrics_ecs_role"
-  assume_role_policy = data.aws_iam_policy_document.service_principal.json
+
+resource "aws_iam_role" "task_execution" {
+  name               = "metrics_task_execution_role"
+  assume_role_policy = data.aws_iam_policy_document.task_execution_role.json
 }
 
-resource "aws_iam_role_policy_attachment" "etl_policies" {
-  role       = aws_iam_role.metrics.name
-  policy_arn = aws_iam_policy.etl_policies.arn
-}
-
-data "aws_iam_policy" "lambda_insights" {
-  name = "CloudWatchLambdaInsightsExecutionRolePolicy"
-}
-
-resource "aws_iam_role_policy_attachment" "lambda_insights" {
-  role       = aws_iam_role.metrics.name
-  policy_arn = data.aws_iam_policy.lambda_insights.arn
-}
-
-data "aws_iam_policy_document" "service_principal" {
+data "aws_iam_policy_document" "task_execution_role" {
   statement {
     effect = "Allow"
 
@@ -25,13 +12,14 @@ data "aws_iam_policy_document" "service_principal" {
 
     principals {
       type        = "Service"
-      identifiers = ["lambda.amazonaws.com"]
+      identifiers = ["ecs-tasks.amazonaws.com"]
     }
   }
 }
 
-data "aws_dynamodb_table" "aggregate_metrics" {
-  name = "aggregate_metrics"
+resource "aws_iam_role_policy_attachment" "etl_policies" {
+  role       = aws_iam_role.task_execution.name
+  policy_arn = aws_iam_policy.etl_policies.arn
 }
 
 data "aws_iam_policy_document" "etl_policies" {
@@ -77,7 +65,10 @@ data "aws_iam_policy_document" "etl_policies" {
     ]
 
     resources = [
-      "*"
+      module.masked_metrics.log_group_arn,
+      module.unmasked_metrics.log_group_arn,
+      "${module.masked_metrics.log_group_arn}:log-stream:*",
+      "${module.unmasked_metrics.log_group_arn}:log-stream:*"
     ]
   }
 
@@ -87,8 +78,21 @@ data "aws_iam_policy_document" "etl_policies" {
 
     actions = [
       "ec2:CreateNetworkInterface",
-      "ec2:DescribeNetworkInterfaces",
       "ec2:DeleteNetworkInterface"
+    ]
+
+    resources = [
+      "arn:aws:ec2:${var.region}:${var.account_id}:network-interface/*"
+    ]
+
+  }
+
+  statement {
+
+    effect = "Allow"
+
+    actions = [
+      "ec2:DescribeNetworkInterfaces"
     ]
 
     resources = [

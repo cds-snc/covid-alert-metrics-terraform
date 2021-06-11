@@ -6,7 +6,11 @@ variable "memory" {
   type = number
 }
 
-variable "role_arn" {
+variable "container_exeuction_role_arn" {
+  type = string
+}
+
+variable "task_execution_role_arn" {
   type = string
 }
 
@@ -16,7 +20,7 @@ variable "name" {
 
 variable "billing_tag_key" {
   type = string
-}  
+}
 
 variable "billing_tag_value" {
   type = string
@@ -26,7 +30,7 @@ variable "cluster_id" {
   type = string
 }
 
-variable "subnet_id"{
+variable "subnet_id" {
   type = string
 }
 
@@ -34,10 +38,10 @@ variable "sg_id" {
   type = string
 }
 
-variable "template_file" { 
+variable "template_file" {
   type = string
 }
 
-variable "vars" { 
+variable "vars" {
   type = map(any)
 }

@@ -7,7 +7,7 @@ resource "aws_ecs_task_definition" "task_def" {
   requires_compatibilities = ["FARGATE"]
   execution_role_arn       = var.role_arn
   task_role_arn            = var.role_arn
-  container_definitions    =  data.template_file.masked_metrics.rendered
+  container_definitions    = data.template_file.masked_metrics.rendered
 
   tags = {
     (var.billing_tag_key) = var.billing_tag_value
@@ -15,6 +15,7 @@ resource "aws_ecs_task_definition" "task_def" {
 }
 
 resource "aws_cloudwatch_log_group" "log" {
+  # checkov:skip=CKV_AWS_158:Encryption using default CloudWatch service key is acceptable
   name              = "/aws/ecs/${var.name}_ecs"
   retention_in_days = 14
 }
@@ -23,7 +24,7 @@ resource "aws_ecs_service" "service" {
 
   name             = var.name
   cluster          = var.cluster_id
-  task_definition  = aws_ecs_task_definition.task_def.arn 
+  task_definition  = aws_ecs_task_definition.task_def.arn
   launch_type      = "FARGATE"
   platform_version = "1.4.0"
   # Enable the new ARN format to propagate tags to containers (see config/terraform/aws/README.md)
