@@ -3,9 +3,9 @@ locals {
 }
 
 inputs = {
-  account_id        = "${local.vars.inputs.account_id}"
-  env               = "${local.vars.inputs.env}"
-  region            = "ca-central-1"
+  account_id = "${local.vars.inputs.account_id}"
+  env        = "${local.vars.inputs.env}"
+  region     = "ca-central-1"
 }
 
 remote_state {
