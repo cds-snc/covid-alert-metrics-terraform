@@ -31,9 +31,6 @@ resource "aws_ecs_service" "service" {
   propagate_tags = "SERVICE"
 
   desired_count                      = 1
-  deployment_minimum_healthy_percent = 50
-  deployment_maximum_percent         = 200
-  health_check_grace_period_seconds  = 60
 
   network_configuration {
     assign_public_ip = false
