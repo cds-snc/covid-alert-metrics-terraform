@@ -183,6 +183,9 @@ jobs:
           - module_name: backoff_retry_lambda
             environment: production
 
+          - module_name: ecs
+            environment: staging
+
     steps:
 
       - name: Checkout

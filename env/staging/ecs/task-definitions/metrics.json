@@ -1,0 +1,28 @@
+[
+    {
+      "name": "${name}",
+      "image": "${image}",
+      "portMappings": [
+        {
+          "containerPort": 8001
+        }
+      ],
+      "linuxParameters": {
+        "capabilities": {
+          "drop": ["ALL"]
+        }
+      },
+      "logConfiguration": {
+        "logDriver": "awslogs",
+        "options": {
+          "awslogs-group": "${awslogs-group}",
+          "awslogs-region": "${awslogs-region}",
+          "awslogs-stream-prefix": "${awslogs-stream-prefix}"
+        }
+      },
+      "environment": [
+      ],
+      "secrets": [
+      ]
+    }
+  ]
