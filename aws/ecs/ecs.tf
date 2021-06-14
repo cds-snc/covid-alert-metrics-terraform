@@ -16,8 +16,8 @@ module "masked_metrics" {
   name                         = "masked_metrics"
   cpu_units                    = 1
   memory                       = 512
-  task_execution_role_arn      = aws_iam_role.metrics.arn
-  container_exeuction_role_arn = aws_iam_role.container_execution_role.arn
+  task_execution_role_arn      = aws_iam_role.task_execution_role.arn
+  container_execution_role_arn = aws_iam_role.container_execution_role.arn
   billing_tag_key              = var.billing_tag_key
   billing_tag_value            = var.billing_tag_value
   cluster_id                   = aws_ecs_cluster.in_app_metrics.id
@@ -27,7 +27,7 @@ module "masked_metrics" {
   vars = {
     image                 = "hello-world"
     awslogs-region        = "ca-central-1"
-    awslogs-stream-prefix = "ecs-unmasked-metrics"
+    awslogs-stream-prefix = "ecs-masked-metrics"
   }
 }
 
@@ -36,8 +36,8 @@ module "unmasked_metrics" {
   name                         = "unmasked_metrics"
   cpu_units                    = 1
   memory                       = 512
-  container_exeuction_role_arn = aws_iam_role.container_execution_role.arn
-  task_execution_role_arn      = aws_iam_role.metrics.arn
+  container_execution_role_arn = aws_iam_role.container_execution_role.arn
+  task_execution_role_arn      = aws_iam_role.task_execution_role.arn
   billing_tag_key              = var.billing_tag_key
   billing_tag_value            = var.billing_tag_value
   cluster_id                   = aws_ecs_cluster.in_app_metrics.id

@@ -6,7 +6,7 @@ variable "memory" {
   type = number
 }
 
-variable "container_exeuction_role_arn" {
+variable "container_execution_role_arn" {
   type = string
 }
 

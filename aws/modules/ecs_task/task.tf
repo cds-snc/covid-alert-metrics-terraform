@@ -5,8 +5,8 @@ resource "aws_ecs_task_definition" "task_def" {
   network_mode = "awsvpc"
 
   requires_compatibilities = ["FARGATE"]
-  execution_role_arn       = var.role_arn
-  task_role_arn            = var.role_arn
+  execution_role_arn       = var.container_execution_role_arn
+  task_role_arn            = var.task_execution_role_arn
   container_definitions    = data.template_file.masked_metrics.rendered
 
   tags = {

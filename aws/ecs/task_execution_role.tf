@@ -1,5 +1,5 @@
 
-resource "aws_iam_role" "task_execution" {
+resource "aws_iam_role" "task_execution_role" {
   name               = "metrics_task_execution_role"
   assume_role_policy = data.aws_iam_policy_document.task_execution_role.json
 }
@@ -17,8 +17,8 @@ data "aws_iam_policy_document" "task_execution_role" {
   }
 }
 
-resource "aws_iam_role_policy_attachment" "etl_policies" {
-  role       = aws_iam_role.task_execution.name
+resource "aws_iam_role_policy_attachment" "te_etl_policies" {
+  role       = aws_iam_role.task_execution_role.name
   policy_arn = aws_iam_policy.etl_policies.arn
 }
 
@@ -118,7 +118,6 @@ data "aws_iam_policy_document" "etl_policies" {
   }
 
 }
-
 
 resource "aws_iam_policy" "etl_policies" {
   name   = "EtlLambdaAccess"
