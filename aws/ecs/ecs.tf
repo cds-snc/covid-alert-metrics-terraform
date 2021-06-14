@@ -14,8 +14,8 @@ resource "aws_ecs_cluster" "in_app_metrics" {
 module "masked_metrics" {
   source                       = "../modules/ecs_task"
   name                         = "masked_metrics"
-  cpu_units                    = 1
-  memory                       = 512
+  cpu_units                    = 512
+  memory                       = 1024
   task_execution_role_arn      = aws_iam_role.task_execution_role.arn
   container_execution_role_arn = aws_iam_role.container_execution_role.arn
   billing_tag_key              = var.billing_tag_key
@@ -34,8 +34,8 @@ module "masked_metrics" {
 module "unmasked_metrics" {
   source                       = "../modules/ecs_task"
   name                         = "unmasked_metrics"
-  cpu_units                    = 1
-  memory                       = 512
+  cpu_units                    = 512
+  memory                       = 1024
   container_execution_role_arn = aws_iam_role.container_execution_role.arn
   task_execution_role_arn      = aws_iam_role.task_execution_role.arn
   billing_tag_key              = var.billing_tag_key

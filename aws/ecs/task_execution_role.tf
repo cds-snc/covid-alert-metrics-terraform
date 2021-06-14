@@ -120,7 +120,7 @@ data "aws_iam_policy_document" "etl_policies" {
 }
 
 resource "aws_iam_policy" "etl_policies" {
-  name   = "EtlLambdaAccess"
+  name   = "ETLTaskExecutionPolicies"
   path   = "/"
   policy = data.aws_iam_policy_document.etl_policies.json
 }
