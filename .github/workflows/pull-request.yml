@@ -172,9 +172,6 @@ jobs:
         include:
 
           - module_name: etl_lambdas
-            environment: staging
-
-          - module_name: etl_lambdas
             environment: production
 
           - module_name: backoff_retry_lambda
