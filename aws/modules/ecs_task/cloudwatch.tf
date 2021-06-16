@@ -12,7 +12,7 @@ resource "aws_cloudwatch_event_target" "ecs_scheduled_task" {
   rule           = aws_cloudwatch_event_rule.event_rule.name
   event_bus_name = aws_cloudwatch_event_rule.event_rule.event_bus_name
   arn            = var.cluster_id
-  role_arn       = var.container_execution_role_arn 
+  role_arn       = var.scheduled_task_role_arn
 
   ecs_target {
     launch_type         = "FARGATE"
