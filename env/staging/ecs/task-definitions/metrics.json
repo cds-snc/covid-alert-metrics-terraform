@@ -22,7 +22,7 @@
       },
       "environment": [
         {
-          "name": "MASKED_DATA",
+          "name": "MASK_DATA",
           "value": "${mask_data}"
         }
       ],

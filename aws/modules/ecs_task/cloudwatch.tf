@@ -1,5 +1,5 @@
 resource "aws_cloudwatch_event_rule" "event_rule" {
-  name                = "${var.name}_event_rul"
+  name                = "${var.name}_event_rule"
   schedule_expression = var.event_rule_schedule_expression
   role_arn            = var.task_execution_role_arn
   tags = {
