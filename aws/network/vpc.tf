@@ -35,8 +35,8 @@ resource "aws_subnet" "private" {
   tags = {
     Name = "${var.name}_private_subnet"
   }
-
-  cidr_block = "10.0.1.0/24"
+  availability_zone = "ca-central-1a"
+  cidr_block        = "10.0.1.0/24"
 }
 
 resource "aws_subnet" "public" {
