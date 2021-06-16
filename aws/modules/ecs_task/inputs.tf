@@ -14,6 +14,10 @@ variable "task_execution_role_arn" {
   type = string
 }
 
+variable "scheduled_task_role_arn" {
+  type = string
+}
+
 variable "name" {
   type = string
 }

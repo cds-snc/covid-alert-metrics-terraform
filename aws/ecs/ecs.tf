@@ -18,6 +18,7 @@ module "masked_metrics" {
   memory                         = 1024
   task_execution_role_arn        = aws_iam_role.task_execution_role.arn
   container_execution_role_arn   = aws_iam_role.container_execution_role.arn
+  scheduled_task_role_arn        = aws_iam_role.scheduled_task_cw_event_role.arn
   billing_tag_key                = var.billing_tag_key
   billing_tag_value              = var.billing_tag_value
   cluster_id                     = aws_ecs_cluster.in_app_metrics.id
@@ -40,6 +41,7 @@ module "unmasked_metrics" {
   memory                         = 1024
   container_execution_role_arn   = aws_iam_role.container_execution_role.arn
   task_execution_role_arn        = aws_iam_role.task_execution_role.arn
+  scheduled_task_role_arn        = aws_iam_role.scheduled_task_cw_event_role.arn
   billing_tag_key                = var.billing_tag_key
   billing_tag_value              = var.billing_tag_value
   cluster_id                     = aws_ecs_cluster.in_app_metrics.id
