@@ -45,3 +45,8 @@ variable "template_file" {
 variable "vars" {
   type = map(any)
 }
+
+
+variable "event_rule_schedule_expression" {
+  type = string
+}

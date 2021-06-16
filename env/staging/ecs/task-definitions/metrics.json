@@ -21,6 +21,10 @@
         }
       },
       "environment": [
+        {
+          "name": "MASKED_DATA",
+          "value": "${mask_data}"
+        }
       ],
       "secrets": [
       ]
