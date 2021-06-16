@@ -11,8 +11,8 @@ data "aws_iam_policy_document" "scheduled_task_cw_event_role_assume_role_policy"
 
 data "aws_iam_policy_document" "scheduled_task_cw_event_role_cloudwatch_policy" {
   statement {
-    effect    = "Allow"
-    actions   = ["ecs:RunTask"]
+    effect  = "Allow"
+    actions = ["ecs:RunTask"]
     #checkov:skip=CKV_AWS_111:for testing only
     resources = ["*"]
   }
