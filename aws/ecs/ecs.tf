@@ -25,7 +25,7 @@ module "masked_metrics" {
   subnet_id                      = var.subnet_id
   sg_id                          = var.sg_id
   template_file                  = file("task-definitions/metrics.json")
-  event_rule_schedule_expression = "cron(0 4 * * *)"
+  event_rule_schedule_expression = "rate(24 hours)"
   vars = {
     image                 = var.csv_etl_repository_url
     awslogs-region        = "ca-central-1"
@@ -48,7 +48,7 @@ module "unmasked_metrics" {
   subnet_id                      = var.subnet_id
   sg_id                          = var.sg_id
   template_file                  = file("task-definitions/metrics.json")
-  event_rule_schedule_expression = "cron(0 4 * * *)"
+  event_rule_schedule_expression = "rate(24 hours)"
   vars = {
     image                 = var.csv_etl_repository_url
     awslogs-region        = "ca-central-1"
