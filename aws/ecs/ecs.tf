@@ -10,7 +10,10 @@ resource "aws_ecs_cluster" "in_app_metrics" {
     (var.billing_tag_key) = var.billing_tag_value
   }
 }
-
+locals {
+  masked_metrics_image   = "${var.csv_etl_repository_url}:${var.masked_image_tag}"
+  unmasked_metrics_image = "${var.csv_etl_repository_url}:${var.unmasked_image_tag}"
+}
 module "masked_metrics" {
   source                         = "../modules/ecs_task"
   name                           = "masked_metrics"
@@ -27,10 +30,11 @@ module "masked_metrics" {
   template_file                  = file("task-definitions/metrics.json")
   event_rule_schedule_expression = "rate(24 hours)"
   vars = {
-    image                 = var.csv_etl_repository_url
+    image                 = local.masked_metrics_image
     awslogs-region        = "ca-central-1"
     awslogs-stream-prefix = "ecs-masked-metrics"
     mask_data             = "True"
+    environment           = var.env
   }
 }
 
@@ -50,9 +54,10 @@ module "unmasked_metrics" {
   template_file                  = file("task-definitions/metrics.json")
   event_rule_schedule_expression = "rate(24 hours)"
   vars = {
-    image                 = var.csv_etl_repository_url
+    image                 = local.unmasked_metrics_image
     awslogs-region        = "ca-central-1"
     awslogs-stream-prefix = "ecs-unmasked-metrics"
     mask_data             = "False"
+    environment           = var.env
   }
 }

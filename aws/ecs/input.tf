@@ -62,3 +62,15 @@ variable "billing_tag_key" {
 variable "billing_tag_value" {
   type = string
 }
+
+
+###
+# ECS Task tags
+###
+variable "masked_image_tag" {
+  type = string
+}
+
+variable "unmasked_image_tag" {
+
+}
