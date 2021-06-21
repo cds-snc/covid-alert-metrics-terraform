@@ -20,38 +20,6 @@ resource "aws_cloudwatch_log_group" "log" {
   retention_in_days = 14
 }
 
-resource "aws_ecs_service" "service" {
-
-  name             = var.name
-  cluster          = var.cluster_id
-  task_definition  = aws_ecs_task_definition.task_def.arn
-  launch_type      = "FARGATE"
-  platform_version = "1.4.0"
-  # Enable the new ARN format to propagate tags to containers (see config/terraform/aws/README.md)
-  propagate_tags = "SERVICE"
-
-  desired_count                      = 1
-
-  network_configuration {
-    assign_public_ip = false
-    subnets          = [var.subnet_id]
-    security_groups = [
-      var.sg_id
-    ]
-  }
-
-  tags = {
-    (var.billing_tag_key) = var.billing_tag_value
-  }
-
-  lifecycle {
-    ignore_changes = [
-      desired_count,   # updated by autoscaling
-      task_definition, # updated by codedeploy
-    ]
-  }
-}
-
 data "template_file" "masked_metrics" {
   template = var.template_file
   vars = merge(var.vars, {
