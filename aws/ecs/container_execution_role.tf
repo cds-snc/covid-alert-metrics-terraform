@@ -13,6 +13,11 @@ data "aws_iam_policy_document" "container_execution_role" {
       type        = "Service"
       identifiers = ["ec2.amazonaws.com"]
     }
+
+    principals {
+      type        = "Service"
+      identifiers = ["ecs-tasks.amazonaws.com"]
+    }
   }
 }
 
