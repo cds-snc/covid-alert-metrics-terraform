@@ -54,3 +54,11 @@ variable "vars" {
 variable "event_rule_schedule_expression" {
   type = string
 }
+
+variable "masked_image_tag" {
+  type = string
+}
+
+variable "unmasked_image_tag" {
+
+}

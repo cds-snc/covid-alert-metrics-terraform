@@ -51,6 +51,8 @@ inputs = {
   create_csv_repository_arn = dependency.ecr.outputs.create_csv_repository_arn
   billing_tag_key           = "CostCentre"
   billing_tag_value         = "CovidShield"
+  masked_image_tag          = "latest"
+  unmasked_image_tag        = "latest"
 }
 
 terraform {
