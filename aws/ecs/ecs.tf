@@ -34,6 +34,7 @@ module "masked_metrics" {
     awslogs-region        = "ca-central-1"
     awslogs-stream-prefix = "ecs-masked-metrics"
     mask_data             = "True"
+    environment           = var.env
   }
 }
 
