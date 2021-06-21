@@ -24,6 +24,10 @@
         {
           "name": "MASK_DATA",
           "value": "${mask_data}"
+        },
+        {
+          "name": "ENVIRONMENT",
+          "value": "${environment}"
         }
       ],
       "secrets": [

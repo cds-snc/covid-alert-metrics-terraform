@@ -11,7 +11,7 @@ resource "aws_ecs_cluster" "in_app_metrics" {
   }
 }
 locals {
-  masked_metrics_image = "${var.csv_etl_repository_url}:${var.masked_image_tag}"
+  masked_metrics_image   = "${var.csv_etl_repository_url}:${var.masked_image_tag}"
   unmasked_metrics_image = "${var.csv_etl_repository_url}:${var.unmasked_image_tag}"
 }
 module "masked_metrics" {
@@ -57,5 +57,6 @@ module "unmasked_metrics" {
     awslogs-region        = "ca-central-1"
     awslogs-stream-prefix = "ecs-unmasked-metrics"
     mask_data             = "False"
+    environment           = var.env
   }
 }
