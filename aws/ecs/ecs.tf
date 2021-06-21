@@ -35,6 +35,7 @@ module "masked_metrics" {
     awslogs-stream-prefix = "ecs-masked-metrics"
     mask_data             = "True"
     environment           = var.env
+    bucket_name           = var.masked_metrics_bucket
   }
 }
 
@@ -59,5 +60,6 @@ module "unmasked_metrics" {
     awslogs-stream-prefix = "ecs-unmasked-metrics"
     mask_data             = "False"
     environment           = var.env
+    bucket_name           = var.unmasked_metrics_bucket
   }
 }

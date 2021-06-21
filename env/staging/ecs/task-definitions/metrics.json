@@ -28,6 +28,10 @@
         {
           "name": "ENVIRONMENT",
           "value": "${environment}"
+        },
+        {
+          "name": "BUCKET_NAME",
+          "value": "${bucket_name}"
         }
       ],
       "secrets": [
