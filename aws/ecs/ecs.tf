@@ -42,8 +42,8 @@ module "masked_metrics" {
 module "unmasked_metrics" {
   source                         = "../modules/ecs_task"
   name                           = "unmasked_metrics"
-  cpu_units                      = 512
-  memory                         = 1024
+  cpu_units                      = var.cpu_units
+  memory                         = var.memory
   container_execution_role_arn   = aws_iam_role.container_execution_role.arn
   task_execution_role_arn        = aws_iam_role.task_execution_role.arn
   scheduled_task_role_arn        = aws_iam_role.scheduled_task_cw_event_role.arn
