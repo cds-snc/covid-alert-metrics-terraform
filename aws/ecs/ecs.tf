@@ -17,8 +17,8 @@ locals {
 module "masked_metrics" {
   source                         = "../modules/ecs_task"
   name                           = "masked_metrics"
-  cpu_units                      = 512
-  memory                         = 1024
+  cpu_units                      = var.cpu_units
+  memory                         = var.memory
   task_execution_role_arn        = aws_iam_role.task_execution_role.arn
   container_execution_role_arn   = aws_iam_role.container_execution_role.arn
   scheduled_task_role_arn        = aws_iam_role.scheduled_task_cw_event_role.arn

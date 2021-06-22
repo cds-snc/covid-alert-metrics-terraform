@@ -53,6 +53,8 @@ inputs = {
   billing_tag_value         = "CovidShield"
   masked_image_tag          = "latest"
   unmasked_image_tag        = "latest"
+  cpu_units                 = 512
+  memory                    = 1024
 }
 
 terraform {
