@@ -1,5 +1,5 @@
 inputs = {
-  name = "metricsstaging"
+  name = "inappmetricsprod"
 }
 
 include {
