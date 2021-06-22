@@ -186,6 +186,9 @@ jobs:
           - module_name: ecs
             environment: staging
 
+          - module_name: ecs
+            environment: production
+
     steps:
 
       - name: Checkout
