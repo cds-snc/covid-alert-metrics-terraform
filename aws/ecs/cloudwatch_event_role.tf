@@ -18,7 +18,7 @@ data "aws_iam_policy_document" "scheduled_task_cw_event_role_cloudwatch_policy" 
   }
   statement {
     actions   = ["iam:PassRole"]
-    resources = [aws_iam_role.task_execution_role.arn]
+    resources = [aws_iam_role.container_execution_role.arn]
   }
 }
 
