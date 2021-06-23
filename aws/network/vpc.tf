@@ -37,6 +37,11 @@ resource "aws_subnet" "private" {
   }
   availability_zone = "ca-central-1a"
   cidr_block        = "10.0.1.0/24"
+
+  timeouts {
+    delete = "40m"
+  }
+  depends_on = [data.aws_iam_policy.CovidAlertBackoffRetryLambda]
 }
 
 resource "aws_subnet" "public" {
