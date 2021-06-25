@@ -28,3 +28,15 @@ resource "aws_lambda_function" "aggregate_metrics" {
   }
 
 }
+
+resource "aws_lambda_event_source_mapping" "raw_metric_stream" {
+  event_source_arn  = data.aws_dynamodb_table.raw_metrics.stream_arn
+  function_name     = aws_lambda_function.aggregate_metrics.arn
+  starting_position = "LATEST"
+  batch_size        = 100
+}
+
+resource "aws_cloudwatch_log_group" "metrics" {
+  name              = "/aws/lambda/${aws_lambda_function.aggregate_metrics.function_name}"
+  retention_in_days = 14
+}
