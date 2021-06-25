@@ -100,7 +100,7 @@ data "aws_iam_policy_document" "vpc_networking" {
     ]
 
     resources = [
-      "*"
+      "arn:aws:ec2:${var.region}:${var.account_id}:network-interface/*"
     ]
 
   }

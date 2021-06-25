@@ -30,14 +30,14 @@ dependency "sqs" {
 }
 
 inputs = {
-  raw_metrics_arn       = dependency.dynamodb.outputs.raw_metrics_arn
-  aggregate_metrics_arn = dependency.dynamodb.outputs.aggregate_metrics_arn
+  raw_metrics_arn        = dependency.dynamodb.outputs.raw_metrics_arn
+  aggregate_metrics_arn  = dependency.dynamodb.outputs.aggregate_metrics_arn
   raw_metrics_stream_arn = dependency.dynamodb.outputs.raw_metrics_stream_arn
 
   dead_letter_queue_arn = dependency.sqs.outputs.dead_letter_queue_arn
   metrics_key_arn       = dependency.sqs.outputs.metrics_key_arn
 
-  feature_count_alarms = true
+  feature_count_alarms               = true
   aggregate_metrics_max_avg_duration = 60000
   aggregate_metrics_dynamodb_wcu_max = 300
 }
