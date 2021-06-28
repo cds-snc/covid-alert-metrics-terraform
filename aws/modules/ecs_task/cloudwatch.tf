@@ -20,8 +20,14 @@ resource "aws_cloudwatch_event_target" "ecs_scheduled_task" {
     task_definition_arn = aws_ecs_task_definition.task_def.arn
 
     network_configuration {
-      subnets          = [var.subnet_id]
-      security_groups  = [var.sg_id]
+      subnets         = [var.subnet_id]
+      security_groups = [var.sg_id]
     }
+  }
+
+  lifecycle {
+    ignore_changes = [
+      ecs_target[0].task_definition_arn # Updated by covid-alert-metrics workflow
+    ]
   }
 }
