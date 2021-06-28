@@ -1,0 +1,30 @@
+name: CI
+
+on: push
+
+jobs:
+  test_lambdas:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - lambda_name: aggregate_metrics_lambda
+            environment: staging
+
+          - lambda_name: backoff_retry_lambda
+            environment: staging
+
+          - lambda_name: backoff_retry_lambda
+            environment: production
+            
+    steps:
+      - uses: actions/checkout@v1
+      - uses: actions/setup-node@v2
+        with:
+          node-version: '14'
+      - name: Test lambdas
+        run: |
+          cd env/${{ matrix.environment }}/${{ matrix.lambda_name }}/lambda
+          npm ci
+          npm test

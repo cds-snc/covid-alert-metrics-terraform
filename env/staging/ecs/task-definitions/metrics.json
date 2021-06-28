@@ -4,6 +4,8 @@
       "image": "${image}",
       "portMappings": [
         {
+          "hostPort": 8001,
+          "protocol": "tcp",
           "containerPort": 8001
         }
       ],
@@ -20,6 +22,7 @@
           "awslogs-stream-prefix": "${awslogs-stream-prefix}"
         }
       },
+      "cpu": 0,
       "environment": [
         {
           "name": "MASK_DATA",
@@ -34,7 +37,8 @@
           "value": "${bucket_name}"
         }
       ],
-      "secrets": [
-      ]
+      "essential": true,
+      "mountPoints": [],
+      "volumesFrom": []
     }
   ]
