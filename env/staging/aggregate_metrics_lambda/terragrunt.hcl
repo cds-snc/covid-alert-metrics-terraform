@@ -21,24 +21,27 @@ dependency "sqs" {
 
   mock_outputs_allowed_terraform_commands = ["validate", "plan"]
   mock_outputs = {
-    dead_letter_queue_arn = ""
-    dead_letter_queue_url = ""
-    metrics_key_arn       = ""
+    dead_letter_queue_arn  = ""
+    metrics_key_arn        = ""
+    raw_metrics_arn        = ""
+    aggregate_metrics_arn  = ""
+    raw_metrics_stream_arn = ""
   }
 }
 
 inputs = {
-  raw_metrics_arn       = dependency.dynamodb.outputs.raw_metrics_arn
-  aggregate_metrics_arn = dependency.dynamodb.outputs.aggregate_metrics_arn
+  raw_metrics_arn        = dependency.dynamodb.outputs.raw_metrics_arn
+  aggregate_metrics_arn  = dependency.dynamodb.outputs.aggregate_metrics_arn
+  raw_metrics_stream_arn = dependency.dynamodb.outputs.raw_metrics_stream_arn
 
   dead_letter_queue_arn = dependency.sqs.outputs.dead_letter_queue_arn
-  dead_letter_queue_url = dependency.sqs.outputs.dead_letter_queue_url
   metrics_key_arn       = dependency.sqs.outputs.metrics_key_arn
 
-  backoff_retry_max_avg_duration     = 3000
+  feature_count_alarms               = true
+  aggregate_metrics_max_avg_duration = 60000
   aggregate_metrics_dynamodb_wcu_max = 300
 }
 
 terraform {
-  source = "../../../aws//backoff_retry_lambda"
+  source = "../../../aws//aggregate_metrics_lambda"
 }

@@ -189,6 +189,9 @@ jobs:
           - module_name: ecs
             environment: production
 
+          - module_name: aggregate_metrics_lambda
+            environment: staging
+
     steps:
 
       - name: Checkout
