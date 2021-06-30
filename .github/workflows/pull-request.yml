@@ -6,6 +6,7 @@ on:
       - "aws/**"
       - "env/**"
       - ".github/workflows/**"
+  workflow_dispatch:
 
 env:
   TERRAFORM_VERSION: 0.14.2
