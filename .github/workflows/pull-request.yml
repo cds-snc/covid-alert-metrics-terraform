@@ -8,7 +8,6 @@ on:
       - ".github/workflows/**"
 
 env:
-  OPA_VERSION: v0.28.0
   TERRAFORM_VERSION: 0.14.2
   TERRAGRUNT_VERSION: v0.29.2
 
@@ -69,11 +68,10 @@ jobs:
           terraform_version: ${{ env.TERRAFORM_VERSION }}
           terraform_wrapper: false
 
-      - name: Setup Terragrunt and OPA
+      - name: Setup Terragrunt
         run: |
           mkdir bin
           wget -O bin/terragrunt https://github.com/gruntwork-io/terragrunt/releases/download/$TERRAGRUNT_VERSION/terragrunt_linux_amd64
-          wget -O bin/opa https://github.com/open-policy-agent/opa/releases/download/$OPA_VERSION/opa_linux_amd64
           chmod +x bin/*
           echo "$GITHUB_WORKSPACE/bin" >> $GITHUB_PATH
 
@@ -83,83 +81,17 @@ jobs:
           INFRASTRUCTURE_VERSION=`cat ./.github/workflows/manifest/prod_version.txt`
           echo "INFRASTRUCTURE_VERSION=$INFRASTRUCTURE_VERSION" >> $GITHUB_ENV
 
-      - name: Validate Module 
-        id: validate-module
+      - name: Terraform plan
         env:
           AWS_ACCESS_KEY_ID: ${{ secrets[format('{0}_AWS_ACCESS_KEY_ID',matrix.environment)] }}
-          AWS_SECRET_ACCESS_KEY: ${{ secrets[format('{0}_AWS_SECRET_ACCESS_KEY',matrix.environment)] }}
-        run: |
-          cd env/${{ matrix.environment }}/${{ matrix.module_name }}
-          terragrunt validate --terragrunt-non-interactive -no-color
-        continue-on-error: false
-
-      - name: Check Formatting
-        id: fmt
-        env:
-          AWS_ACCESS_KEY_ID: ${{ secrets[format('{0}_AWS_ACCESS_KEY_ID',matrix.environment)] }}
-          AWS_SECRET_ACCESS_KEY: ${{ secrets[format('{0}_AWS_SECRET_ACCESS_KEY',matrix.environment)] }}
-        run: |
-          cd env/${{ matrix.environment }}/${{ matrix.module_name }}
-          terragrunt fmt --terragrunt-non-interactive -check -no-color
-        continue-on-error: true
-
-      - name: Plan module
-        id: plan
-        env:
-          AWS_ACCESS_KEY_ID: ${{ secrets[format('{0}_AWS_ACCESS_KEY_ID',matrix.environment)] }}
-          AWS_SECRET_ACCESS_KEY: ${{ secrets[format('{0}_AWS_SECRET_ACCESS_KEY',matrix.environment)] }}
-        run: |
-          set -o pipefail
-          cd env/${{ matrix.environment }}/${{matrix.module_name}}
-          terragrunt plan --terragrunt-non-interactive --terragrunt-log-level warn -no-color -out="$GITHUB_WORKSPACE/tfplan.binary" |& tee tempfile
-          terragrunt show -json "$GITHUB_WORKSPACE/tfplan.binary" > "$GITHUB_WORKSPACE/tfplan.json"
-          plan_output=$(cat tempfile)
-          plan_output="${plan_output//'%'/'%25'}"
-          plan_output="${plan_output//$'\n'/'%0A'}"
-          plan_output="${plan_output//$'\r'/'%0D'}"
-          echo "::set-output name=stdout::$plan_output"
-        continue-on-error: true
-
-      - name: Check plan changes
-        id: check-changes
-        run: |
-          no_changes=$(opa eval --format pretty --data .github/workflows/policy/resource-changes.rego --input "$GITHUB_WORKSPACE/tfplan.json" "data.terraform.analysis.no_changes")
-          creates=$(opa eval --format pretty --data .github/workflows/policy/resource-changes.rego --input "$GITHUB_WORKSPACE/tfplan.json" "data.terraform.analysis.resource_changes.create")
-          updates=$(opa eval --format pretty --data .github/workflows/policy/resource-changes.rego --input "$GITHUB_WORKSPACE/tfplan.json" "data.terraform.analysis.resource_changes.update")
-          deletes=$(opa eval --format pretty --data .github/workflows/policy/resource-changes.rego --input "$GITHUB_WORKSPACE/tfplan.json" "data.terraform.analysis.resource_changes.delete")
-          echo "::set-output name=no-changes::$no_changes"
-          echo "::set-output name=creates::$creates"
-          echo "::set-output name=updates::$updates"
-          echo "::set-output name=deletes::$deletes"
-
-      # Create plan comment for PRs if there are changes or the format/plan steps failed
-      - uses: actions/github-script@v4
-        if: ${{ github.event_name == 'pull_request' && (steps.check-changes.outputs.no-changes != 'true' || steps.fmt.outcome == 'failure' || steps.plan.outcome == 'failure') }}
-        env:
-          PLAN: "${{ steps.plan.outputs.stdout }}"
+          AWS_SECRET_ACCESS_KEY: ${{ secrets[format('{0}_AWS_SECRET_ACCESS_KEY',matrix.environment)] }}      
+        uses: cds-snc/terraform-plan@v1
         with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-          script: |
-            const script = require("./.github/workflows/scripts/comment_plan.js");
-            const s = {
-              fmtOutcome: "${{ steps.fmt.outcome }}",
-              planOutcome: "${{ steps.plan.outcome}}",
-              deletes: "${{ steps.check-changes.outputs.deletes}}",
-              creates: "${{ steps.check-changes.outputs.creates}}",
-              updates: "${{ steps.check-changes.outputs.updates}}"
-            };
-            const m = {
-              environment: "${{ matrix.environment }}",
-              moduleName: "${{ matrix.module_name }}"
-            };
-            script(github, context, s, m);
-
-      - name: Check Success
-        if: ${{ steps.fmt.outcome == 'failure' || steps.plan.outcome == 'failure' }}
-        run: |
-          echo "steps.fmt.outcome == ${{ steps.fmt.outcome }}"
-          echo "steps.plan.outcome == ${{ steps.plan.outcome }}"
-          exit 1
+          directory: "env/${{ matrix.environment }}/${{ matrix.module_name }}"
+          comment-delete: "true"
+          comment-title: "${{ matrix.environment }}: ${{ matrix.module_name }}"
+          github-token: "${{ secrets.GITHUB_TOKEN }}"
+          terragrunt: "true"
 
   tg-plan-dependents:
     needs: tg-plan-dependencies
@@ -207,92 +139,26 @@ jobs:
         run: |
           mkdir bin
           wget -O bin/terragrunt https://github.com/gruntwork-io/terragrunt/releases/download/$TERRAGRUNT_VERSION/terragrunt_linux_amd64
-          wget -O bin/opa https://github.com/open-policy-agent/opa/releases/download/$OPA_VERSION/opa_linux_amd64
           chmod +x bin/*
           echo "$GITHUB_WORKSPACE/bin" >> $GITHUB_PATH
+
       - name: Set Prod Version
         if: ${{ matrix.environment == 'production' }}
         run: |
           INFRASTRUCTURE_VERSION=`cat ./.github/workflows/manifest/prod_version.txt`
           echo "INFRASTRUCTURE_VERSION=$INFRASTRUCTURE_VERSION" >> $GITHUB_ENV
 
-      - name: Validate Module 
-        id: validate-module
+      - name: Terraform plan
         env:
           AWS_ACCESS_KEY_ID: ${{ secrets[format('{0}_AWS_ACCESS_KEY_ID',matrix.environment)] }}
-          AWS_SECRET_ACCESS_KEY: ${{ secrets[format('{0}_AWS_SECRET_ACCESS_KEY',matrix.environment)] }}
-        run: |
-          cd env/${{ matrix.environment }}/${{ matrix.module_name }}
-          terragrunt validate --terragrunt-non-interactive -no-color
-        continue-on-error: false
-
-      - name: Check Formatting
-        id: fmt
-        env:
-          AWS_ACCESS_KEY_ID: ${{ secrets[format('{0}_AWS_ACCESS_KEY_ID',matrix.environment)] }}
-          AWS_SECRET_ACCESS_KEY: ${{ secrets[format('{0}_AWS_SECRET_ACCESS_KEY',matrix.environment)] }}
-        run: |
-          cd env/${{ matrix.environment }}/${{ matrix.module_name }}
-          terragrunt fmt --terragrunt-non-interactive -check -no-color
-        continue-on-error: true
-
-      - name: Plan module
-        id: plan
-        env:
-          AWS_ACCESS_KEY_ID: ${{ secrets[format('{0}_AWS_ACCESS_KEY_ID',matrix.environment)] }}
-          AWS_SECRET_ACCESS_KEY: ${{ secrets[format('{0}_AWS_SECRET_ACCESS_KEY',matrix.environment)] }}
-        run: |
-          set -o pipefail
-          cd env/${{ matrix.environment }}/${{matrix.module_name}}
-          terragrunt plan --terragrunt-non-interactive --terragrunt-log-level warn -no-color -out="$GITHUB_WORKSPACE/tfplan.binary" |& tee tempfile
-          terragrunt show -json "$GITHUB_WORKSPACE/tfplan.binary" > "$GITHUB_WORKSPACE/tfplan.json"
-          plan_output=$(cat tempfile)
-          plan_output="${plan_output//'%'/'%25'}"
-          plan_output="${plan_output//$'\n'/'%0A'}"
-          plan_output="${plan_output//$'\r'/'%0D'}"
-          echo "::set-output name=stdout::$plan_output"
-        continue-on-error: true
-
-      - name: Check plan changes
-        id: check-changes
-        run: |
-          no_changes=$(opa eval --format pretty --data .github/workflows/policy/resource-changes.rego --input "$GITHUB_WORKSPACE/tfplan.json" "data.terraform.analysis.no_changes")
-          creates=$(opa eval --format pretty --data .github/workflows/policy/resource-changes.rego --input "$GITHUB_WORKSPACE/tfplan.json" "data.terraform.analysis.resource_changes.create")
-          updates=$(opa eval --format pretty --data .github/workflows/policy/resource-changes.rego --input "$GITHUB_WORKSPACE/tfplan.json" "data.terraform.analysis.resource_changes.update")
-          deletes=$(opa eval --format pretty --data .github/workflows/policy/resource-changes.rego --input "$GITHUB_WORKSPACE/tfplan.json" "data.terraform.analysis.resource_changes.delete")
-          echo "::set-output name=no-changes::$no_changes"
-          echo "::set-output name=creates::$creates"
-          echo "::set-output name=updates::$updates"
-          echo "::set-output name=deletes::$deletes"
-
-      # Create plan comment for PRs if there are changes or the format/plan steps failed
-      - uses: actions/github-script@v4
-        if: ${{ github.event_name == 'pull_request' && (steps.check-changes.outputs.no-changes != 'true' || steps.fmt.outcome == 'failure' || steps.plan.outcome == 'failure') }}
-        env:
-          PLAN: "${{ steps.plan.outputs.stdout }}"
+          AWS_SECRET_ACCESS_KEY: ${{ secrets[format('{0}_AWS_SECRET_ACCESS_KEY',matrix.environment)] }}      
+        uses: cds-snc/terraform-plan@v1.0.4
         with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-          script: |
-            const script = require("./.github/workflows/scripts/comment_plan.js");
-            const s = {
-              fmtOutcome: "${{ steps.fmt.outcome }}",
-              planOutcome: "${{ steps.plan.outcome}}",
-              deletes: "${{ steps.check-changes.outputs.deletes}}",
-              creates: "${{ steps.check-changes.outputs.creates}}",
-              updates: "${{ steps.check-changes.outputs.updates}}"
-            };
-            const m = {
-              environment: "${{ matrix.environment }}",
-              moduleName: "${{ matrix.module_name }}"
-            };
-            script(github, context, s, m);
-
-      - name: Check Success
-        if: ${{ steps.fmt.outcome == 'failure' || steps.plan.outcome == 'failure' }}
-        run: |
-          echo "steps.fmt.outcome == ${{ steps.fmt.outcome }}"
-          echo "steps.plan.outcome == ${{ steps.plan.outcome }}"
-          exit 1
+          directory: "env/${{ matrix.environment }}/${{ matrix.module_name }}"
+          comment-delete: "true"
+          comment-title: "${{ matrix.environment }}: ${{ matrix.module_name }}"
+          github-token: "${{ secrets.GITHUB_TOKEN }}"
+          terragrunt: "true"          
 
   comment-end:
     if: always()
@@ -300,12 +166,12 @@ jobs:
     runs-on: ubuntu-latest
     steps:
 
-      - name: Checkout
-        uses: actions/checkout@v2
-
       - uses: actions/github-script@v4
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
-            const comment = require("./.github/scripts/comment.js");
-            comment(github, context, "## 🏁 Plans are complete for this run");
+            github.issues.createComment({
+              ...context.repo,
+              issue_number: context.issue.number,
+              body: "## 🏁 Plans are complete for this run"
+            })
