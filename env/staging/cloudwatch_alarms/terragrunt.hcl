@@ -5,7 +5,7 @@ inputs = {
 
   feature_api_alarms              = true
   api_gateway_400_error_threshold = 95
-  api_gateway_500_error_threshold = 95
+  api_gateway_500_error_threshold = 200
   api_gateway_min_invocations     = 0
   api_gateway_max_invocations     = 10000
   api_gateway_max_latency         = 3000
