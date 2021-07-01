@@ -22,7 +22,7 @@ resource "aws_cloudwatch_metric_alarm" "metrics_api_gateway_500_errors_above_thr
   evaluation_periods  = "1"
   metric_name         = "5XXError"
   namespace           = "AWS/ApiGateway"
-  period              = "60"
+  period              = "600"
   statistic           = "Sum"
   threshold           = var.api_gateway_500_error_threshold
   alarm_description   = "This metric monitors 500 errors in the metrics API gateway"
