@@ -54,6 +54,6 @@ variable "event_rule_schedule_expression" {
   type = string
 }
 
-variable "default_log_retention_in_days" {
+variable "log_retention_in_days" {
   type = string
 }

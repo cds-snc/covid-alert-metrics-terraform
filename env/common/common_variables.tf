@@ -15,7 +15,7 @@ variable "region" {
   type        = string
 }
 
-variable "default_log_retention_in_days" {
+variable "log_retention_in_days" {
   description = "(Required) The default cloudfront log retention period"
   type        = number
 }

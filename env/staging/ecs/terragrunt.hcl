@@ -68,7 +68,7 @@ inputs = {
   cpu_units                           = 512
   memory                              = 1024
   aggregate_metrics_table_arn         = dependency.dynamodb.outputs.aggregate_metrics_arn
-  default_schedule_expression         = "rate(24 hours)"
+  schedule_expression         = "rate(24 hours)"
 }
 
 terraform {

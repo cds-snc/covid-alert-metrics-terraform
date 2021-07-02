@@ -137,6 +137,6 @@ variable "aggregate_metrics_table_arn" {
   type = string
 }
 
-variable "default_schedule_expression" {
+variable "schedule_expression" {
   type = string
 }

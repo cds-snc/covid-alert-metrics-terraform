@@ -6,7 +6,7 @@ inputs = {
   account_id                    = "${local.vars.inputs.account_id}"
   env                           = "${local.vars.inputs.env}"
   region                        = "ca-central-1"
-  default_log_retention_in_days = "${local.vars.inputs.default_log_retention_in_days}"
+  log_retention_in_days = "${local.vars.inputs.log_retention_in_days}"
 }
 
 remote_state {

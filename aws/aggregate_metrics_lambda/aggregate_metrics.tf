@@ -42,5 +42,5 @@ resource "aws_lambda_event_source_mapping" "raw_metric_stream" {
 resource "aws_cloudwatch_log_group" "metrics" {
   # checkov:skip=CKV_AWS_158:Encryption using default CloudWatch service key is acceptable
   name              = "/aws/lambda/${aws_lambda_function.aggregate_metrics.function_name}"
-  retention_in_days = var.default_log_retention_in_days
+  retention_in_days = var.log_retention_in_days
 }
