@@ -43,7 +43,9 @@ data "aws_iam_policy_document" "etl_policies" {
       "ecr:BatchGetImage"
     ]
     resources = [
-      var.create_csv_repository_arn
+      var.create_csv_repository_arn,
+      var.appstore_metrics_etl_repository_arn,
+      var.server_metrics_etl_repository_arn
     ]
   }
 
@@ -61,7 +63,15 @@ data "aws_iam_policy_document" "etl_policies" {
       module.masked_metrics.log_group_arn,
       module.unmasked_metrics.log_group_arn,
       "${module.masked_metrics.log_group_arn}:log-stream:*",
-      "${module.unmasked_metrics.log_group_arn}:log-stream:*"
+      "${module.unmasked_metrics.log_group_arn}:log-stream:*",
+      module.masked_server_metrics_etl.log_group_arn,
+      module.unmasked_server_metrics_etl.log_group_arn,
+      "${module.masked_server_metrics_etl.log_group_arn}:log-stream:*",
+      "${module.unmasked_server_metrics_etl.log_group_arn}:log-stream:*",
+      module.masked_appstore_metrics_etl.log_group_arn,
+      module.unmasked_appstore_metrics_etl.log_group_arn,
+      "${module.masked_appstore_metrics_etl.log_group_arn}:log-stream:*",
+      "${module.unmasked_appstore_metrics_etl.log_group_arn}:log-stream:*"
     ]
   }
 
