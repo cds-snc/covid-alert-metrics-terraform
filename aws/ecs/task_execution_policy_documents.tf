@@ -1,7 +1,22 @@
 
-resource "aws_iam_role" "task_execution_role" {
-  name               = "metrics_task_execution_role"
-  assume_role_policy = data.aws_iam_policy_document.task_execution_role.json
+data "aws_iam_policy_document" "readonly_aggregate_metrics"{
+
+  statement {
+
+    effect = "Allow"
+
+    actions = [
+      "dynamodb:GetItem",
+      "dynamodb:BatchGetItem",
+      "dynamodb:Scan",
+      "dynamodb:Query",
+      "dynamodb:ConditionCheckItem"
+    ]
+    resources = [
+      var.aggregate_metrics_table_arn
+    ]
+
+  }
 }
 
 data "aws_iam_policy_document" "task_execution_role" {
@@ -17,29 +32,7 @@ data "aws_iam_policy_document" "task_execution_role" {
   }
 }
 
-resource "aws_iam_role_policy_attachment" "te_etl_policies" {
-  role       = aws_iam_role.task_execution_role.name
-  policy_arn = aws_iam_policy.etl_policies.arn
-}
-
 data "aws_iam_policy_document" "etl_policies" {
-
-  statement {
-
-    effect = "Allow"
-
-    actions = [
-      "dynamodb:GetItem",
-      "dynamodb:BatchGetItem",
-      "dynamodb:Scan",
-      "dynamodb:Query",
-      "dynamodb:ConditionCheckItem"
-    ]
-    resources = [
-      data.aws_dynamodb_table.aggregate_metrics.arn
-    ]
-
-  }
 
   statement {
 
@@ -117,10 +110,4 @@ data "aws_iam_policy_document" "etl_policies" {
 
   }
 
-}
-
-resource "aws_iam_policy" "etl_policies" {
-  name   = "ETLTaskExecutionPolicies"
-  path   = "/"
-  policy = data.aws_iam_policy_document.etl_policies.json
 }
