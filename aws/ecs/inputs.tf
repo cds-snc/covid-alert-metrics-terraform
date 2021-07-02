@@ -136,3 +136,7 @@ variable "unmasked_appstore_tag" {
 variable "aggregate_metrics_table_arn" {
   type = string
 }
+
+variable "default_schedule_expression" {
+  type = string
+}
