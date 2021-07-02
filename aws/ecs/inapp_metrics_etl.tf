@@ -26,6 +26,7 @@ module "masked_metrics" {
     environment           = var.env
     bucket_name           = var.masked_metrics_bucket
   }
+  default_log_retention_in_days = var.default_log_retention_in_days
 }
 
 module "unmasked_metrics" {
@@ -51,4 +52,5 @@ module "unmasked_metrics" {
     environment           = var.env
     bucket_name           = var.unmasked_metrics_bucket
   }
+  default_log_retention_in_days = var.default_log_retention_in_days
 }

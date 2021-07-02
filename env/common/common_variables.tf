@@ -14,3 +14,8 @@ variable "region" {
   description = "(Required) The region to build infra in"
   type        = string
 }
+
+variable "default_log_retention_in_days" {
+  description = "(Required) The default cloudfront log retention period"
+  type        = number
+}

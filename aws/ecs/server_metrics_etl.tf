@@ -26,6 +26,7 @@ module "masked_server_metrics_etl" {
     environment           = var.env
     bucket_name           = var.masked_metrics_bucket
   }
+  default_log_retention_in_days = var.default_log_retention_in_days
 }
 
 module "unmasked_server_metrics_etl" {
@@ -51,4 +52,5 @@ module "unmasked_server_metrics_etl" {
     environment           = var.env
     bucket_name           = var.unmasked_metrics_bucket
   }
+  default_log_retention_in_days = var.default_log_retention_in_days
 }
