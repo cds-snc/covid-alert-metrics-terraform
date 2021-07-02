@@ -17,7 +17,7 @@ resource "aws_ecs_task_definition" "task_def" {
 resource "aws_cloudwatch_log_group" "log" {
   # checkov:skip=CKV_AWS_158:Encryption using default CloudWatch service key is acceptable
   name              = "/aws/ecs/${var.name}_ecs"
-  retention_in_days = 14
+  retention_in_days = var.log_retention_in_days
 }
 
 data "template_file" "masked_metrics" {

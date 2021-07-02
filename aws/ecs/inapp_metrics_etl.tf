@@ -17,7 +17,7 @@ module "masked_metrics" {
   subnet_id                      = var.subnet_id
   sg_id                          = var.sg_id
   template_file                  = file("task-definitions/metrics.json")
-  event_rule_schedule_expression = "rate(24 hours)"
+  event_rule_schedule_expression = var.schedule_expression
   vars = {
     image                 = local.masked_metrics_image
     awslogs-region        = "ca-central-1"
@@ -26,6 +26,7 @@ module "masked_metrics" {
     environment           = var.env
     bucket_name           = var.masked_metrics_bucket
   }
+  log_retention_in_days = var.log_retention_in_days
 }
 
 module "unmasked_metrics" {
@@ -42,7 +43,7 @@ module "unmasked_metrics" {
   subnet_id                      = var.subnet_id
   sg_id                          = var.sg_id
   template_file                  = file("task-definitions/metrics.json")
-  event_rule_schedule_expression = "rate(24 hours)"
+  event_rule_schedule_expression = var.schedule_expression
   vars = {
     image                 = local.unmasked_metrics_image
     awslogs-region        = "ca-central-1"
@@ -51,4 +52,5 @@ module "unmasked_metrics" {
     environment           = var.env
     bucket_name           = var.unmasked_metrics_bucket
   }
+  log_retention_in_days = var.log_retention_in_days
 }

@@ -42,5 +42,5 @@ resource "aws_lambda_function" "lambda" {
 resource "aws_cloudwatch_log_group" "metric_log" {
   # checkov:skip=CKV_AWS_158:Encryption using default CloudWatch service key is acceptable
   name              = "/aws/lambda/${var.name}"
-  retention_in_days = 14
+  retention_in_days = var.log_retention_in_days
 }

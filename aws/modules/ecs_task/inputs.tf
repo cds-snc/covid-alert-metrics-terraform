@@ -50,7 +50,10 @@ variable "vars" {
   type = map(any)
 }
 
-
 variable "event_rule_schedule_expression" {
+  type = string
+}
+
+variable "log_retention_in_days" {
   type = string
 }
