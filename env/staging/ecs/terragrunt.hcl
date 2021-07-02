@@ -45,29 +45,29 @@ dependency "s3" {
 }
 
 inputs = {
-  subnet_id                   = dependency.network.outputs.private_subnet_id
-  sg_id                       = dependency.network.outputs.csv_etl_sg_id
-  unmasked_metrics_s3_arn     = dependency.s3.outputs.unmasked_metrics_arn
-  masked_metrics_s3_arn       = dependency.s3.outputs.masked_metrics_arn
-  masked_metrics_bucket       = dependency.s3.outputs.masked_metrics_id
-  unmasked_metrics_bucket     = dependency.s3.outputs.unmasked_metrics_id
-  csv_etl_repository_url      = dependency.ecr.outputs.create_csv_repository_url
-  create_csv_repository_arn   = dependency.ecr.outputs.create_csv_repository_arn
+  subnet_id                           = dependency.network.outputs.private_subnet_id
+  sg_id                               = dependency.network.outputs.csv_etl_sg_id
+  unmasked_metrics_s3_arn             = dependency.s3.outputs.unmasked_metrics_arn
+  masked_metrics_s3_arn               = dependency.s3.outputs.masked_metrics_arn
+  masked_metrics_bucket               = dependency.s3.outputs.masked_metrics_id
+  unmasked_metrics_bucket             = dependency.s3.outputs.unmasked_metrics_id
+  csv_etl_repository_url              = dependency.ecr.outputs.create_csv_repository_url
+  create_csv_repository_arn           = dependency.ecr.outputs.create_csv_repository_arn
   server_metrics_etl_repository_url   = dependency.ecr.outputs.server_metrics_etl_repository_url
   server_metrics_etl_repository_arn   = dependency.ecr.outputs.server_metrics_etl_repository_arn
   appstore_metrics_etl_repository_url = dependency.ecr.outputs.appstore_metrics_etl_repository_url
   appstore_metrics_etl_repository_arn = dependency.ecr.outputs.appstore_metrics_etl_repository_arn
-  billing_tag_key             = "CostCentre"
-  billing_tag_value           = "CovidShield"
-  masked_image_tag            = "latest"
-  unmasked_image_tag          = "latest"
-  masked_server_tag           = "latest"
-  unmasked_server_tag         = "latest"
-  masked_appstore_tag         = "latest"
-  unmasked_appstore_tag       = "latest"
-  cpu_units                   = 512
-  memory                      = 1024
-  aggregate_metrics_table_arn  = dependency.dynamodb.outputs.aggregate_metrics_arn
+  billing_tag_key                     = "CostCentre"
+  billing_tag_value                   = "CovidShield"
+  masked_image_tag                    = "latest"
+  unmasked_image_tag                  = "latest"
+  masked_server_tag                   = "latest"
+  unmasked_server_tag                 = "latest"
+  masked_appstore_tag                 = "latest"
+  unmasked_appstore_tag               = "latest"
+  cpu_units                           = 512
+  memory                              = 1024
+  aggregate_metrics_table_arn         = dependency.dynamodb.outputs.aggregate_metrics_arn
 }
 
 terraform {

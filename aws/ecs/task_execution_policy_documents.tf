@@ -1,5 +1,5 @@
 
-data "aws_iam_policy_document" "readonly_aggregate_metrics"{
+data "aws_iam_policy_document" "readonly_aggregate_metrics" {
 
   statement {
 

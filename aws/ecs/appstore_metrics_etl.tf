@@ -3,7 +3,7 @@ locals {
   unmasked_appstore_image = "${var.appstore_metrics_etl_repository_url}:${var.unmasked_appstore_tag}"
 }
 
-module "masked_appstore_metrics_etl" { 
+module "masked_appstore_metrics_etl" {
   source                         = "../modules/ecs_task"
   name                           = "masked_appstore_metrics"
   cpu_units                      = var.appstore_metrics_cpu_units
@@ -28,7 +28,7 @@ module "masked_appstore_metrics_etl" {
   }
 }
 
-module "unmasked_appstore_metrics_etl" { 
+module "unmasked_appstore_metrics_etl" {
   source                         = "../modules/ecs_task"
   name                           = "unmasked_appstore_metrics"
   cpu_units                      = var.appstore_metrics_cpu_units
