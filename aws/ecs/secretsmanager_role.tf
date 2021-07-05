@@ -1,11 +1,11 @@
-resource "aws_kms_key" "server_metrics_key" {
-  enable_key_rotation = true
+resource "aws_iam_role" "secretsmanager_role" {
+  name               = "metrics_secretsmanager_role"
+  assume_role_policy = data.aws_iam_policy_document.task_execution_role.json
 }
 
 resource "aws_secretsmanager_secret" "metrics_token" {
+  # checkov:skip=CKV_AWS_149:AWS Managed keys are acceptable
   name = "server-metrics-token"
-
-  kms_key_id = aws_kms_key.server_metrics_key.id
 }
 
 data "aws_iam_policy_document" "get_metrics_token_secret_value_ecs_task" {

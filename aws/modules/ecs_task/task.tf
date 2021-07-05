@@ -23,8 +23,7 @@ resource "aws_cloudwatch_log_group" "log" {
 data "template_file" "masked_metrics" {
   template = var.template_file
   vars = merge(var.vars, {
-    awslogs-group           = aws_cloudwatch_log_group.log.name
-    name                    = var.name
-    metric_token_secret_arn = var.metric_token_secret_arn
+    awslogs-group = aws_cloudwatch_log_group.log.name
+    name          = var.name
   })
 }

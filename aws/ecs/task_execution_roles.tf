@@ -4,6 +4,11 @@ resource "aws_iam_role" "task_execution_role" {
   assume_role_policy = data.aws_iam_policy_document.task_execution_role.json
 }
 
+resource "aws_iam_role" "server_metrics_task_execution_role" {
+  name               = "server_metrics_task_execution_role"
+  assume_role_policy = data.aws_iam_policy_document.server_metrics_task_execution_role.json
+}
+
 resource "aws_iam_role" "server_appstore_task_execution_role" {
   name               = "server_appstore_metrics_task_execution_role"
   assume_role_policy = data.aws_iam_policy_document.task_execution_role.json
@@ -32,7 +37,7 @@ resource "aws_iam_role_policy_attachment" "te_etl_policies" {
 }
 
 resource "aws_iam_role_policy_attachment" "secretsmanager_etl_policies" {
-  role       = aws_iam_role.task_execution_role.name
+  role       = aws_iam_role.server_metrics_task_execution_role.name
   policy_arn = aws_iam_policy.get_metrics_token_secret_value_ecs_task.arn
 }
 
