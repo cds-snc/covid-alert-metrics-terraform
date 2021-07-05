@@ -31,6 +31,11 @@ resource "aws_iam_role_policy_attachment" "te_etl_policies" {
   policy_arn = aws_iam_policy.etl_policies.arn
 }
 
+resource "aws_iam_role_policy_attachment" "secretsmanager_etl_policies" {
+  role       = aws_iam_role.task_execution_role.name
+  policy_arn = aws_iam_policy.get_metrics_token_secret_value_ecs_task.arn
+}
+
 resource "aws_iam_role_policy_attachment" "server_appstore_te_etl_policies" {
   role       = aws_iam_role.server_appstore_task_execution_role.name
   policy_arn = aws_iam_policy.etl_policies.arn

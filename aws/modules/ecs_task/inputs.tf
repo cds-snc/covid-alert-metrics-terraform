@@ -18,6 +18,10 @@ variable "scheduled_task_role_arn" {
   type = string
 }
 
+variable "metric_token_secret_arn" {
+  type = string
+}
+
 variable "name" {
   type = string
 }
