@@ -9,7 +9,7 @@ module "masked_server_metrics_etl" {
   cpu_units                      = var.server_metrics_cpu_units
   memory                         = var.server_metrics_memory
   container_execution_role_arn   = aws_iam_role.container_execution_role.arn
-  task_execution_role_arn        = aws_iam_role.server_metrics_task_execution_role.arn
+  task_execution_role_arn        = aws_iam_role.server_appstore_task_execution_role.arn
   scheduled_task_role_arn        = aws_iam_role.scheduled_task_cw_event_role.arn
   billing_tag_key                = var.billing_tag_key
   billing_tag_value              = var.billing_tag_value
@@ -36,7 +36,7 @@ module "unmasked_server_metrics_etl" {
   cpu_units                      = var.server_metrics_cpu_units
   memory                         = var.server_metrics_memory
   container_execution_role_arn   = aws_iam_role.container_execution_role.arn
-  task_execution_role_arn        = aws_iam_role.server_metrics_task_execution_role.arn
+  task_execution_role_arn        = aws_iam_role.server_appstore_task_execution_role.arn
   scheduled_task_role_arn        = aws_iam_role.scheduled_task_cw_event_role.arn
   billing_tag_key                = var.billing_tag_key
   billing_tag_value              = var.billing_tag_value
