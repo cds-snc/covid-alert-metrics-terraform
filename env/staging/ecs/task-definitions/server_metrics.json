@@ -35,6 +35,9 @@
         {
           "name": "BUCKET_NAME",
           "value": "${bucket_name}"
+        },{
+          "name": "SERVER_EVENTS_ENDPOINT",
+          "value": "${server_events_endpoint}"
         }
       ],
       "secrets": [{

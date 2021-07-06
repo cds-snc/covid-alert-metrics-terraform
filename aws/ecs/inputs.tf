@@ -144,3 +144,7 @@ variable "schedule_expression" {
 variable "metrics_token" {
   type = string
 }
+
+variable "server_events_endpoint" {
+  type = string
+}
