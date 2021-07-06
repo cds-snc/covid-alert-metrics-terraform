@@ -32,19 +32,6 @@ data "aws_iam_policy_document" "task_execution_role" {
   }
 }
 
-data "aws_iam_policy_document" "server_metrics_task_execution_role" {
-  statement {
-    effect = "Allow"
-
-    actions = ["sts:AssumeRole"]
-
-    principals {
-      type        = "Service"
-      identifiers = ["ecs-tasks.amazonaws.com"]
-    }
-  }
-}
-
 data "aws_iam_policy_document" "etl_policies" {
 
   statement {
