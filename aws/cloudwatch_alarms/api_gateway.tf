@@ -84,3 +84,47 @@ resource "aws_cloudwatch_metric_alarm" "metrics_api_gateway_max_latency_threshol
     ApiName = data.aws_api_gateway_rest_api.metrics.name
   }
 }
+
+resource "aws_cloudwatch_metric_alarm" "metrics_api_gateway_traffic_change" {
+  alarm_name          = "metrics-api-gateway-traffic-change"
+  comparison_operator = "GreaterThanThreshold"
+  evaluation_periods  = "1"
+  threshold           = var.api_gateway_traffic_change_percent
+  alarm_description   = "Maximum traffic percentage change between current and previous day"
+
+  metric_query {
+    id    = "current"
+    label = "Current count"
+
+    metric {
+      metric_name = "RequestCount"
+      namespace   = "AWS/ApiGateway"
+      period      = "86400"
+      stat        = "Sum"
+      unit        = "Count"
+
+      dimensions = {
+        ApiName = data.aws_api_gateway_rest_api.metrics.name
+      }
+    }
+  }
+
+  metric_query {
+    id         = "delta"
+    expression = "RATE(current) * PERIOD(current)"
+    label      = "Delta"
+  }
+
+  metric_query {
+    id         = "previous"
+    expression = "current - delta"
+    label      = "Previous count"
+  }
+
+  metric_query {
+    id          = "percent_change"
+    expression  = "ABS(100 * delta/previous)"
+    label       = "Percent change"
+    return_data = "true"
+  }
+}
