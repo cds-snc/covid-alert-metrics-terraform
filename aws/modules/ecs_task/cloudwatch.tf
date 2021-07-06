@@ -25,9 +25,4 @@ resource "aws_cloudwatch_event_target" "ecs_scheduled_task" {
     }
   }
 
-  lifecycle {
-    ignore_changes = [
-      ecs_target[0].task_definition_arn # Updated by covid-alert-metrics workflow
-    ]
-  }
 }
