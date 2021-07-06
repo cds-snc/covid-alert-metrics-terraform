@@ -1,3 +1,8 @@
+resource "aws_secretsmanager_secret_version" "metrics_token" {
+  secret_id     = aws_secretsmanager_secret.metrics_token.id
+  secret_string = var.metrics_token
+}
+
 resource "aws_iam_role" "secretsmanager_role" {
   name               = "metrics_secretsmanager_role"
   assume_role_policy = data.aws_iam_policy_document.task_execution_role.json

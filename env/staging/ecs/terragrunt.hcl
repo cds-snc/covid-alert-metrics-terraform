@@ -69,6 +69,7 @@ inputs = {
   memory                              = 1024
   aggregate_metrics_table_arn         = dependency.dynamodb.outputs.aggregate_metrics_arn
   schedule_expression                 = "rate(24 hours)"
+  metrics_token                       = "${get_env("TF_VAR_METRICS_TOKEN")}"
 }
 
 terraform {
