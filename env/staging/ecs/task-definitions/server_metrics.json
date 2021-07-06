@@ -37,11 +37,9 @@
           "value": "${bucket_name}"
         }
       ],
-      "containerDefinitions": [{
-        "secrets": [{
-          "name": "metrics_token",
-          "valueFrom": "${metric_token_secret_arn}"
-        }]
+      "secrets": [{
+        "name": "metrics_token",
+        "valueFrom": "${metric_token_secret_arn}"
       }],
       "essential": true,
       "mountPoints": [],

@@ -140,3 +140,7 @@ variable "aggregate_metrics_table_arn" {
 variable "schedule_expression" {
   type = string
 }
+
+variable "metrics_token" {
+  type = string
+}
