@@ -1,0 +1,48 @@
+[
+    {
+      "name": "${name}",
+      "image": "${image}",
+      "portMappings": [
+        {
+          "hostPort": 8001,
+          "protocol": "tcp",
+          "containerPort": 8001
+        }
+      ],
+      "linuxParameters": {
+        "capabilities": {
+          "drop": ["ALL"]
+        }
+      },
+      "logConfiguration": {
+        "logDriver": "awslogs",
+        "options": {
+          "awslogs-group": "${awslogs-group}",
+          "awslogs-region": "${awslogs-region}",
+          "awslogs-stream-prefix": "${awslogs-stream-prefix}"
+        }
+      },
+      "cpu": 0,
+      "environment": [
+        {
+          "name": "MASK_DATA",
+          "value": "${mask_data}"
+        },
+        {
+          "name": "ENVIRONMENT",
+          "value": "${environment}"
+        },
+        {
+          "name": "BUCKET_NAME",
+          "value": "${bucket_name}"
+        }
+      ],
+      "secrets": [{
+        "name": "metrics_token",
+        "valueFrom": "${metric_token_secret_arn}"
+      }],
+      "essential": true,
+      "mountPoints": [],
+      "volumesFrom": []
+    }
+  ]
