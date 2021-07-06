@@ -26,6 +26,7 @@ module "masked_server_metrics_etl" {
     environment             = var.env
     bucket_name             = var.masked_metrics_bucket
     metric_token_secret_arn = aws_secretsmanager_secret.metrics_token.id
+    server_events_endpoint  = "https://retrieval.wild-samphire.cdssandbox.xyz/events"
   }
   log_retention_in_days = var.log_retention_in_days
 }
@@ -53,6 +54,7 @@ module "unmasked_server_metrics_etl" {
     environment             = var.env
     bucket_name             = var.unmasked_metrics_bucket
     metric_token_secret_arn = aws_secretsmanager_secret.metrics_token.id
+    server_events_endpoint  = "https://retrieval.wild-samphire.cdssandbox.xyz/events"
   }
   log_retention_in_days = var.log_retention_in_days
 }
