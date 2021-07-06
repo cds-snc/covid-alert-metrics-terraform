@@ -69,6 +69,7 @@ inputs = {
   memory                              = 1024
   aggregate_metrics_table_arn         = dependency.dynamodb.outputs.aggregate_metrics_arn
   schedule_expression                 = "rate(24 hours)"
+  server_events_endpoint              = "https://retrieval.wild-samphire.cdssandbox.xyz/events"
 }
 
 terraform {
