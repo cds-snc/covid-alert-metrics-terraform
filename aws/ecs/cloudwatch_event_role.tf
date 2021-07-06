@@ -21,7 +21,8 @@ data "aws_iam_policy_document" "scheduled_task_cw_event_role_cloudwatch_policy" 
     resources = [
       aws_iam_role.task_execution_role.arn,
       aws_iam_role.container_execution_role.arn,
-      aws_iam_role.server_appstore_task_execution_role.arn
+      aws_iam_role.server_appstore_task_execution_role.arn,
+      aws_iam_role.server_metrics_container_execution_role.arn
     ]
   }
 }
