@@ -43,3 +43,8 @@ variable "api_gateway_max_latency" {
   description = "Maximum latency (milliseconds) in a 60 second period before an alarm triggers"
   type        = string
 }
+
+variable "api_gateway_traffic_change_percent" {
+  description = "Maximum traffic percentage change between current and previous day"
+  type        = string
+}
