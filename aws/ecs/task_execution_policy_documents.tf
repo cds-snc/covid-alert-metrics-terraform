@@ -121,3 +121,16 @@ data "aws_iam_policy_document" "etl_policies" {
   }
 
 }
+
+data "aws_iam_policy_document" "send_alerts_to_CloudWatch_ecs_task" {
+  statement {
+    effect = "Allow"
+    actions = [
+      "logs:CreateLogGroup",
+      "logs:CreateLogStream",
+      "logs:PutLogEvents",
+      "logs:DescribeLogStreams"
+    ]
+    resources = ["arn:aws:logs:*:*:*"]
+  }
+}
