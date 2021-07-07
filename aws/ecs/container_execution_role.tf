@@ -25,6 +25,10 @@ resource "aws_iam_role_policy_attachment" "secretsmanager_etl_policies" {
   role       = aws_iam_role.server_metrics_container_execution_role.name
   policy_arn = aws_iam_policy.get_metrics_token_secret_value_ecs_task.arn
 }
+resource "aws_iam_role_policy_attachment" "server_metrics_ce_cs" {
+  role       = aws_iam_role.server_metrics_container_execution_role.name
+  policy_arn = data.aws_iam_policy.ec2_container_service.arn
+}
 
 
 ###
