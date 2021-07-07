@@ -14,12 +14,18 @@ jest.mock("aws-sdk", () => {
     promise: jest.fn(),
   };
 
+  const mockCloudWatch = {
+    putMetricData: jest.fn().mockReturnThis(),
+    promise: jest.fn(),
+  };
+
   return {
     __esModule: true,
     DynamoDB: {
       DocumentClient: jest.fn(() => mockDynamoDb)
     },
     SQS: jest.fn(() => mockSQS),
+    CloudWatch: jest.fn(() => mockCloudWatch),
   };
 });
 
@@ -652,6 +658,22 @@ describe("sendToDeadLetterQueue", () => {
     let err = "ouch"
     lambda.sendToDeadLetterQueue(payload, err)
     expect(sqs.sendMessage).toHaveBeenCalledTimes(1)
+  })
+})
+
+describe("writeCloudWatchMetric", () => {
+  let cloudwatch
+
+  beforeAll(async (done) => {
+    cloudwatch = new AWS.CloudWatch()
+    done();
+  });
+
+  it("writes a metric", () => {
+    let metric = {a: true}
+    let err = "ouch"
+    lambda.writeCloudWatchMetric(metric, err)
+    expect(cloudwatch.putMetricData).toHaveBeenCalledTimes(1)
   })
 })
 

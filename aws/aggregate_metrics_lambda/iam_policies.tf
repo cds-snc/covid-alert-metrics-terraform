@@ -41,6 +41,11 @@ resource "aws_iam_role_policy_attachment" "aggregator_write_and_encrypt_deadlett
   policy_arn = aws_iam_policy.write_and_encrypt_deadletter_queue.arn
 }
 
+resource "aws_iam_role_policy_attachment" "aggregator_write_cloudwatch_metrics" {
+  role       = aws_iam_role.aggregator.name
+  policy_arn = aws_iam_policy.write_cloudwatch_metrics.arn
+}
+
 data "aws_iam_policy_document" "aggregate_metrics_update" {
   statement {
     effect = "Allow"
@@ -162,4 +167,23 @@ resource "aws_iam_policy" "write_and_encrypt_deadletter_queue" {
   name   = "CovidAlertWriteAndEncryptDeadletterQueue"
   path   = "/"
   policy = data.aws_iam_policy_document.write_and_encrypt_deadletter_queue.json
+}
+
+# Write CloudWatch metrics
+
+data "aws_iam_policy_document" "write_cloudwatch_metrics" {
+  statement {
+
+    effect = "Allow"
+    actions = [
+      "cloudwatch:PutMetricData"
+    ]
+    resources = ["*"]
+  }
+}
+
+resource "aws_iam_policy" "write_cloudwatch_metrics" {
+  name   = "CovidAlertWriteCloudwatchMetrics"
+  path   = "/"
+  policy = data.aws_iam_policy_document.write_cloudwatch_metrics.json
 }
