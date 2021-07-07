@@ -97,7 +97,7 @@ resource "aws_cloudwatch_metric_alarm" "metrics_api_gateway_traffic_change" {
     label = "Current count"
 
     metric {
-      metric_name = "RequestCount"
+      metric_name = "Count"
       namespace   = "AWS/ApiGateway"
       period      = "86400"
       stat        = "Sum"
