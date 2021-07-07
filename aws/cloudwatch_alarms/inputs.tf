@@ -48,3 +48,13 @@ variable "api_gateway_traffic_change_percent" {
   description = "Maximum traffic percentage change between current and previous day"
   type        = string
 }
+
+variable "app_500_qr_parse_error_critical_threshold" {
+  description = "Maximum sum of QR parse errors in a 24 hour period before a critical alarm triggers"
+  type        = string
+}
+
+variable "app_500_qr_parse_error_warning_threshold" {
+  description = "Maximum sum of QR parse errors in a 24 hour period before a warning alarm triggers"
+  type        = string
+}
