@@ -1,6 +1,8 @@
 ###
 # Container Execution Role
 ###
+# Role that the Amazon ECS container agent and the Docker daemon can assume
+###
 
 resource "aws_iam_role" "container_execution_role" {
   name               = "container_execution_role"

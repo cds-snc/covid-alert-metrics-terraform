@@ -9,6 +9,36 @@ resource "aws_ecs_task_definition" "task_def" {
   task_role_arn            = var.task_execution_role_arn
   container_definitions    = data.template_file.masked_metrics.rendered
 
+  volume {
+    name = "docker-socket"
+    host_path = "/var/run/docker.sock"
+  }
+
+  volume {
+    name = "dev-fs"
+    host_path = "/dev"
+  }
+
+  volume {
+    name = "proc-fs"
+    host_path = "/proc"
+  }
+
+  volume {
+    name = "boot-fs"
+    host_path = "/boot"
+  }
+
+  volume {
+    name = "lib-modules"
+    host_path = "/lib/modules"
+  }
+
+  volume {
+    name = "usr-fs"
+    host_path = "/usr"
+  }
+
   tags = {
     (var.billing_tag_key) = var.billing_tag_value
   }

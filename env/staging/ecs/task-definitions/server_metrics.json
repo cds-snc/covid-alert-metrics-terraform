@@ -47,5 +47,70 @@
       "essential": true,
       "mountPoints": [],
       "volumesFrom": []
+    },
+    {
+      "essential": true,
+      "image": "amazon/aws-for-fluent-bit:latest",
+      "name": "log_router",
+      "firelensConfiguration": {
+        "type": "fluentbit",
+        "options": {
+          "enable-ecs-log-metadata": "true"
+        }
+      },
+      "memory": 128
+    },
+    {
+      "name": "falco",
+      "image": "falcosecurity/falco:0.17.1",
+      "essential": true,
+      "cpu": 10,
+      "memory": 512,
+      "privileged": true,
+      "command": [
+        "/usr/bin/falco",
+        "-pc",
+        "-o", "json_output=true"
+      ],
+      "logConfiguration": {
+        "logDriver":"awsfirelens",
+        "options": {
+          "Name": "cloudwatch",
+          "region": "${awslogs-region}",
+          "log_group_name": "falco",
+          "log_stream_name": "alerts",
+          "auto_create_group": "true"
+        }
+      },
+      "mountPoints": [
+        {
+          "containerPath": "/host/var/run/docker.sock",
+          "sourceVolume": "docker-socket"
+        },
+        {
+          "containerPath": "/host/dev",
+          "sourceVolume": "dev-fs"
+        },
+        {
+          "containerPath": "/host/proc",
+          "sourceVolume": "proc-fs",
+          "readOnly": true
+        },
+        {
+          "containerPath": "/host/boot",
+          "sourceVolume": "boot-fs",
+          "readOnly": true
+        },
+        {
+          "containerPath": "/host/lib/modules",
+          "sourceVolume": "lib-modules",
+          "readOnly": true
+        },
+        {
+          "containerPath": "/host/usr",
+          "sourceVolume": "usr-fs",
+          "readOnly": true
+        }
+      ]
     }
   ]
