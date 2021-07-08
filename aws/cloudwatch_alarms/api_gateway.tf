@@ -91,6 +91,7 @@ resource "aws_cloudwatch_metric_alarm" "metrics_api_gateway_traffic_change" {
   evaluation_periods  = "1"
   threshold           = var.api_gateway_traffic_change_percent
   alarm_description   = "Maximum traffic percentage change between current and previous day"
+  alarm_actions       = [data.aws_sns_topic.alert_warning.arn]
 
   metric_query {
     id    = "current"
