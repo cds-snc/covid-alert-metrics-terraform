@@ -1,6 +1,6 @@
 locals {
-  masked_server_image   = "${var.csv_etl_repository_url}:${var.masked_server_tag}"
-  unmasked_server_image = "${var.csv_etl_repository_url}:${var.unmasked_server_tag}"
+  masked_server_image   = "${var.server_metrics_etl_repository_url}:${var.masked_server_tag}"
+  unmasked_server_image = "${var.server_metrics_etl_repository_url}:${var.unmasked_server_tag}"
 }
 
 module "masked_server_metrics_etl" {
