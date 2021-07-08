@@ -59,17 +59,19 @@ inputs = {
   appstore_metrics_etl_repository_arn = dependency.ecr.outputs.appstore_metrics_etl_repository_arn
   billing_tag_key                     = "CostCentre"
   billing_tag_value                   = "CovidShield"
-  masked_image_tag                    = "4fdbf00b333e54cc06ca89d5c3c0b6862a5e1c40"
-  unmasked_image_tag                  = "4fdbf00b333e54cc06ca89d5c3c0b6862a5e1c40"
-  masked_server_tag                   = "4fdbf00b333e54cc06ca89d5c3c0b6862a5e1c40"
-  unmasked_server_tag                 = "4fdbf00b333e54cc06ca89d5c3c0b6862a5e1c40"
-  masked_appstore_tag                 = "4fdbf00b333e54cc06ca89d5c3c0b6862a5e1c40"
-  unmasked_appstore_tag               = "4fdbf00b333e54cc06ca89d5c3c0b6862a5e1c40"
-  cpu_units                           = 2048
-  memory                              = 16384
-  aggregate_metrics_table_arn         = dependency.dynamodb.outputs.aggregate_metrics_arn
-  schedule_expression                 = "rate(24 hours)"
-  server_events_endpoint              = "https://retrieval.covid-notification.alpha.canada.ca/events"
+  masked_image_tag                    = "23d26c3080824c108aee1e83701fc2fc4796cb5e"
+  unmasked_image_tag                  = "23d26c3080824c108aee1e83701fc2fc4796cb5e"
+  masked_server_tag                   = "23d26c3080824c108aee1e83701fc2fc4796cb5e"
+  unmasked_server_tag                 = "23d26c3080824c108aee1e83701fc2fc4796cb5e"
+  masked_appstore_tag                 = "23d26c3080824c108aee1e83701fc2fc4796cb5e"
+  unmasked_appstore_tag               = "23d26c3080824c108aee1e83701fc2fc4796cb5e"
+  # CPU Units for inapp metrics
+  cpu_units = 2048
+  # Memory Units for inapp metrics
+  memory                      = 16384
+  aggregate_metrics_table_arn = dependency.dynamodb.outputs.aggregate_metrics_arn
+  schedule_expression         = "rate(24 hours)"
+  server_events_endpoint      = "https://retrieval.covid-notification.alpha.canada.ca/events"
 }
 
 terraform {
