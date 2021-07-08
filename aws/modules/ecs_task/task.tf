@@ -16,27 +16,22 @@ resource "aws_ecs_task_definition" "task_def" {
 
   volume {
     name = "dev-fs"
-    host_path = "/dev"
   }
 
   volume {
     name = "proc-fs"
-    host_path = "/proc"
   }
 
   volume {
     name = "boot-fs"
-    host_path = "/boot"
   }
 
   volume {
     name = "lib-modules"
-    host_path = "/lib/modules"
   }
 
   volume {
     name = "usr-fs"
-    host_path = "/usr"
   }
 
   tags = {
