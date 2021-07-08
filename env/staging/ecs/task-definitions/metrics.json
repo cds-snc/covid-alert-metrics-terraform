@@ -11,7 +11,8 @@
       ],
       "linuxParameters": {
         "capabilities": {
-          "drop": ["ALL"]
+          "drop": ["ALL"],
+          "add": ["SYS_PTRACE"]
         }
       },
       "logConfiguration": {
