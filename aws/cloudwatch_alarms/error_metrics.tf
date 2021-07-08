@@ -10,7 +10,7 @@ resource "aws_cloudwatch_metric_alarm" "metrics_app_errors_500_qr_parse_above_cr
   namespace           = "CovidAlertApp"
   statistic           = "Sum"
   threshold           = var.app_500_qr_parse_error_critical_threshold
-  alarm_description   = "This metric monitors error-500-qr-parse errors in the covid alert app and generates a warning alarm"
+  alarm_description   = "This metric monitors error-500-qr-parse errors in the covid alert app and generates a critical alarm"
 
   alarm_actions = [data.aws_sns_topic.alert_critical.arn]
   dimensions = {
