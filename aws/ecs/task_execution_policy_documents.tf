@@ -132,6 +132,6 @@ data "aws_iam_policy_document" "send_falco_alerts_to_CloudWatch_ecs_task" {
       "logs:DescribeLogStreams"
     ]
     resources = ["arn:aws:logs:${var.region}:${var.account_id}:log-group:falco*"]
-    
+
   }
 }
