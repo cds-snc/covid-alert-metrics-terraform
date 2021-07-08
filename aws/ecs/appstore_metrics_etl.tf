@@ -1,6 +1,6 @@
 locals {
-  masked_appstore_image   = "${var.appstore_metrics_etl_repository_url}:${var.masked_appstore_tag}"
-  unmasked_appstore_image = "${var.appstore_metrics_etl_repository_url}:${var.unmasked_appstore_tag}"
+  masked_appstore_image   = "${var.appstore_metrics_etl_repository_url}:${var.appstore_tag}"
+  unmasked_appstore_image = "${var.appstore_metrics_etl_repository_url}:${var.appstore_tag}"
 }
 
 module "masked_appstore_metrics_etl" {
