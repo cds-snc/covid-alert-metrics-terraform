@@ -67,7 +67,6 @@
       "essential": true,
       "cpu": 10,
       "memory": 512,
-      "privileged": true,
       "command": [
         "/usr/bin/falco",
         "-pc",
