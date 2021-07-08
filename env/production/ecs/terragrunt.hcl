@@ -66,12 +66,12 @@ inputs = {
   masked_appstore_tag                 = "23d26c3080824c108aee1e83701fc2fc4796cb5e"
   unmasked_appstore_tag               = "23d26c3080824c108aee1e83701fc2fc4796cb5e"
   # CPU Units for inapp metrics
-  cpu_units                           = 2048
+  cpu_units = 2048
   # Memory Units for inapp metrics
-  memory                              = 16384
-  aggregate_metrics_table_arn         = dependency.dynamodb.outputs.aggregate_metrics_arn
-  schedule_expression                 = "rate(24 hours)"
-  server_events_endpoint              = "https://retrieval.covid-notification.alpha.canada.ca/events"
+  memory                      = 16384
+  aggregate_metrics_table_arn = dependency.dynamodb.outputs.aggregate_metrics_arn
+  schedule_expression         = "rate(24 hours)"
+  server_events_endpoint      = "https://retrieval.covid-notification.alpha.canada.ca/events"
 }
 
 terraform {
