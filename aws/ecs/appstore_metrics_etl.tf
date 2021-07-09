@@ -17,7 +17,7 @@ module "masked_appstore_metrics_etl" {
   subnet_id                      = var.subnet_id
   sg_id                          = var.sg_id
   template_file                  = file("task-definitions/metrics.json")
-  event_rule_schedule_expression = var.schedule_expression
+  event_rule_schedule_expression = var.masked_appstore_schedule_expression
   vars = {
     image                 = local.masked_appstore_image
     awslogs-region        = "ca-central-1"
@@ -43,7 +43,7 @@ module "unmasked_appstore_metrics_etl" {
   subnet_id                      = var.subnet_id
   sg_id                          = var.sg_id
   template_file                  = file("task-definitions/metrics.json")
-  event_rule_schedule_expression = var.schedule_expression
+  event_rule_schedule_expression = var.unmasked_appstore_schedule_expression
   vars = {
     image                 = local.unmasked_appstore_image
     awslogs-region        = "ca-central-1"

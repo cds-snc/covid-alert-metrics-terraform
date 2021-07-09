@@ -11,12 +11,12 @@ variable "inapp_metrics_memory" {
   default = 1024
 }
 
-variable "inapp_metrics_repository_url" {
+variable "inapp_metrics_etl_repository_url" {
   description = "(required) url for the ECR repo holding the inapp metrics container"
   type        = string
 }
 
-variable "inapp_metrics_repository_arn" {
+variable "inapp_metrics_etl_repository_arn" {
   description = "(required) arn for the ECR repo holding the inapp metrics container"
   type = string
 }

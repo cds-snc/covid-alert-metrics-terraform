@@ -1,6 +1,6 @@
 locals {
-  masked_inapp_metrics_image   = "${var.inapp_metrics_repository_url}:${var.inapp_tag}"
-  unmasked_inapp_metrics_image = "${var.inapp_metrics_repository_url}:${var.inapp_tag}"
+  masked_inapp_metrics_image   = "${var.inapp_metrics_etl_repository_url}:${var.inapp_tag}"
+  unmasked_inapp_metrics_image = "${var.inapp_metrics_etl_repository_url}:${var.inapp_tag}"
 }
 
 module "masked_inapp_metrics" {
@@ -17,7 +17,7 @@ module "masked_inapp_metrics" {
   subnet_id                      = var.subnet_id
   sg_id                          = var.sg_id
   template_file                  = file("task-definitions/metrics.json")
-  event_rule_schedule_expression = var.schedule_expression
+  event_rule_schedule_expression = var.masked__inapp_schedule_expression
   vars = {
     image                 = local.masked_inapp_metrics_image
     awslogs-region        = "ca-central-1"
@@ -43,7 +43,7 @@ module "unmasked_inapp_metrics" {
   subnet_id                      = var.subnet_id
   sg_id                          = var.sg_id
   template_file                  = file("task-definitions/metrics.json")
-  event_rule_schedule_expression = var.schedule_expression
+  event_rule_schedule_expression = var.unmasked__inapp_schedule_expression
   vars = {
     image                 = local.unmasked_inapp_metrics_image
     awslogs-region        = "ca-central-1"
