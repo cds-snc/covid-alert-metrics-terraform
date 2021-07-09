@@ -43,7 +43,7 @@ data "aws_iam_policy_document" "etl_policies" {
       "ecr:BatchGetImage"
     ]
     resources = [
-      var.create_csv_repository_arn,
+      var.inapp_metrics_repository_arn,
       var.appstore_metrics_etl_repository_arn,
       var.server_metrics_etl_repository_arn
     ]
