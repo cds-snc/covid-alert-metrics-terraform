@@ -17,7 +17,7 @@ module "masked_server_metrics_etl" {
   subnet_id                      = var.subnet_id
   sg_id                          = var.sg_id
   template_file                  = file("task-definitions/server_metrics.json")
-  event_rule_schedule_expression = var.schedule_expression
+  event_rule_schedule_expression = var.masked_server_schedule_expression
   vars = {
     image                   = local.masked_server_image
     awslogs-region          = "ca-central-1"
@@ -45,7 +45,7 @@ module "unmasked_server_metrics_etl" {
   subnet_id                      = var.subnet_id
   sg_id                          = var.sg_id
   template_file                  = file("task-definitions/server_metrics.json")
-  event_rule_schedule_expression = var.schedule_expression
+  event_rule_schedule_expression = var.unmasked_server_schedule_expression
   vars = {
     image                   = local.unmasked_server_image
     awslogs-region          = "ca-central-1"
