@@ -25,8 +25,8 @@ dependency "ecr" {
 
   mock_outputs_allowed_terraform_commands = ["validate", "plan"]
   mock_outputs = {
-    inapp_metrics_etl_repository_url   = ""
-    inapp_metrics_etl_repository_arn   = ""
+    inapp_metrics_etl_repository_url = ""
+    inapp_metrics_etl_repository_arn = ""
   }
 }
 
