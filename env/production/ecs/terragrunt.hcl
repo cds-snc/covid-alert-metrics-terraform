@@ -25,8 +25,8 @@ dependency "ecr" {
 
   mock_outputs_allowed_terraform_commands = ["validate", "plan"]
   mock_outputs = {
-    create_csv_repository_url = ""
-    create_csv_repository_arn = ""
+    inapp_metrics_etl_repository_url = ""
+    inapp_metrics_etl_repository_arn = ""
   }
 }
 
@@ -45,33 +45,42 @@ dependency "s3" {
 }
 
 inputs = {
-  subnet_id                           = dependency.network.outputs.private_subnet_id
-  sg_id                               = dependency.network.outputs.csv_etl_sg_id
-  unmasked_metrics_s3_arn             = dependency.s3.outputs.unmasked_metrics_arn
-  masked_metrics_s3_arn               = dependency.s3.outputs.masked_metrics_arn
-  masked_metrics_bucket               = dependency.s3.outputs.masked_metrics_id
-  unmasked_metrics_bucket             = dependency.s3.outputs.unmasked_metrics_id
-  csv_etl_repository_url              = dependency.ecr.outputs.create_csv_repository_url
-  create_csv_repository_arn           = dependency.ecr.outputs.create_csv_repository_arn
+
+  # Server Metrics Inputs
   server_metrics_etl_repository_url   = dependency.ecr.outputs.server_metrics_etl_repository_url
   server_metrics_etl_repository_arn   = dependency.ecr.outputs.server_metrics_etl_repository_arn
-  appstore_metrics_etl_repository_url = dependency.ecr.outputs.appstore_metrics_etl_repository_url
-  appstore_metrics_etl_repository_arn = dependency.ecr.outputs.appstore_metrics_etl_repository_arn
-  billing_tag_key                     = "CostCentre"
-  billing_tag_value                   = "CovidShield"
-  masked_image_tag                    = "23d26c3080824c108aee1e83701fc2fc4796cb5e"
-  unmasked_image_tag                  = "23d26c3080824c108aee1e83701fc2fc4796cb5e"
-  masked_server_tag                   = "23d26c3080824c108aee1e83701fc2fc4796cb5e"
-  unmasked_server_tag                 = "23d26c3080824c108aee1e83701fc2fc4796cb5e"
-  masked_appstore_tag                 = "23d26c3080824c108aee1e83701fc2fc4796cb5e"
-  unmasked_appstore_tag               = "23d26c3080824c108aee1e83701fc2fc4796cb5e"
-  # CPU Units for inapp metrics
-  cpu_units = 2048
-  # Memory Units for inapp metrics
-  memory                      = 16384
-  aggregate_metrics_table_arn = dependency.dynamodb.outputs.aggregate_metrics_arn
-  schedule_expression         = "rate(24 hours)"
-  server_events_endpoint      = "https://retrieval.covid-notification.alpha.canada.ca/events"
+  server_tag                          = "23d26c3080824c108aee1e83701fc2fc4796cb5e"
+  masked_server_schedule_expression   = "cron(0 5 * * ? *)"
+  unmasked_server_schedule_expression = "cron(0 5 * * ? *)"
+  server_events_endpoint              = "https://retrieval.covid-notification.alpha.canada.ca/events"
+
+  # Appstore Metrics Inputs
+  appstore_metrics_etl_repository_url   = dependency.ecr.outputs.appstore_metrics_etl_repository_url
+  appstore_metrics_etl_repository_arn   = dependency.ecr.outputs.appstore_metrics_etl_repository_arn
+  appstore_tag                          = "23d26c3080824c108aee1e83701fc2fc4796cb5e"
+  masked_appstore_schedule_expression   = "cron(0 5 * * ? *)"
+  unmasked_appstore_schedule_expression = "cron(0 5 * * ? *)"
+
+  # Inapp Metrics Inputs
+  inapp_metrics_etl_repository_url   = dependency.ecr.outputs.inapp_metrics_etl_repository_url
+  inapp_metrics_etl_repository_arn   = dependency.ecr.outputs.inapp_metrics_etl_repository_arn
+  inapp_tag                          = "23d26c3080824c108aee1e83701fc2fc4796cb5e"
+  inapp_metrics_cpu_units            = 2048
+  inapp_metrics_memory               = 16384
+  masked_inapp_schedule_expression   = "cron(0 3 * * ? *)"
+  unmasked_inapp_schedule_expression = "cron(0 4 * * ? *)"
+  aggregate_metrics_table_arn        = dependency.dynamodb.outputs.aggregate_metrics_arn
+
+  # Common Inputs
+  billing_tag_key         = "CostCentre"
+  billing_tag_value       = "CovidShield"
+  subnet_id               = dependency.network.outputs.private_subnet_id
+  sg_id                   = dependency.network.outputs.csv_etl_sg_id
+  unmasked_metrics_s3_arn = dependency.s3.outputs.unmasked_metrics_arn
+  masked_metrics_s3_arn   = dependency.s3.outputs.masked_metrics_arn
+  masked_metrics_bucket   = dependency.s3.outputs.masked_metrics_id
+  unmasked_metrics_bucket = dependency.s3.outputs.unmasked_metrics_id
+
 }
 
 terraform {
