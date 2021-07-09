@@ -1,109 +1,120 @@
 [
-    {
-      "name": "${name}",
-      "image": "${image}",
-      "portMappings": [
-        {
-          "hostPort": 8001,
-          "protocol": "tcp",
-          "containerPort": 8001
-        }
-      ],
-      "linuxParameters": {
-        "capabilities": {
-          "drop": ["ALL"],
-          "add": ["SYS_PTRACE"]
-        }
-      },
-      "logConfiguration": {
-        "logDriver": "awslogs",
-        "options": {
-          "awslogs-group": "${awslogs-group}",
-          "awslogs-region": "${awslogs-region}",
-          "awslogs-stream-prefix": "${awslogs-stream-prefix}"
-        }
-      },
-      "cpu": 0,
-      "environment": [
-        {
-          "name": "MASK_DATA",
-          "value": "${mask_data}"
-        },
-        {
-          "name": "ENVIRONMENT",
-          "value": "${environment}"
-        },
-        {
-          "name": "BUCKET_NAME",
-          "value": "${bucket_name}"
-        }
-      ],
-      "essential": true,
-      "mountPoints": [],
-      "volumesFrom": []
-    },
-    {
-      "essential": true,
-      "image": "amazon/aws-for-fluent-bit:latest",
-      "name": "log_router",
-      "firelensConfiguration": {
-        "type": "fluentbit",
-        "options": {
-          "enable-ecs-log-metadata": "true"
-        }
-      },
-      "memory": 128
-    },
-    {
-      "name": "falco",
-      "image": "falcosecurity/falco:0.17.1",
-      "essential": true,
-      "cpu": 10,
-      "memory": 512,
-      "command": [
-        "/usr/bin/falco",
-        "-pc",
-        "-o", "json_output=true"
-      ],
-      "logConfiguration": {
-        "logDriver":"awsfirelens",
-        "options": {
-          "Name": "cloudwatch",
-          "region": "${awslogs-region}",
-          "log_group_name": "falco",
-          "log_stream_name": "alerts",
-          "auto_create_group": "true"
-        }
-      },
-      "mountPoints": [
-        {
-          "containerPath": "/host/var/run/docker.sock",
-          "sourceVolume": "docker-socket"
-        },
-        {
-          "containerPath": "/host/dev",
-          "sourceVolume": "dev-fs"
-        },
-        {
-          "containerPath": "/host/proc",
-          "sourceVolume": "proc-fs",
-          "readOnly": true
-        },
-        {
-          "containerPath": "/host/boot",
-          "sourceVolume": "boot-fs",
-          "readOnly": true
-        },
-        {
-          "containerPath": "/host/lib/modules",
-          "sourceVolume": "lib-modules",
-          "readOnly": true
-        },
-        {
-          "containerPath": "/host/usr",
-          "sourceVolume": "usr-fs",
-          "readOnly": true
-        }
-      ]
-    }
-  ]
+	{
+		"cpu": 0,
+		"environment": [
+			{
+				"name": "MASK_DATA",
+				"value": "${mask_data}"
+			},
+			{
+				"name": "ENVIRONMENT",
+				"value": "${environment}"
+			},
+			{
+				"name": "BUCKET_NAME",
+				"value": "${bucket_name}"
+			}
+		],
+		"essential": true,
+		"image": "${image}",
+		"linuxParameters": {
+			"capabilities": {
+				"drop": [
+					"ALL"
+				],
+				"add": [
+					"SYS_PTRACE"
+				]
+			}
+		},
+		"logConfiguration": {
+			"logDriver": "awslogs",
+			"options": {
+				"awslogs-group": "${awslogs-group}",
+				"awslogs-region": "${awslogs-region}",
+				"awslogs-stream-prefix": "${awslogs-stream-prefix}"
+			}
+		},
+		"mountPoints": [],
+		"name": "${name}",
+		"portMappings": [
+			{
+				"hostPort": 8001,
+				"protocol": "tcp",
+				"containerPort": 8001
+			}
+		],
+		"volumesFrom": []
+	},
+	{
+		"cpu": 0,
+		"environment": [],
+		"essential": true,
+		"firelensConfiguration": {
+			"type": "fluentbit",
+			"options": {
+				"enable-ecs-log-metadata": "true"
+			}
+		},
+		"image": "amazon/aws-for-fluent-bit:latest",
+		"memory": 128,
+		"mountPoints": [],
+		"name": "log_router",
+		"portMappings": [],
+		"user": "0",
+		"volumesFrom": []
+	},
+	{
+		"command": [
+			"/usr/bin/falco",
+			"-pc",
+			"-o",
+			"json_output=true"
+		],
+		"cpu": 10,
+		"essential": true,
+		"image": "falcosecurity/falco:0.17.1",
+		"logConfiguration": {
+			"logDriver": "awsfirelens",
+			"options": {
+				"Name": "cloudwatch",
+				"region": "${awslogs-region}",
+				"log_group_name": "falco",
+				"log_stream_name": "alerts",
+				"auto_create_group": "true"
+			}
+		},
+		"memory": 512,
+		"mountPoints": [
+			{
+				"containerPath": "/host/var/run/docker.sock",
+				"sourceVolume": "docker-socket"
+			},
+			{
+				"containerPath": "/host/dev",
+				"sourceVolume": "dev-fs"
+			},
+			{
+				"containerPath": "/host/proc",
+				"sourceVolume": "proc-fs",
+				"readOnly": true
+			},
+			{
+				"containerPath": "/host/boot",
+				"sourceVolume": "boot-fs",
+				"readOnly": true
+			},
+			{
+				"containerPath": "/host/lib/modules",
+				"sourceVolume": "lib-modules",
+				"readOnly": true
+			},
+			{
+				"containerPath": "/host/usr",
+				"sourceVolume": "usr-fs",
+				"readOnly": true
+			}
+		],
+		"name": "falco"
+	}
+]
