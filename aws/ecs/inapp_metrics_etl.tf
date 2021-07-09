@@ -1,13 +1,13 @@
 locals {
-  masked_metrics_image   = "${var.csv_etl_repository_url}:${var.masked_image_tag}"
-  unmasked_metrics_image = "${var.csv_etl_repository_url}:${var.unmasked_image_tag}"
+  masked_inapp_metrics_image   = "${var.inapp_metrics_etl_repository_url}:${var.inapp_tag}"
+  unmasked_inapp_metrics_image = "${var.inapp_metrics_etl_repository_url}:${var.inapp_tag}"
 }
 
-module "masked_metrics" {
+module "masked_inapp_metrics" {
   source                         = "../modules/ecs_task"
-  name                           = "masked_metrics"
-  cpu_units                      = var.cpu_units
-  memory                         = var.memory
+  name                           = "masked_inapp_metrics"
+  cpu_units                      = var.inapp_metrics_cpu_units
+  memory                         = var.inapp_metrics_memory
   task_execution_role_arn        = aws_iam_role.task_execution_role.arn
   container_execution_role_arn   = aws_iam_role.container_execution_role.arn
   scheduled_task_role_arn        = aws_iam_role.scheduled_task_cw_event_role.arn
@@ -17,9 +17,9 @@ module "masked_metrics" {
   subnet_id                      = var.subnet_id
   sg_id                          = var.sg_id
   template_file                  = file("task-definitions/metrics.json")
-  event_rule_schedule_expression = var.schedule_expression
+  event_rule_schedule_expression = var.masked_inapp_schedule_expression
   vars = {
-    image                 = local.masked_metrics_image
+    image                 = local.masked_inapp_metrics_image
     awslogs-region        = "ca-central-1"
     awslogs-stream-prefix = "ecs-masked-metrics"
     mask_data             = "True"
@@ -29,11 +29,11 @@ module "masked_metrics" {
   log_retention_in_days = var.log_retention_in_days
 }
 
-module "unmasked_metrics" {
+module "unmasked_inapp_metrics" {
   source                         = "../modules/ecs_task"
-  name                           = "unmasked_metrics"
-  cpu_units                      = var.cpu_units
-  memory                         = var.memory
+  name                           = "unmasked_inapp_metrics"
+  cpu_units                      = var.inapp_metrics_cpu_units
+  memory                         = var.inapp_metrics_memory
   container_execution_role_arn   = aws_iam_role.container_execution_role.arn
   task_execution_role_arn        = aws_iam_role.task_execution_role.arn
   scheduled_task_role_arn        = aws_iam_role.scheduled_task_cw_event_role.arn
@@ -43,9 +43,9 @@ module "unmasked_metrics" {
   subnet_id                      = var.subnet_id
   sg_id                          = var.sg_id
   template_file                  = file("task-definitions/metrics.json")
-  event_rule_schedule_expression = var.schedule_expression
+  event_rule_schedule_expression = var.unmasked_inapp_schedule_expression
   vars = {
-    image                 = local.unmasked_metrics_image
+    image                 = local.unmasked_inapp_metrics_image
     awslogs-region        = "ca-central-1"
     awslogs-stream-prefix = "ecs-unmasked-metrics"
     mask_data             = "False"
