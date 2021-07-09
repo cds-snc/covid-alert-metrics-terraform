@@ -5,7 +5,7 @@ locals {
 
 module "masked_inapp_metrics" {
   source                         = "../modules/ecs_task"
-  name                           = "masked_metrics"
+  name                           = "masked_inapp_metrics"
   cpu_units                      = var.inapp_metrics_cpu_units
   memory                         = var.inapp_metrics_memory
   task_execution_role_arn        = aws_iam_role.task_execution_role.arn
@@ -31,7 +31,7 @@ module "masked_inapp_metrics" {
 
 module "unmasked_inapp_metrics" {
   source                         = "../modules/ecs_task"
-  name                           = "unmasked_metrics"
+  name                           = "unmasked_inapp_metrics"
   cpu_units                      = var.inapp_metrics_cpu_units
   memory                         = var.inapp_metrics_memory
   container_execution_role_arn   = aws_iam_role.container_execution_role.arn
