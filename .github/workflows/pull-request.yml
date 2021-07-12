@@ -126,6 +126,9 @@ jobs:
           - module_name: aggregate_metrics_lambda
             environment: staging
 
+          - module_name: aggregate_metrics_lambda
+            environment: production
+
     steps:
 
       - name: Checkout
