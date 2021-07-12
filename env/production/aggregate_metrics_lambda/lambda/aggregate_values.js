@@ -2,6 +2,7 @@
 
 const AWS = require("aws-sdk");
 const sqs = new AWS.SQS({apiVersion: '2012-11-05'});
+const cloudwatch = new AWS.CloudWatch({apiVersion: '2010-08-01'});
 const METRIC_VERSION = 6;
 const https = require('https');
 const agent = new https.Agent({
@@ -183,6 +184,12 @@ const aggregateEvents = (event) => {
                     if (pl.identifier === "ExposureNotificationCheck") {
                         return;
                     }
+
+                    // Write all errors to cloudwatch metrics for monitoring
+                    if (pl.identifier.toLowerCase().startsWith("error")){
+                        writeCloudWatchMetric(pl.identifier);
+                    }
+
                     // bucket values to reduce possible permutations
                     const date = pinDate(pl.timestamp);
                     pl.count = bucketCount(pl.count);
@@ -271,6 +278,34 @@ const sendToDeadLetterQueue = (payload, err) => {
     });
 }
 
+const buildCloudWatchMetric = (identifier) => {
+    return {
+        MetricData: [ 
+            {
+            MetricName: 'Errors', 
+            Dimensions: [
+                {
+                Name: 'Identifier', 
+                Value: identifier
+                },
+            ],
+            Unit: 'Count',
+            Value: 1
+            },
+        ],
+        Namespace: 'CovidAlertApp' 
+    };
+}
+
+const writeCloudWatchMetric = (identifier) => {
+    const metric = buildCloudWatchMetric(identifier);
+    cloudwatch.putMetricData(metric, (cwErr, data) => {
+        if (cwErr) {
+            console.error(`Failed writing CloudWatch metric: ${cwErr}, failed identifier: ${identifier}`);
+        }
+    });
+}
+
 const handler = (event, context, callback) => {
     try {
 
@@ -306,4 +341,5 @@ exports.pinDate = pinDate;
 exports.aggregateEvents = aggregateEvents;
 exports.buildDeadLetterMsg = buildDeadLetterMsg;
 exports.sendToDeadLetterQueue = sendToDeadLetterQueue;
+exports.writeCloudWatchMetric = writeCloudWatchMetric;
 exports.handler = handler;
