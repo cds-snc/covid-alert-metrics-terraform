@@ -73,7 +73,7 @@
 		],
 		"cpu": 10,
 		"essential": true,
-		"image": "falcosecurity/falco:0.17.1",
+		"image": "falcosecurity/falco:master",
 		"logConfiguration": {
 			"logDriver": "awsfirelens",
 			"options": {
