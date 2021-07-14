@@ -58,3 +58,9 @@ variable "app_500_qr_parse_error_warning_threshold" {
   description = "Maximum sum of QR parse errors in a 24 hour period before a warning alarm triggers"
   type        = string
 }
+
+variable "service_name" {
+  type        = string
+  description = "Name of the service"
+  default     = "save-metrics"
+}

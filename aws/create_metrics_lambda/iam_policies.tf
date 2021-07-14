@@ -1,4 +1,4 @@
-resource "aws_iam_role" "createmetrics" {
+resource "aws_iam_role" "create_metrics" {
   name               = "create_lambda_role"
   assume_role_policy = data.aws_iam_policy_document.service_principal.json
 }
@@ -16,55 +16,42 @@ data "aws_iam_policy_document" "service_principal" {
   }
 }
 
-resource "aws_iam_role_policy_attachment" "createmetrics_update" {
-  role       = aws_iam_role.createmetrics.name
-  policy_arn = aws_iam_policy.create_metrics_update.arn
+resource "aws_iam_role_policy_attachment" "createmetrics_dynamodb_put" {
+  role       = aws_iam_role.create_metrics.name
+  policy_arn = aws_iam_policy.create_metrics_put.arn
 }
 
-resource "aws_iam_role_policy_attachment" "createmetrics_log_writer" {
-  role       = aws_iam_role.createmetrics.name
+resource "aws_iam_role_policy_attachment" "create_metrics_log_writer" {
+  role       = aws_iam_role.create_metrics.name
   policy_arn = aws_iam_policy.write_logs.arn
 }
 
 resource "aws_iam_role_policy_attachment" "createmetrics_vpc_networking" {
-  role       = aws_iam_role.createmetrics.name
+  role       = aws_iam_role.create_metrics.name
   policy_arn = aws_iam_policy.vpc_networking.arn
 }
 
-resource "aws_iam_role_policy_attachment" "createmetrics_raw_metrics_stream_processor" {
-  role       = aws_iam_role.createmetrics.name
-  policy_arn = aws_iam_policy.raw_metrics_stream_processor.arn
-}
+# create_metrics_put
 
-resource "aws_iam_role_policy_attachment" "createmetrics_write_and_encrypt_deadletter_queue" {
-  role       = aws_iam_role.createmetrics.name
-  policy_arn = aws_iam_policy.write_and_encrypt_deadletter_queue.arn
-}
-
-resource "aws_iam_role_policy_attachment" "createmetrics_write_cloudwatch_metrics" {
-  role       = aws_iam_role.createmetrics.name
-  policy_arn = aws_iam_policy.write_cloudwatch_metrics.arn
-}
-
-data "aws_iam_policy_document" "create_metrics_update" {
+data "aws_iam_policy_document" "create_metrics_put" {
   statement {
     effect = "Allow"
 
     actions = [
-      "dynamodb:UpdateItem"
+      "dynamodb:PutItem"
     ]
 
     resources = [
-      var.raw_metrics_arn
+      data.aws_dynamodb_table.raw_metrics.arn
     ]
   }
 
 }
 
-resource "aws_iam_policy" "create_metrics_update" {
-  name   = "CovidAlertcreateMetricsUpdateItem"
+resource "aws_iam_policy" "create_metrics_put" {
+  name   = "CovidAlertCreateMetricsPutItem"
   path   = "/"
-  policy = data.aws_iam_policy_document.create_metrics_update.json
+  policy = data.aws_iam_policy_document.create_metrics_put.json
 }
 
 # write_logs
@@ -115,75 +102,4 @@ resource "aws_iam_policy" "vpc_networking" {
   name   = "CovidAlertVplNetworking"
   path   = "/"
   policy = data.aws_iam_policy_document.vpc_networking.json
-}
-
-# dynamodb_streams
-
-data "aws_iam_policy_document" "raw_metrics_stream_processor" {
-  statement {
-
-    effect = "Allow"
-    actions = [
-      "dynamodb:DescribeStream",
-      "dynamodb:GetRecords",
-      "dynamodb:GetShardIterator",
-      "dynamodb:ListStreams",
-      "dyanmodb:ListShards"
-    ]
-    resources = [
-      var.raw_metrics_stream_arn
-    ]
-  }
-
-}
-
-resource "aws_iam_policy" "raw_metrics_stream_processor" {
-  name   = "CovidAlertRawMetricsStreamProcessor"
-  path   = "/"
-  policy = data.aws_iam_policy_document.raw_metrics_stream_processor.json
-}
-
-# Write and encrypt to SQS deadletter queue
-
-data "aws_iam_policy_document" "write_and_encrypt_deadletter_queue" {
-  statement {
-
-    effect = "Allow"
-    actions = [
-      "kms:GenerateDataKey",
-      "kms:Decrypt",
-      "sqs:SendMessage"
-
-    ]
-    resources = [
-      var.metrics_key_arn,
-      var.dead_letter_queue_arn
-    ]
-
-  }
-}
-
-resource "aws_iam_policy" "write_and_encrypt_deadletter_queue" {
-  name   = "CovidAlertWriteAndEncryptDeadletterQueue"
-  path   = "/"
-  policy = data.aws_iam_policy_document.write_and_encrypt_deadletter_queue.json
-}
-
-# Write CloudWatch metrics
-
-data "aws_iam_policy_document" "write_cloudwatch_metrics" {
-  statement {
-
-    effect = "Allow"
-    actions = [
-      "cloudwatch:PutMetricData"
-    ]
-    resources = ["*"]
-  }
-}
-
-resource "aws_iam_policy" "write_cloudwatch_metrics" {
-  name   = "CovidAlertWriteCloudwatchMetrics"
-  path   = "/"
-  policy = data.aws_iam_policy_document.write_cloudwatch_metrics.json
 }
