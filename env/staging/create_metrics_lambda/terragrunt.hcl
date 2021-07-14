@@ -62,18 +62,4 @@ inputs = {
 
 terraform {
   source = "../../../aws//create_metrics_lambda"
-
-  extra_arguments "conditional_vars" {
-    commands = [
-      "apply",
-      "plan",
-      "import",
-      "push",
-      "refresh"
-    ]
-
-    required_var_files = [
-      "${get_parent_terragrunt_dir()}/terraform.tfvars"
-    ]
-  }
 }
