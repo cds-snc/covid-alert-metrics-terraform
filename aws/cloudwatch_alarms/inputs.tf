@@ -1,7 +1,11 @@
-variable "metrics_api_gateway_name" {
-  description = "Name of the metrics API gateway"
-  type        = string
-}
+# TO-DO: Reintroduce this afte the apply is complete
+# variable "raw_metrics_name" {
+#   type = string
+# }
+
+# variable "aggregate_metrics_name" {
+#   type = string
+# }
 
 variable "sns_topic_warning_name" {
   description = "SNS topic name for warning alerts"
@@ -57,4 +61,9 @@ variable "app_500_qr_parse_error_critical_threshold" {
 variable "app_500_qr_parse_error_warning_threshold" {
   description = "Maximum sum of QR parse errors in a 24 hour period before a warning alarm triggers"
   type        = string
+}
+
+variable "service_name" {
+  type        = string
+  description = "Name of the service"
 }

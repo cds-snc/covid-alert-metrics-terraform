@@ -59,6 +59,9 @@ jobs:
           - module_name: cloudwatch_alarms
             environment: production
 
+          - module_name: api_gateway
+            environment: staging
+
     steps:
 
       - name: Checkout
@@ -87,6 +90,7 @@ jobs:
         env:
           AWS_ACCESS_KEY_ID: ${{ secrets[format('{0}_AWS_ACCESS_KEY_ID',matrix.environment)] }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets[format('{0}_AWS_SECRET_ACCESS_KEY',matrix.environment)] }}      
+          TF_VAR_route53_zone_name: ${{ secrets[format('{0}_ROUTE53_ZONE_NAME',matrix.environment)] }}
         uses: cds-snc/terraform-plan@v1
         with:
           directory: "env/${{ matrix.environment }}/${{ matrix.module_name }}"
@@ -128,6 +132,9 @@ jobs:
 
           - module_name: aggregate_metrics_lambda
             environment: production
+
+          - module_name: create_metrics_lambda
+            environment: staging
 
     steps:
 

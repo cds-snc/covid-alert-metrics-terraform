@@ -12,7 +12,7 @@ resource "aws_cloudwatch_metric_alarm" "metrics_api_gateway_400_errors_above_thr
 
   alarm_actions = [data.aws_sns_topic.alert_critical.arn]
   dimensions = {
-    ApiName = data.aws_api_gateway_rest_api.metrics.name
+    ApiName = var.service_name
   }
 }
 
@@ -29,7 +29,7 @@ resource "aws_cloudwatch_metric_alarm" "metrics_api_gateway_500_errors_above_thr
 
   alarm_actions = [data.aws_sns_topic.alert_critical.arn]
   dimensions = {
-    ApiName = data.aws_api_gateway_rest_api.metrics.name
+    ApiName = var.service_name
   }
 }
 
@@ -46,7 +46,7 @@ resource "aws_cloudwatch_metric_alarm" "metrics_api_gateway_min_invocations_thre
 
   alarm_actions = [data.aws_sns_topic.alert_critical.arn]
   dimensions = {
-    ApiName = data.aws_api_gateway_rest_api.metrics.name
+    ApiName = var.service_name
   }
 }
 
@@ -64,7 +64,7 @@ resource "aws_cloudwatch_metric_alarm" "metrics_api_gateway_max_invocations_thre
 
   alarm_actions = [data.aws_sns_topic.alert_critical.arn]
   dimensions = {
-    ApiName = data.aws_api_gateway_rest_api.metrics.name
+    ApiName = var.service_name
   }
 }
 
@@ -81,7 +81,7 @@ resource "aws_cloudwatch_metric_alarm" "metrics_api_gateway_max_latency_threshol
 
   alarm_actions = [data.aws_sns_topic.alert_critical.arn]
   dimensions = {
-    ApiName = data.aws_api_gateway_rest_api.metrics.name
+    ApiName = var.service_name
   }
 }
 
@@ -105,7 +105,7 @@ resource "aws_cloudwatch_metric_alarm" "metrics_api_gateway_traffic_change" {
       unit        = "Count"
 
       dimensions = {
-        ApiName = data.aws_api_gateway_rest_api.metrics.name
+        ApiName = var.service_name
       }
     }
   }
