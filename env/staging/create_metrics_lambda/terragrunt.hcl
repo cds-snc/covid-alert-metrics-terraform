@@ -53,8 +53,6 @@ inputs = {
   resource_id           = dependency.api_gateway.outputs.resource_id
   http_method           = dependency.api_gateway.outputs.http_method
 
-  service_name = "create_metrics"
-
   feature_count_alarms            = true
   create_metrics_max_avg_duration = 10000
   create_metrics_dynamodb_wcu_max = 300
@@ -62,4 +60,10 @@ inputs = {
 
 terraform {
   source = "../../../aws//create_metrics_lambda"
+  extra_arguments "extra_args" {
+    commands = "${get_terraform_commands_that_need_vars()}"
+    optional_var_files = [
+      "${find_in_parent_folders("variables.auto.tfvars", "ignore")}",
+    ]
+  }
 }
