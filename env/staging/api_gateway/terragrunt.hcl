@@ -9,9 +9,14 @@ inputs = {
   api_gateway_burst = "5000"
   billing_tag_key   = "CostCentre"
   billing_tag_value = "CovidShield"
-  service_name      = "create_metrics"
 }
 
 terraform {
   source = "../../../aws//api_gateway"
+  extra_arguments "extra_args" {
+    commands = "${get_terraform_commands_that_need_vars()}"
+    optional_var_files = [
+      "${find_in_parent_folders("variables.auto.tfvars", "ignore")}",
+    ]
+  }
 }
