@@ -13,15 +13,15 @@ dependency "dynamodb" {
   mock_outputs_allowed_terraform_commands = ["validate", "plan"]
   mock_outputs = {
     raw_metrics_name       = ""
-    raw_metrics_arn       = ""
-    aggregate_metrics_arn = ""
+    raw_metrics_arn        = ""
+    aggregate_metrics_arn  = ""
     aggregate_metrics_name = ""
   }
 }
 
 inputs = {
-  raw_metrics_arn        = dependency.dynamodb.outputs.raw_metrics_arn
-  aggregate_metrics_arn  = dependency.dynamodb.outputs.aggregate_metrics_arn
+  raw_metrics_arn         = dependency.dynamodb.outputs.raw_metrics_arn
+  aggregate_metrics_arn   = dependency.dynamodb.outputs.aggregate_metrics_arn
   sns_topic_warning_name  = "alert-warning"
   sns_topic_critical_name = "alert-critical"
 
