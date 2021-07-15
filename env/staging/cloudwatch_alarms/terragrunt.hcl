@@ -7,8 +7,8 @@ dependencies {
 }
 
 inputs = {
-  sns_topic_warning_name   = "alert-warning"
-  sns_topic_critical_name  = "alert-critical"
+  sns_topic_warning_name  = "alert-warning"
+  sns_topic_critical_name = "alert-critical"
 
   feature_api_alarms                        = true
   api_gateway_400_error_threshold           = 95
@@ -24,9 +24,9 @@ inputs = {
 terraform {
   source = "../../../aws//cloudwatch_alarms"
   extra_arguments "extra_args" {
-      commands = "${get_terraform_commands_that_need_vars()}"
-      optional_var_files = [
-          "${find_in_parent_folders("variables.auto.tfvars", "ignore")}",
-      ]
+    commands = "${get_terraform_commands_that_need_vars()}"
+    optional_var_files = [
+      "${find_in_parent_folders("variables.auto.tfvars", "ignore")}",
+    ]
   }
 }

@@ -34,10 +34,10 @@ dependency "api_gateway" {
 
   mock_outputs_allowed_terraform_commands = ["validate", "plan"]
   mock_outputs = {
-    metrics_execution_arn  = "arn:aws:execute-api:ca-central-1:123456789123:abcdef1ghi/*/POST/create_metrics"
-    rest_api_id = ""
-    resource_id = ""
-    http_method = "POST"
+    metrics_execution_arn = "arn:aws:execute-api:ca-central-1:123456789123:abcdef1ghi/*/POST/create_metrics"
+    rest_api_id           = ""
+    resource_id           = ""
+    http_method           = "POST"
   }
 }
 
@@ -49,13 +49,13 @@ inputs = {
   metrics_key_arn       = dependency.sqs.outputs.metrics_key_arn
 
   metrics_execution_arn = dependency.api_gateway.outputs.metrics_execution_arn
-  rest_api_id = dependency.api_gateway.outputs.rest_api_id
-  resource_id = dependency.api_gateway.outputs.resource_id
-  http_method = dependency.api_gateway.outputs.http_method
+  rest_api_id           = dependency.api_gateway.outputs.rest_api_id
+  resource_id           = dependency.api_gateway.outputs.resource_id
+  http_method           = dependency.api_gateway.outputs.http_method
 
   service_name = "create_metrics"
 
-  feature_count_alarms               = true
+  feature_count_alarms            = true
   create_metrics_max_avg_duration = 10000
   create_metrics_dynamodb_wcu_max = 300
 }
