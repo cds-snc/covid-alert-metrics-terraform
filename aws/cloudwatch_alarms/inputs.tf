@@ -1,8 +1,3 @@
-variable "metrics_api_gateway_name" {
-  description = "Name of the metrics API gateway"
-  type        = string
-}
-
 variable "sns_topic_warning_name" {
   description = "SNS topic name for warning alerts"
   type        = string
@@ -62,5 +57,4 @@ variable "app_500_qr_parse_error_warning_threshold" {
 variable "service_name" {
   type        = string
   description = "Name of the service"
-  default     = "save-metrics"
 }

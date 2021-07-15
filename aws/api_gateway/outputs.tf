@@ -1,3 +1,7 @@
+output "base_url" {
+  value = aws_api_gateway_deployment.metrics.invoke_url
+}
+
 output "metrics_execution_arn" {
   value = aws_api_gateway_rest_api.metrics.execution_arn
 }

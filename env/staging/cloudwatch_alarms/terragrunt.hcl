@@ -1,5 +1,12 @@
+include {
+  path = find_in_parent_folders()
+}
+
+dependencies {
+  paths = ["../api_gateway"]
+}
+
 inputs = {
-  metrics_api_gateway_name = "save-metrics"
   sns_topic_warning_name   = "alert-warning"
   sns_topic_critical_name  = "alert-critical"
 
@@ -14,10 +21,12 @@ inputs = {
   app_500_qr_parse_error_warning_threshold  = 1
 }
 
-include {
-  path = find_in_parent_folders()
-}
-
 terraform {
   source = "../../../aws//cloudwatch_alarms"
+  extra_arguments "extra_args" {
+      commands = "${get_terraform_commands_that_need_vars()}"
+      optional_var_files = [
+          "${find_in_parent_folders("variables.auto.tfvars", "ignore")}",
+      ]
+  }
 }

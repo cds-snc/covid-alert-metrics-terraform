@@ -59,6 +59,9 @@ jobs:
           - module_name: cloudwatch_alarms
             environment: production
 
+          - module_name: api_gateway
+            environment: staging
+
     steps:
 
       - name: Checkout
@@ -128,6 +131,9 @@ jobs:
 
           - module_name: aggregate_metrics_lambda
             environment: production
+
+          - module_name: create_metrics_lambda
+            environment: staging
 
     steps:
 

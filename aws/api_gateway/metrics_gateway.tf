@@ -42,10 +42,6 @@ resource "aws_api_gateway_request_validator" "metrics_model" {
   validate_request_parameters = false
 }
 
-output "base_url" {
-  value = aws_api_gateway_deployment.metrics.invoke_url
-}
-
 resource "aws_api_gateway_resource" "create_resource" {
   rest_api_id = aws_api_gateway_rest_api.metrics.id
   parent_id   = aws_api_gateway_rest_api.metrics.root_resource_id
