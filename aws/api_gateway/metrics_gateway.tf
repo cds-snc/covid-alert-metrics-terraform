@@ -100,19 +100,23 @@ resource "aws_api_gateway_deployment" "metrics" {
 }
 
 resource "aws_cloudwatch_log_group" "api_log_group" {
+  # checkov:skip=CKV_AWS_158:Encryption using default CloudWatch service key is acceptable
   name              = "API-Gateway-Execution-Logs_${aws_api_gateway_rest_api.metrics.id}/${var.env}"
   retention_in_days = 7
   # ... potentially other configuration ...
 }
 
 resource "aws_api_gateway_stage" "metrics" {
-  deployment_id        = aws_api_gateway_deployment.metrics.id
-  rest_api_id          = aws_api_gateway_rest_api.metrics.id
-  stage_name           = var.env
-  xray_tracing_enabled = true
+  deployment_id         = aws_api_gateway_deployment.metrics.id
+  rest_api_id           = aws_api_gateway_rest_api.metrics.id
+  stage_name            = var.env
+  xray_tracing_enabled  = true
+  cache_cluster_enabled = true
 
-  # TODO: implement an access log temp ignore
-  # tfsec:ignore:AWS061
+  access_log_settings {
+    destination_arn = aws_cloudwatch_log_group.api_log_group.arn
+    format          = file("models/apigw_access_log_format.json")
+  }
 }
 
 resource "aws_api_gateway_usage_plan" "metrics_usage_plan" {

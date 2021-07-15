@@ -35,7 +35,7 @@ data "aws_iam_policy_document" "cloudwatch" {
       "logs:FilterLogEvents"
     ]
 
-    resources = ["*"]
+    resources = ["arn:aws:logs:*:*:*"]
   }
 
 }

@@ -6,6 +6,9 @@ data "archive_file" "lambda_create_metric" {
 
 
 resource "aws_lambda_function" "create_metrics" {
+  # checkov:skip=CKV_AWS_50:X-ray tracing only required during function debug
+  # checkov:skip=CKV_AWS_115:Reserved concurrency not required (not latency sensitive)
+  # checkov:skip=CKV_AWS_116:Dead Letter Queue is handled by aggregate_metrics function code
   function_name = "create_metrics"
   filename      = "/tmp/lambda_create_metric.js.zip"
 
