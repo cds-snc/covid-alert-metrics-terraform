@@ -1,5 +1,5 @@
 inputs = {
-  metrics_api_gateway_name = "create_metrics"
+  metrics_api_gateway_name = "save-metrics"
   sns_topic_warning_name   = "alert-warning"
   sns_topic_critical_name  = "alert-critical"
 

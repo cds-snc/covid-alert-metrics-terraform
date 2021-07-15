@@ -107,11 +107,11 @@ resource "aws_cloudwatch_log_group" "api_log_group" {
 }
 
 resource "aws_api_gateway_stage" "metrics" {
-  deployment_id         = aws_api_gateway_deployment.metrics.id
-  rest_api_id           = aws_api_gateway_rest_api.metrics.id
-  stage_name            = var.env
-  xray_tracing_enabled  = true
-  cache_cluster_enabled = true
+  # checkov:skip=CKV_AWS_120:API is for metric ingestion only and requires no cache
+  deployment_id        = aws_api_gateway_deployment.metrics.id
+  rest_api_id          = aws_api_gateway_rest_api.metrics.id
+  stage_name           = var.env
+  xray_tracing_enabled = true
 
   access_log_settings {
     destination_arn = aws_cloudwatch_log_group.api_log_group.arn
