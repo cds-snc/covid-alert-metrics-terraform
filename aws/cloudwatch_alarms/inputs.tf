@@ -1,3 +1,12 @@
+# TO-DO: Reintroduce this afte the apply is complete
+# variable "raw_metrics_name" {
+#   type = string
+# }
+
+# variable "aggregate_metrics_name" {
+#   type = string
+# }
+
 variable "sns_topic_warning_name" {
   description = "SNS topic name for warning alerts"
   type        = string

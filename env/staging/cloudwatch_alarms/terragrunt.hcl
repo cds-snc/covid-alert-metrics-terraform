@@ -2,11 +2,26 @@ include {
   path = find_in_parent_folders()
 }
 
+# These will be used later once the apply is complete
 dependencies {
-  paths = ["../api_gateway"]
+  paths = ["../dynamodb", "../api_gateway"]
+}
+
+dependency "dynamodb" {
+  config_path = "../dynamodb"
+
+  mock_outputs_allowed_terraform_commands = ["validate", "plan"]
+  mock_outputs = {
+    raw_metrics_name       = ""
+    raw_metrics_arn       = ""
+    aggregate_metrics_arn = ""
+    aggregate_metrics_name = ""
+  }
 }
 
 inputs = {
+  raw_metrics_arn        = dependency.dynamodb.outputs.raw_metrics_arn
+  aggregate_metrics_arn  = dependency.dynamodb.outputs.aggregate_metrics_arn
   sns_topic_warning_name  = "alert-warning"
   sns_topic_critical_name = "alert-critical"
 
