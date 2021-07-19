@@ -20,4 +20,10 @@ include {
 
 terraform {
   source = "git::https://github.com/cds-snc/covid-alert-metrics-terraform//aws/cloudwatch_alarms?ref=v${get_env("INFRASTRUCTURE_VERSION")}"
+  extra_arguments "extra_args" {
+    commands = "${get_terraform_commands_that_need_vars()}"
+    optional_var_files = [
+      "${find_in_parent_folders("variables.auto.tfvars", "ignore")}",
+    ]
+  }
 }
