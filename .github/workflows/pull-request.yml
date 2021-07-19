@@ -62,6 +62,9 @@ jobs:
           - module_name: api_gateway
             environment: staging
 
+          - module_name: api_gateway
+            environment: production
+
     steps:
 
       - name: Checkout
@@ -135,6 +138,9 @@ jobs:
 
           - module_name: create_metrics_lambda
             environment: staging
+
+          - module_name: create_metrics_lambda
+            environment: production
 
     steps:
 

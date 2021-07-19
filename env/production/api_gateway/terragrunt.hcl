@@ -12,5 +12,5 @@ inputs = {
 }
 
 terraform {
-  source = "../../../aws//api_gateway"
+  source = "git::https://github.com/cds-snc/covid-alert-metrics-terraform//aws/api_gateway?ref=v${get_env("INFRASTRUCTURE_VERSION")}"
 }

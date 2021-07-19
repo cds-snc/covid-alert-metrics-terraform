@@ -7,6 +7,7 @@ inputs = {
   env                   = "${local.vars.inputs.env}"
   region                = "ca-central-1"
   log_retention_in_days = "${local.vars.inputs.log_retention_in_days}"
+  service_name          = "${local.vars.inputs.service_name}"
 }
 
 remote_state {
