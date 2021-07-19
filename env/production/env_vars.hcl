@@ -3,4 +3,5 @@ inputs = {
   env                   = "production"
   name                  = "csv_etl_production"
   log_retention_in_days = 14
+  service_name          = "save-metrics"
 }
