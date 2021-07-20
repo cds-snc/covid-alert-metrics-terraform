@@ -1,14 +1,15 @@
 locals {
-  vars = read_terragrunt_config("../env_vars.hcl")
+  vars        = read_terragrunt_config("../env_vars.hcl")
+  secret_vars = try(read_terragrunt_config("../secret_env_vars.hcl"), { inputs = {} })
 }
 
-inputs = {
-  account_id            = "${local.vars.inputs.account_id}"
-  env                   = "${local.vars.inputs.env}"
-  region                = "ca-central-1"
-  log_retention_in_days = "${local.vars.inputs.log_retention_in_days}"
-  service_name          = "${local.vars.inputs.service_name}"
-}
+inputs = merge(
+  local.vars.inputs,
+  local.secret_vars.inputs,
+  {
+    region = "ca-central-1"
+  }
+)
 
 remote_state {
   backend = "s3"
