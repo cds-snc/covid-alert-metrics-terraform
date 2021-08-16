@@ -29,6 +29,7 @@ module "masked_server_metrics_etl" {
     server_events_endpoint  = var.server_events_endpoint
   }
   log_retention_in_days = var.log_retention_in_days
+  ecs_task_alarm_action = data.aws_sns_topic.alert_warning.arn
 }
 
 module "unmasked_server_metrics_etl" {
@@ -57,4 +58,5 @@ module "unmasked_server_metrics_etl" {
     server_events_endpoint  = var.server_events_endpoint
   }
   log_retention_in_days = var.log_retention_in_days
+  ecs_task_alarm_action = data.aws_sns_topic.alert_warning.arn
 }

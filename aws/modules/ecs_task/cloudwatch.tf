@@ -24,5 +24,30 @@ resource "aws_cloudwatch_event_target" "ecs_scheduled_task" {
       security_groups = [var.sg_id]
     }
   }
+}
 
+resource "aws_cloudwatch_log_metric_filter" "ecs_task_error_metric" {
+  name           = "EcsTaskError-${var.name}"
+  pattern        = "Error"
+  log_group_name = aws_cloudwatch_log_group.log.name
+
+  metric_transformation {
+    name      = "EcsTaskError-${var.name}"
+    namespace = "CovidShieldMetrics"
+    value     = "1"
+  }
+}
+
+resource "aws_cloudwatch_metric_alarm" "ecs_task_error_alarm" {
+  alarm_name          = "EcsTaskError-${var.name}"
+  comparison_operator = "GreaterThanThreshold"
+  evaluation_periods  = "1"
+  metric_name         = aws_cloudwatch_log_metric_filter.ecs_task_error_metric.name
+  namespace           = "CovidShieldMetrics"
+  period              = "60"
+  statistic           = "Sum"
+  threshold           = "1"
+  alarm_description   = "This monitors for errors in the ECS ${var.name} task"
+
+  alarm_actions = [var.ecs_task_alarm_action]
 }

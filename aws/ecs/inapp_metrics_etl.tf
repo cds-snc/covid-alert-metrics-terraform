@@ -27,6 +27,7 @@ module "masked_inapp_metrics" {
     bucket_name           = var.masked_metrics_bucket
   }
   log_retention_in_days = var.log_retention_in_days
+  ecs_task_alarm_action = data.aws_sns_topic.alert_warning.arn
 }
 
 module "unmasked_inapp_metrics" {
@@ -53,4 +54,5 @@ module "unmasked_inapp_metrics" {
     bucket_name           = var.unmasked_metrics_bucket
   }
   log_retention_in_days = var.log_retention_in_days
+  ecs_task_alarm_action = data.aws_sns_topic.alert_warning.arn
 }
