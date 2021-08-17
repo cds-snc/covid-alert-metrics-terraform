@@ -46,7 +46,7 @@ resource "aws_cloudwatch_metric_alarm" "ecs_task_error_alarm" {
   namespace           = "CovidShieldMetrics"
   period              = "60"
   statistic           = "Sum"
-  threshold           = "1"
+  threshold           = "0"
   alarm_description   = "This monitors for errors in the ECS ${var.name} task"
 
   alarm_actions = [var.ecs_task_alarm_action]
