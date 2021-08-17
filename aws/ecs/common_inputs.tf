@@ -8,6 +8,11 @@ variable "subnet_id" {
   type        = string
 }
 
+variable "sns_topic_warning_name" {
+  description = "SNS topic name for warning alerts"
+  type        = string
+}
+
 ###
 # Buckets
 ###

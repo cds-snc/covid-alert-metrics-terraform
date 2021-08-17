@@ -57,3 +57,7 @@ variable "event_rule_schedule_expression" {
 variable "log_retention_in_days" {
   type = string
 }
+
+variable "ecs_task_alarm_action" {
+  type = string
+}
