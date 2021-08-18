@@ -53,7 +53,7 @@ inputs = {
   resource_id           = dependency.api_gateway.outputs.resource_id
   http_method           = dependency.api_gateway.outputs.http_method
 
-  feature_count_alarms            = true
+  feature_count_alarms            = false
   create_metrics_max_avg_duration = 10000
   create_metrics_dynamodb_wcu_max = 65000
 }

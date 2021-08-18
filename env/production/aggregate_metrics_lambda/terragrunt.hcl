@@ -37,7 +37,7 @@ inputs = {
   dead_letter_queue_arn = dependency.sqs.outputs.dead_letter_queue_arn
   metrics_key_arn       = dependency.sqs.outputs.metrics_key_arn
 
-  feature_count_alarms               = true
+  feature_count_alarms               = false
   aggregate_metrics_max_avg_duration = 10000
   aggregate_metrics_dynamodb_wcu_max = 50000
 }
