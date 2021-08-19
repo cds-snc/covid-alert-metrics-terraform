@@ -23,6 +23,12 @@ variable "feature_api_alarms" {
   default     = true
 }
 
+variable "feature_qr_code_alarms" {
+  description = "Should QR code alarms be created"
+  type        = bool
+  default     = true
+}
+
 variable "api_gateway_400_error_threshold" {
   description = "Maximum sum of 4xx errors in a 60 second period before an alarm triggers"
   type        = string
