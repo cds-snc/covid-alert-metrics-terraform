@@ -1,5 +1,6 @@
 # Catch "QR parse errors" from the covid alert app
 resource "aws_cloudwatch_metric_alarm" "metrics_app_errors_500_qr_parse_above_critical_threshold" {
+  count               = var.feature_qr_code_alarms ? 1 : 0
   alarm_name          = "metrics-app-errors-500-qr-parse-above-critical-threshold"
   comparison_operator = "GreaterThanThreshold"
   period              = "3600"
@@ -19,6 +20,7 @@ resource "aws_cloudwatch_metric_alarm" "metrics_app_errors_500_qr_parse_above_cr
 }
 
 resource "aws_cloudwatch_metric_alarm" "metrics_app_errors_500_qr_parse_above_warning_threshold" {
+  count               = var.feature_qr_code_alarms ? 1 : 0
   alarm_name          = "metrics-app-errors-500-qr-parse-above-warning-threshold"
   comparison_operator = "GreaterThanThreshold"
   period              = "3600"
