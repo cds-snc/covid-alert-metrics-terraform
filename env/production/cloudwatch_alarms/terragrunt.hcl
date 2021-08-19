@@ -3,7 +3,7 @@ inputs = {
   sns_topic_warning_name   = "alert-warning"
   sns_topic_critical_name  = "alert-critical"
 
-  feature_api_alarms                        = false
+  feature_api_alarms                        = true
   api_gateway_400_error_threshold           = 3000
   api_gateway_500_error_threshold           = 1000
   api_gateway_min_invocations               = 100
