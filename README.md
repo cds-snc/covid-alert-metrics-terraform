@@ -1,10 +1,10 @@
-[La version française suit.](#referentiel-terraform-pour-les-mesures-de-performance-dalerte-covid)
+[La version française suit.](#référentiel-terraform-pour-les-mesures-de-performance-dalerte-covid)
 
 # Covid Alert Metrics Terraform
 
 This is the Terraform and Terragrunt repository used to manage the Metrics Application Programming Interface (API) infrastructure in the Amazon Web Services (AWS) cloud platform.  
 
-The [Covid Alert App](https://github.com/cds-snc/covid-alert-app) sends anonymous usage data to the Metrics API `/save-metrics` endpoint which is then converted to data comma-separated values (CSV) files by the [Covid Alert Metrics ETL](https://github.com/cds-snc/covid-alert-metrics-etl) project.
+The [Covid Alert App](https://github.com/cds-snc/covid-alert-app#covid-alert-mobile-app) sends anonymous usage data to the Metrics API `/save-metrics` endpoint which is then converted to data comma-separated values (CSV) files by the [Covid Alert Metrics ETL](https://github.com/cds-snc/covid-alert-metrics-etl#covid-alert-metrics-extract-transform-and-load-etl) project.
 
 ## Infrastructure
 This project creates and manages the following AWS resources in the Staging and Production environments:
@@ -12,7 +12,7 @@ This project creates and manages the following AWS resources in the Staging and 
 * API Gateway which provides the `/save-metrics` endpoint.
 * Lambda functions process metrics data payloads from the Covid Alert App.
 * DynamoDB tables to store raw and aggregated metrics data.
-* Elastic Container Registries (ECR) and an Elastic Container Service (ECS) Fargate cluster to store the [Covid Alert Metrics ETL](https://github.com/cds-snc/covid-alert-metrics-etl) Docker images and process the metrics data.
+* Elastic Container Registries (ECR) and an Elastic Container Service (ECS) Fargate cluster to store the [Covid Alert Metrics ETL](https://github.com/cds-snc/covid-alert-metrics-etl#covid-alert-metrics-extract-transform-and-load-etl) Docker images and process the metrics data.
 * S3 buckets to store the generated metrics CSV files.
 * Route53 Domain Name System (DNS) record for the `metrics` subdomain.
 * Virtual Private Cloud (VPC) configuration.
@@ -41,7 +41,7 @@ terragrunt run-all apply
 
 Il s’agit du référentiel Terraform et Terragrunt utilisé pour gérer l’infrastructure de l’API des mesures de performance dans la plate-forme d’infonuagique Amazon Web Services (AWS). 
 
-[L’application Alerte COVID](https://github.com/cds-snc/covid-alert-app) envoie des données d’utilisation anonymes au point de terminaison `/save-metrics` de l’API des mesures de performance qui sont ensuite converties en fichiers de valeurs séparées par des virgules (CSV) par le projet [Extraction, transformation et chargement des mesures d’Alerte COVID (ETL)](https://github.com/cds-snc/covid-alert-metrics-etl).
+[L’application Alerte COVID](https://github.com/cds-snc/covid-alert-app#application-mobile-alerte-covid) envoie des données d’utilisation anonymes au point de terminaison `/save-metrics` de l’API des mesures de performance qui sont ensuite converties en fichiers de valeurs séparées par des virgules (CSV) par le projet [Extraction, transformation et chargement des mesures d’Alerte COVID (ETL)](https://github.com/cds-snc/covid-alert-metrics-etl#extraction-transformation-et-chargement-etl-des-mesures-de-performance-dalerte-covid).
 
 ## Infrastructure
 Ce projet crée et gère les ressources AWS suivantes dans les environnements de préparation et de production :
@@ -49,7 +49,7 @@ Ce projet crée et gère les ressources AWS suivantes dans les environnements de
 * Passerelle API qui fournit le point de terminaison `/save-metrics`.
 * Les fonctions Lambda traitent les données des mesures de performance envoyées par l’application Alerte COVID.
 * Tables DynamoDB pour stocker les données de mesures brutes et agrégées.
-* Elastic Container Registries (ECR) et un groupe Fargate Elastic Container Service (ECS) pour stocker les images Docker du projet [ETL des mesures de performance d’Alerte COVID](https://github.com/cds-snc/covid-alert-metrics-etl) et traiter les données de mesures.
+* Elastic Container Registries (ECR) et un groupe Fargate Elastic Container Service (ECS) pour stocker les images Docker du projet [ETL des mesures de performance d’Alerte COVID](https://github.com/cds-snc/covid-alert-metrics-etl#extraction-transformation-et-chargement-etl-des-mesures-de-performance-dalerte-covid) et traiter les données de mesures.
 * Des compartiments S3 pour stocker les fichiers CSV de mesures générés.
 * Enregistrement du système de noms de domaine (DNS) Route53 pour le sous-domaine `metrics`.
 * Configuration du nuage privé virtuel (VPC).
