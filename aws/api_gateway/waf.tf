@@ -147,6 +147,34 @@ resource "aws_wafv2_web_acl" "metrics_collection" {
     }
   }
 
+  rule {
+    name = "metrics_collection_max_body_size"
+    action {
+      block {}
+    }
+    priority = 102
+
+    statement {
+      size_constraint_statement {
+        comparison_operator = "GT"
+        field_to_match {
+          body {}
+        }
+        size = var.api_gateway_max_body_size
+        text_transformation {
+          priority = 103
+          type     = "NONE"
+        }
+      }
+    }
+
+    visibility_config {
+      cloudwatch_metrics_enabled = true
+      metric_name                = "metrics_collection_max_body_size"
+      sampled_requests_enabled   = true
+    }
+  }
+
   visibility_config {
     cloudwatch_metrics_enabled = true
     metric_name                = "metrics-submission"

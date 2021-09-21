@@ -20,6 +20,10 @@ variable "api_gateway_burst" {
   type = string
 }
 
+variable "api_gateway_max_body_size" {
+  type = string
+}
+
 variable "route53_zone_name" {
   type = string
 }
