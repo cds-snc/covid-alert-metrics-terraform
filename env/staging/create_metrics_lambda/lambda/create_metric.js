@@ -48,13 +48,11 @@ exports.handler = async (event, context) => {
     }
 
     return transactionStatus;
-
-    return transactionStatus;
 };
 
 // Recursively splits the payload in half until all chunks are below the limit
 const splitPayload = (payload) => {
-  let results = [];
+  const results = [];
   
   const middle = payload.length / 2; // if it's odd, it'll round down
   const left = payload.slice(0, middle);
