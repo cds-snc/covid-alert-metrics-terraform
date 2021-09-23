@@ -31,8 +31,8 @@ exports.handler = async (event, context) => {
 
             if(!Array.isArray(event.body.payload) || event.body.payload.length === 1){
                 console.error(`Upload failed, unable to split large payload: ${payloadLength} > ${process.env.SPLIT_THRESHOLD}`);
-                transactionStatus.statusCode = 500;
-                transactionStatus.body= JSON.stringify({ "status" : "UPLOAD FAILED" }); 
+                transactionStatus.statusCode = 200;
+                transactionStatus.body= JSON.stringify({ "status" : "RECORD DROPPED" }); 
                 return transactionStatus;
             }
             const results = splitPayload(event.body.payload);

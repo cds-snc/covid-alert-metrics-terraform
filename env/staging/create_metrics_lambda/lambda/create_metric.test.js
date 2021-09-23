@@ -54,19 +54,19 @@ describe("handler", () => {
     })
   })
 
-  it("returns a 500 error code if payload array has one element and can't be split", async () => {
+  it("returns a 200 error code if payload array has one element and can't be split", async () => {
     process.env.TABLE_NAME = "foo"
-    process.env.SPLIT_THRESHOLD = 50;
+    process.env.SPLIT_THRESHOLD = 10;
 
-    client.promise = jest.fn(async () => {throw "Error"})
+    client.promise = jest.fn(async () => true)
 
     const event = {body: JSON.parse(fs.readFileSync('test_files/test_payload_small.json', 'utf8'))}
     const response = await handler(event)
 
     expect(response).toStrictEqual({
       isBase64Encoded: false,
-      statusCode: 500,
-      body: JSON.stringify({ "status" : "UPLOAD FAILED" })
+      statusCode: 200,
+      body: JSON.stringify({ "status" : "RECORD DROPPED" })
     })
   })
 
