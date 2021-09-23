@@ -113,7 +113,7 @@ describe("handler", () => {
       TableName: process.env.TABLE_NAME,
       Item: {
         expdate: {N: expect.any(String)},
-        raw: {S: JSON.stringify(event.body)},
+        raw: {S: event.body},
         uuid: {S: expect.any(String)},
       }
     }))
