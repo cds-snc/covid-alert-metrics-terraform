@@ -37,10 +37,10 @@ exports.handler = async (event, context) => {
             }
             const results = splitPayload(event.body.payload);
 
-            results.forEach((result) => {
+            for(const result of results){
                 eventBody.payload = result;
-                writePayload(eventBody, ttl);
-            });
+                await writePayload(eventBody, ttl);
+            };
         }else{
             await writePayload(event.body, ttl);
         }
@@ -94,5 +94,5 @@ const  writePayload = async (payload, ttl) => {
       },
   };
   
-  await dynamodb.putItem(params).promise();
+  return dynamodb.putItem(params).promise();
 };

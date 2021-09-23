@@ -38,6 +38,23 @@ describe("handler", () => {
     })
   })
 
+  it("returns a 500 error code if the putItem fails when processing split payloads", async () => {
+    process.env.TABLE_NAME = "foo"
+    process.env.SPLIT_THRESHOLD = 50;
+
+    client.promise = jest.fn(async () => {throw "Error"})
+
+    const event = {body: JSON.parse(fs.readFileSync('test_files/test_payload_large.json', 'utf8'))}
+
+    const response = await handler(event)
+
+    expect(response).toStrictEqual({
+      isBase64Encoded: false,
+      statusCode: 500,
+      body: JSON.stringify({ "status" : "UPLOAD FAILED" })
+    })
+  })
+
   it("returns a 500 error code if large single payload can't be split", async () => {
     process.env.TABLE_NAME = "foo"
     process.env.SPLIT_THRESHOLD = 50;
