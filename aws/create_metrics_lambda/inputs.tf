@@ -46,3 +46,8 @@ variable "create_metrics_dynamodb_wcu_max" {
 variable "create_metrics_max_avg_duration" {
   type = string
 }
+
+variable "large_payload_split_threshold_bytes" {
+  type = string
+}
+

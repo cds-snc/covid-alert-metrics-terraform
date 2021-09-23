@@ -1,0 +1,16 @@
+{
+  "manufacturer": "Apple",
+  "appos": "ios",
+  "model": "fancy",
+  "metricstimestamp": 1621957249091,
+  "payload": [
+    {
+      "region": "",
+      "timestamp": 1621957249091,
+      "identifier": "foo"
+    }
+  ],
+  "androidReleaseVersion": "unavailable",
+  "osversion": "14.4.2",
+  "appversion": "1.2.10"
+}

@@ -15,6 +15,12 @@ jobs:
           - lambda_name: aggregate_metrics_lambda
             environment: production
 
+          - lambda_name: create_metrics_lambda
+            environment: staging
+
+          - lambda_name: create_metrics_lambda
+            environment: production          
+
           - lambda_name: backoff_retry_lambda
             environment: staging
 
