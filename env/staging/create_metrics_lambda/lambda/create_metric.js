@@ -20,9 +20,6 @@ exports.handler = async (event, context) => {
 
     // expire after 24 hours
     const ttl = (Math.floor(Date.now()/1000) + 86400).toString();
-    const eventBody = {
-        ...event.body
-    };
 
     try {
         // The maximum item size in DynamoDB is 400 KB
@@ -39,8 +36,11 @@ exports.handler = async (event, context) => {
             const results = splitPayload(event.body.payload);
 
             for(const result of results){
-                eventBody.payload = JSON.stringify(result);
-                await writePayload(eventBody, ttl);
+                let eventBody = {
+                    ...event.body
+                };
+                eventBody.payload = result;
+                await writePayload(JSON.stringify(eventBody), ttl);
             };
         }else{
             await writePayload(event.body, ttl);
