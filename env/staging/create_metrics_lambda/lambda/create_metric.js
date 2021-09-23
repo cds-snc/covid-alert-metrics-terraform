@@ -57,21 +57,25 @@ exports.handler = async (event, context) => {
 
 // Recursively splits the payload in half until all chunks are below the limit
 const splitPayload = (payload) => {
-  let results = [];
+  const results = [];
+  let chunk_size = payload.length;
+  while (true) {
+    let left = payload.slice(0, chunk_size);
+    if (new TextEncoder().encode(left).length < process.env.SPLIT_THRESHOLD) {
+     break;
+    }
   
-  const middle = payload.length / 2; // if it's odd, it'll round down
-  const left = payload.slice(0, middle);
-  const right = payload.slice(middle, payload.length);
-  
-  if (new TextEncoder().encode(left).length > process.env.SPLIT_THRESHOLD){
-      results = results.concat(splitPayload(left));
-      results = results.concat(splitPayload(right));
-      return results;
-  }else{
-      results.push(left);
-      results.push(right);
-      return results;
+    chunk_size /= 2;
+    // Can't go smaller then a single element chunk
+    if (chunk_size <= 1) {
+      break;
+    }
   }
+  
+  for (let i = 0; i < payload.length; i += chunk_size) {
+    results.push(payload.slice(i, i + chunk_size));
+  }
+  return results;
 };
 
 const  writePayload = async (payload, ttl) => {
