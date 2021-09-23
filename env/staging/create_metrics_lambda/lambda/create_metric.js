@@ -21,31 +21,71 @@ exports.handler = async (event, context) => {
     // expire after 24 hours
     const ttl = (Math.floor(Date.now()/1000) + 86400).toString();
 
-    const params = {
-        TableName: process.env.TABLE_NAME,
-        Item : {
-            "uuid": {
-                S: uuidv4(),
-            },
-            "expdate" : {
-                N: ttl,
-            },
-            "raw": {
-                S: event.body,
-            },
-        },
-    };
-
+    const eventBody = event.body;
+    
     try {
+        // The maximum item size in DynamoDB is 400 KB
+        const payloadLength = new TextEncoder().encode(event.body.payload).length;
+        if (payloadLength > process.env.SPLIT_THRESHOLD){
+            console.info(`Large payload being split; size: ${payloadLength}`);
+            const results = splitPayload(event.body.payload);
 
-        await dynamodb.putItem(params).promise();
+            results.forEach((result) => {
+                result.forEach((r) => {
+                    eventBody.payload = r
+                    writePayload(eventBody, ttl);
+                });
+            });
+        }else{
+            await writePayload(event.body, ttl);
+        }
         transactionStatus.statusCode = 200;
         transactionStatus.body = JSON.stringify({ "status": "RECORD CREATED" });
     } catch (err) {
-        console.error(`Upload faile ${err}`);
+        console.error(`Upload failed ${err}`);
         transactionStatus.statusCode = 500;
         transactionStatus.body= JSON.stringify({ "status" : "UPLOAD FAILED" });
     }
 
     return transactionStatus;
+
+    return transactionStatus;
+};
+
+// Recursively splits the payload in half until all chunks are below the limit
+const splitPayload = (payload) => {
+  let results = [];
+  
+  const middle = payload.length / 2; // if it's odd, it'll round down
+  const left = payload.slice(0, middle);
+  const right = payload.slice(middle, payload.length);
+  
+  if (new TextEncoder().encode(left).length > process.env.SPLIT_THRESHOLD){
+      results.push(splitPayload(left));
+      results.push(splitPayload(right));
+      return results;
+  }else{
+      results.push(left);
+      results.push(right);
+      return results;
+  }
+};
+
+const  writePayload = async (payload, ttl) => {
+  const params = {
+      TableName: process.env.TABLE_NAME,
+      Item : {
+          "uuid": {
+              S: uuidv4(),
+          },
+          "expdate" : {
+              N: ttl,
+          },
+          "raw": {
+              S: JSON.stringify(payload),
+          },
+      },
+  };
+  
+  await dynamodb.putItem(params).promise();
 };

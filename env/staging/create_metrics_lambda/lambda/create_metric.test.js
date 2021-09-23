@@ -2,6 +2,7 @@
 
 const { handler } = require("./create_metric")
 const AWS = require('aws-sdk');
+const fs = require('fs');
 
 jest.mock("aws-sdk", () => {
   const mockDynamoDb = {
@@ -52,17 +53,18 @@ describe("handler", () => {
 
   it("saves the event body with a random UUID and a TTL", async () => {
     process.env.TABLE_NAME = "foo"
+    process.env.SPLIT_THRESHOLD = 307200;
 
     client.promise = jest.fn(async () => true)
 
-    const event = {body: ""}
+    const event = {body: JSON.parse(fs.readFileSync('test_payload_small.json', 'utf8'))}
     const response = await handler(event)
 
     expect(client.putItem).toHaveBeenCalledWith(expect.objectContaining({
       TableName: process.env.TABLE_NAME,
       Item: {
         expdate: {N: expect.any(String)},
-        raw: {S: event.body},
+        raw: {S: JSON.stringify(event.body)},
         uuid: {S: expect.any(String)},
       }
     }))
@@ -74,5 +76,50 @@ describe("handler", () => {
     })
 
     delete process.env.TABLE_NAME
+    delete process.env.SPLIT_THRESHOLD
+  })
+
+  it("saves large event body successfully after splitting", async () => {
+    
+    process.env.TABLE_NAME = "foo"
+    process.env.SPLIT_THRESHOLD = 100;
+
+    client.promise = jest.fn(async () => true)
+
+    const event = {body: JSON.parse(fs.readFileSync('test_payload_large.json', 'utf8'))}
+    const response = await handler(event)
+
+    expect(client.putItem).toHaveBeenCalledTimes(4)
+
+    expect(response).toStrictEqual({
+      isBase64Encoded: false,
+      statusCode: 200,
+      body: JSON.stringify({ "status" : "RECORD CREATED" })
+    })
+
+    delete process.env.TABLE_NAME
+    delete process.env.SPLIT_THRESHOLD
+  })
+
+  it("does not split if file is below split threshold", async () => {
+    process.env.TABLE_NAME = "foo"
+    process.env.SPLIT_THRESHOLD = 307200;
+
+    client.promise = jest.fn(async () => true)
+
+    const event = {body: JSON.parse(fs.readFileSync('test_payload_large.json', 'utf8'))}
+    const response = await handler(event)
+
+    expect(client.putItem).toHaveBeenCalledTimes(1)
+
+    expect(response).toStrictEqual({
+      isBase64Encoded: false,
+      statusCode: 200,
+      body: JSON.stringify({ "status" : "RECORD CREATED" })
+    })
+
+    delete process.env.TABLE_NAME
+    delete process.env.SPLIT_THRESHOLD
   })
 })
+

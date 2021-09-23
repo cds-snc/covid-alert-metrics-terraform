@@ -56,6 +56,7 @@ inputs = {
   feature_count_alarms            = true
   create_metrics_max_avg_duration = 10000
   create_metrics_dynamodb_wcu_max = 300
+  large_payload_split_threshold_bytes = 307200
 }
 
 terraform {
