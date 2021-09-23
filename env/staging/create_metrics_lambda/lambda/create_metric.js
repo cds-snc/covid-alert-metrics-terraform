@@ -28,13 +28,18 @@ exports.handler = async (event, context) => {
         const payloadLength = new TextEncoder().encode(event.body.payload).length;
         if (payloadLength > process.env.SPLIT_THRESHOLD){
             console.info(`Large payload being split; size: ${payloadLength}`);
+
+            if(!Array.isArray(event.body.payload) || event.body.payload.length === 1){
+                console.error(`Upload failed, unable to split large payload: ${payloadLength} > ${process.env.SPLIT_THRESHOLD}`);
+                transactionStatus.statusCode = 500;
+                transactionStatus.body= JSON.stringify({ "status" : "UPLOAD FAILED" }); 
+                return transactionStatus;
+            }
             const results = splitPayload(event.body.payload);
 
             results.forEach((result) => {
-                result.forEach((r) => {
-                    eventBody.payload = r
-                    writePayload(eventBody, ttl);
-                });
+                eventBody.payload = result;
+                writePayload(eventBody, ttl);
             });
         }else{
             await writePayload(event.body, ttl);
@@ -52,15 +57,15 @@ exports.handler = async (event, context) => {
 
 // Recursively splits the payload in half until all chunks are below the limit
 const splitPayload = (payload) => {
-  const results = [];
+  let results = [];
   
   const middle = payload.length / 2; // if it's odd, it'll round down
   const left = payload.slice(0, middle);
   const right = payload.slice(middle, payload.length);
   
   if (new TextEncoder().encode(left).length > process.env.SPLIT_THRESHOLD){
-      results.push(splitPayload(left));
-      results.push(splitPayload(right));
+      results = results.concat(splitPayload(left));
+      results = results.concat(splitPayload(right));
       return results;
   }else{
       results.push(left);

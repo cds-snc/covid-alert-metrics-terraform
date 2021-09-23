@@ -38,6 +38,38 @@ describe("handler", () => {
     })
   })
 
+  it("returns a 500 error code if large single payload can't be split", async () => {
+    process.env.TABLE_NAME = "foo"
+    process.env.SPLIT_THRESHOLD = 50;
+
+    client.promise = jest.fn(async () => {throw "Error"})
+
+    const event = {body: JSON.parse(fs.readFileSync('test_files/test_payload_large_single.json', 'utf8'))}
+    const response = await handler(event)
+
+    expect(response).toStrictEqual({
+      isBase64Encoded: false,
+      statusCode: 500,
+      body: JSON.stringify({ "status" : "UPLOAD FAILED" })
+    })
+  })
+
+  it("returns a 500 error code if payload array has one element and can't be split", async () => {
+    process.env.TABLE_NAME = "foo"
+    process.env.SPLIT_THRESHOLD = 50;
+
+    client.promise = jest.fn(async () => {throw "Error"})
+
+    const event = {body: JSON.parse(fs.readFileSync('test_files/test_payload_small.json', 'utf8'))}
+    const response = await handler(event)
+
+    expect(response).toStrictEqual({
+      isBase64Encoded: false,
+      statusCode: 500,
+      body: JSON.stringify({ "status" : "UPLOAD FAILED" })
+    })
+  })
+
   it("returns a 200 code if the putItem succeeds", async () => {
     client.promise = jest.fn(async () => true)
 
@@ -57,7 +89,7 @@ describe("handler", () => {
 
     client.promise = jest.fn(async () => true)
 
-    const event = {body: JSON.parse(fs.readFileSync('test_payload_small.json', 'utf8'))}
+    const event = {body: JSON.parse(fs.readFileSync('test_files/test_payload_small.json', 'utf8'))}
     const response = await handler(event)
 
     expect(client.putItem).toHaveBeenCalledWith(expect.objectContaining({
@@ -86,10 +118,32 @@ describe("handler", () => {
 
     client.promise = jest.fn(async () => true)
 
-    const event = {body: JSON.parse(fs.readFileSync('test_payload_large.json', 'utf8'))}
+    const event = {body: JSON.parse(fs.readFileSync('test_files/test_payload_large.json', 'utf8'))}
     const response = await handler(event)
 
     expect(client.putItem).toHaveBeenCalledTimes(4)
+
+    expect(response).toStrictEqual({
+      isBase64Encoded: false,
+      statusCode: 200,
+      body: JSON.stringify({ "status" : "RECORD CREATED" })
+    })
+
+    delete process.env.TABLE_NAME
+    delete process.env.SPLIT_THRESHOLD
+  })
+
+  it("saves large event body successfully after splitting in half", async () => {
+    
+    process.env.TABLE_NAME = "foo"
+    process.env.SPLIT_THRESHOLD = 200;
+
+    client.promise = jest.fn(async () => true)
+
+    const event = {body: JSON.parse(fs.readFileSync('test_files/test_payload_large.json', 'utf8'))}
+    const response = await handler(event)
+
+    expect(client.putItem).toHaveBeenCalledTimes(2)
 
     expect(response).toStrictEqual({
       isBase64Encoded: false,
@@ -107,7 +161,7 @@ describe("handler", () => {
 
     client.promise = jest.fn(async () => true)
 
-    const event = {body: JSON.parse(fs.readFileSync('test_payload_large.json', 'utf8'))}
+    const event = {body: JSON.parse(fs.readFileSync('test_files/test_payload_large.json', 'utf8'))}
     const response = await handler(event)
 
     expect(client.putItem).toHaveBeenCalledTimes(1)
