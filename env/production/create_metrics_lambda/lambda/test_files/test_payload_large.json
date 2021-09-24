@@ -1,0 +1,131 @@
+{
+  "manufacturer": "Apple",
+  "appos": "ios",
+  "model": "fancy",
+  "metricstimestamp": 1621957249091,
+  "payload": [
+    {
+      "region": "",
+      "timestamp": 1621957249091,
+      "identifier": "star1"
+    },
+    {
+      "region": "",
+      "timestamp": 1621957249096,
+      "identifier": "moon2"
+    },
+    {
+      "region": "",
+      "timestamp": 1621957249091,
+      "identifier": "star3"
+    },
+    {
+      "region": "",
+      "timestamp": 1621957249096,
+      "identifier": "moon4"
+    },
+    {
+      "region": "",
+      "timestamp": 1621957249091,
+      "identifier": "star5"
+    },
+    {
+      "region": "",
+      "timestamp": 1621957249096,
+      "identifier": "moon6"
+    },
+    {
+      "region": "",
+      "timestamp": 1621957249091,
+      "identifier": "star7"
+    },
+    {
+      "region": "",
+      "timestamp": 1621957249096,
+      "identifier": "moon8"
+    },
+    {
+      "region": "",
+      "timestamp": 1621957249091,
+      "identifier": "star9"
+    },
+    {
+      "region": "",
+      "timestamp": 1621957249096,
+      "identifier": "moon10"
+    },
+    {
+      "region": "",
+      "timestamp": 1621957249091,
+      "identifier": "star11"
+    },
+    {
+      "region": "",
+      "timestamp": 1621957249096,
+      "identifier": "moon12"
+    },
+    {
+      "region": "",
+      "timestamp": 1621957249091,
+      "identifier": "star13"
+    },
+    {
+      "region": "",
+      "timestamp": 1621957249096,
+      "identifier": "moon14"
+    },
+    {
+      "region": "",
+      "timestamp": 1621957249091,
+      "identifier": "star15"
+    },
+    {
+      "region": "",
+      "timestamp": 1621957249096,
+      "identifier": "moon16"
+    },
+    {
+      "region": "",
+      "timestamp": 1621957249091,
+      "identifier": "star17"
+    },
+    {
+      "region": "",
+      "timestamp": 1621957249096,
+      "identifier": "moon18"
+    },
+    {
+      "region": "",
+      "timestamp": 1621957249091,
+      "identifier": "star19"
+    },
+    {
+      "region": "",
+      "timestamp": 1621957249096,
+      "identifier": "moon20"
+    },
+    {
+      "region": "",
+      "timestamp": 1621957249091,
+      "identifier": "star21"
+    },
+    {
+      "region": "",
+      "timestamp": 1621957249096,
+      "identifier": "moon22"
+    },
+    {
+      "region": "",
+      "timestamp": 1621957249091,
+      "identifier": "star23"
+    },
+    {
+      "region": "",
+      "timestamp": 1621957249096,
+      "identifier": "moon24"
+    }
+  ],
+  "androidReleaseVersion": "unavailable",
+  "osversion": "14.4.2",
+  "appversion": "1.2.10"
+}
