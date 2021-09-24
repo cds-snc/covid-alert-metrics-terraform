@@ -131,14 +131,14 @@ describe("handler", () => {
   it("saves large event body successfully after splitting", async () => {
     
     process.env.TABLE_NAME = "foo"
-    process.env.SPLIT_THRESHOLD = 100;
+    process.env.SPLIT_THRESHOLD = 307200;
 
     client.promise = jest.fn(async () => true)
 
-    const event = {body: JSON.parse(fs.readFileSync('test_files/test_payload_large.json', 'utf8'))}
+    const event = {body: JSON.parse(fs.readFileSync('test_files/test_payload_gigantic.json', 'utf8'))}
     const response = await handler(event)
 
-    expect(client.putItem).toHaveBeenCalledTimes(4)
+    expect(client.putItem).toHaveBeenCalledTimes(32)
 
     expect(response).toStrictEqual({
       isBase64Encoded: false,
@@ -153,7 +153,7 @@ describe("handler", () => {
   it("saves large event body successfully after splitting in half", async () => {
     
     process.env.TABLE_NAME = "foo"
-    process.env.SPLIT_THRESHOLD = 200;
+    process.env.SPLIT_THRESHOLD = 1000;
 
     client.promise = jest.fn(async () => true)
 
