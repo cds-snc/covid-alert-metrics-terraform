@@ -23,7 +23,7 @@ exports.handler = async (event, context) => {
 
     try {
         // The maximum item size in DynamoDB is 400 KB
-        const payloadLength = new TextEncoder().encode(event.body.payload).length;
+        const payloadLength = new TextEncoder().encode(JSON.stringify(event.body.payload)).length;
         if (payloadLength > process.env.SPLIT_THRESHOLD){
             console.info(`Large payload being split; size: ${payloadLength}`);
 
@@ -62,7 +62,7 @@ const splitPayload = (payload) => {
   let chunk_size = payload.length;
   while (true) {
     let left = payload.slice(0, chunk_size);
-    if (new TextEncoder().encode(left).length < process.env.SPLIT_THRESHOLD) {
+    if (new TextEncoder().encode(JSON.stringify(left)).length < process.env.SPLIT_THRESHOLD) {
      break;
     }
   
