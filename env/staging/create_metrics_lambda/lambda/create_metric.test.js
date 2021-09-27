@@ -55,7 +55,7 @@ describe("handler", () => {
     })
   })
 
-  it("returns a 500 error code if large single payload can't be split", async () => {
+  it("returns a 200 error code if large single payload can't be split", async () => {
     process.env.TABLE_NAME = "foo"
     process.env.SPLIT_THRESHOLD = 50;
 
@@ -66,8 +66,8 @@ describe("handler", () => {
 
     expect(response).toStrictEqual({
       isBase64Encoded: false,
-      statusCode: 500,
-      body: JSON.stringify({ "status" : "UPLOAD FAILED" })
+      statusCode: 200,
+      body: JSON.stringify({ "status" : "RECORD DROPPED" })
     })
   })
 
