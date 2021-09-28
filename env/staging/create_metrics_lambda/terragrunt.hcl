@@ -47,8 +47,8 @@ dependency "s3" {
   mock_outputs_allowed_terraform_commands = ["validate", "plan"]
   mock_outputs = {
 
-    metrics_error_log_id    = "metrics_error_log"
-    metrics_error_log_arn   = ""
+    metrics_error_log_id  = "metrics_error_log"
+    metrics_error_log_arn = ""
   }
 }
 
@@ -64,8 +64,8 @@ inputs = {
   resource_id           = dependency.api_gateway.outputs.resource_id
   http_method           = dependency.api_gateway.outputs.http_method
 
-  metrics_error_log_s3_arn   = dependency.s3.outputs.metrics_error_log_arn
-  metrics_error_log_bucket   = dependency.s3.outputs.metrics_error_log_id
+  metrics_error_log_s3_arn = dependency.s3.outputs.metrics_error_log_arn
+  metrics_error_log_bucket = dependency.s3.outputs.metrics_error_log_id
 
   feature_count_alarms                = true
   create_metrics_max_avg_duration     = 10000
