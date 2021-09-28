@@ -21,6 +21,11 @@ resource "aws_iam_role_policy_attachment" "createmetrics_dynamodb_put" {
   policy_arn = aws_iam_policy.create_metrics_put.arn
 }
 
+resource "aws_iam_role_policy_attachment" "createmetrics_s3_put" {
+  role       = aws_iam_role.create_metrics.name
+  policy_arn = aws_iam_policy.create_metrics_put_s3.arn
+}
+
 # Use AWS managed IAM policy
 ####
 # Provides minimum permissions for a Lambda function to execute while 
@@ -54,3 +59,27 @@ resource "aws_iam_policy" "create_metrics_put" {
   path   = "/"
   policy = data.aws_iam_policy_document.create_metrics_put.json
 }
+
+# create_metrics_put_s3
+
+data "aws_iam_policy_document" "create_metrics_put_s3" {
+  statement {
+    effect = "Allow"
+    actions = [
+      "s3:PutObject",
+      "s3:PutObjectAcl",
+    ]
+    resources = [
+      var.metrics_error_log_s3_arn,
+      "${var.metrics_error_log_s3_arn}/*"
+    ]
+  }
+
+}
+
+resource "aws_iam_policy" "create_metrics_put_s3" {
+  name   = "CovidAlertCreateMetricsPutItem"
+  path   = "/"
+  policy = data.aws_iam_policy_document.create_metrics_put_s3.json
+}
+

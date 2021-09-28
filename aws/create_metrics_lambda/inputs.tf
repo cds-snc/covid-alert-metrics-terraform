@@ -51,3 +51,13 @@ variable "large_payload_split_threshold_bytes" {
   type = string
 }
 
+variable "metrics_error_log_bucket" {
+  description = "(required) the name of the bucket that's used to store error samples"
+  type        = string
+}
+
+variable "metrics_error_log_s3_arn" {
+  description = "(required) the arn of the bucket that's used to store error samples"
+  type        = string
+
+}
