@@ -13,4 +13,10 @@ output "unmasked_metrics_arn" {
   value = module.unmasked_metrics.arn
 }
 
+output "metrics_error_log_id" {
+  value = module.metrics_error_log.s3_bucket_id
+}
 
+output "metrics_error_log_arn" {
+  value = module.metrics_error_log.s3_bucket_arn
+}
