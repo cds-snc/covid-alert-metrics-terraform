@@ -78,7 +78,7 @@ data "aws_iam_policy_document" "create_metrics_put_s3" {
 }
 
 resource "aws_iam_policy" "create_metrics_put_s3" {
-  name   = "CovidAlertCreateMetricsPutItem"
+  name   = "CovidAlertCreateMetricsPutS3Object"
   path   = "/"
   policy = data.aws_iam_policy_document.create_metrics_put_s3.json
 }
