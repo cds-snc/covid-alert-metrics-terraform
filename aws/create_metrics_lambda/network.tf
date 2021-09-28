@@ -6,6 +6,6 @@ resource "aws_security_group" "create_metrics_sg" {
     from_port       = 443
     to_port         = 443
     protocol        = "tcp"
-    prefix_list_ids = [data.aws_vpc_endpoint.dynamodb.prefix_list_id]
+    prefix_list_ids = [data.aws_vpc_endpoint.dynamodb.prefix_list_id, data.aws_vpc_endpoint.s3.prefix_list_id]
   }
 }

@@ -18,6 +18,11 @@ data "aws_vpc_endpoint" "dynamodb" {
   service_name = "com.amazonaws.${var.region}.dynamodb"
 }
 
+data "aws_vpc_endpoint" "s3" {
+  vpc_id       = data.aws_vpc.covid_alert.id
+  service_name = "com.amazonaws.${var.region}.s3"
+}
+
 data "aws_security_group" "privatelink" {
   name   = "privatelink"
   vpc_id = data.aws_vpc.covid_alert.id
