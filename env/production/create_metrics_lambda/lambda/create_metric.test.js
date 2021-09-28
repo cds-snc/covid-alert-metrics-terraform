@@ -184,7 +184,7 @@ describe("handler", () => {
     expect(s3Client.putObject).toHaveBeenCalledWith(expect.objectContaining({
       Bucket: process.env.BUCKET_NAME,
       Key: expect.any(String),
-      Body:  event.body
+      Body:  JSON.stringify(event.body)
     }))
 
     expect(response).toStrictEqual({
