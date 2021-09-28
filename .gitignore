@@ -2,3 +2,4 @@
 .DS_STORE
 *.swp
 secret_env_vars.hcl
+node_modules

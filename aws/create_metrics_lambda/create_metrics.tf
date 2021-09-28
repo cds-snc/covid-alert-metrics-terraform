@@ -21,6 +21,7 @@ resource "aws_lambda_function" "create_metrics" {
   environment {
     variables = {
       TABLE_NAME      = data.aws_dynamodb_table.raw_metrics.name
+      BUCKET_NAME     = var.metrics_error_log_bucket
       SPLIT_THRESHOLD = var.large_payload_split_threshold_bytes
     }
   }
