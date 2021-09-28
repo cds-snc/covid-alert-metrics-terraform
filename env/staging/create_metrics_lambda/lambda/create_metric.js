@@ -54,7 +54,7 @@ exports.handler = async (event, context) => {
     } catch (err) {
         console.error(`Upload failed ${err}`);
         transactionStatus.statusCode = 500;
-        transactionStatus.body= JSON.stringify({ "status" : "UPLOAD FAILED" });
+        transactionStatus.body = JSON.stringify({ "status" : "UPLOAD FAILED" });
     }
 
     return transactionStatus;
