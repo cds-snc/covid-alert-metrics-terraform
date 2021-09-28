@@ -3,6 +3,7 @@
 const
     AWS = require('aws-sdk'),
     dynamodb = new AWS.DynamoDB(),
+    s3 = new AWS.S3(),
     crypto = require('crypto');
     
 const uuidv4 = () => {
@@ -28,7 +29,9 @@ exports.handler = async (event, context) => {
             console.info(`Large payload being split; size: ${payloadLength}`);
 
             if(!Array.isArray(event.body.payload) || event.body.payload.length === 1){
-                console.error(`Upload failed, unable to split large payload: ${payloadLength} > ${process.env.SPLIT_THRESHOLD}`);
+                const key = uuidv4();
+                console.error(`${key} - Upload failed, unable to split large payload: ${payloadLength} > ${process.env.SPLIT_THRESHOLD}`);
+                await saveSample(JSON.stringify(event.body), key);
                 transactionStatus.statusCode = 200;
                 transactionStatus.body= JSON.stringify({ "status" : "RECORD DROPPED" }); 
                 return transactionStatus;
@@ -50,7 +53,7 @@ exports.handler = async (event, context) => {
     } catch (err) {
         console.error(`Upload failed ${err}`);
         transactionStatus.statusCode = 500;
-        transactionStatus.body= JSON.stringify({ "status" : "UPLOAD FAILED" });
+        transactionStatus.body = JSON.stringify({ "status" : "UPLOAD FAILED" });
     }
 
     return transactionStatus;
@@ -96,4 +99,14 @@ const  writePayload = async (payload, ttl) => {
   };
   
   return dynamodb.putItem(params).promise();
+};
+
+const  saveSample = async (data, key) => {
+  var params = {
+      Bucket : process.env.BUCKET_NAME,
+      Key : key,
+      Body : data
+  }
+
+  return s3.putObject(params).promise(); 
 };
