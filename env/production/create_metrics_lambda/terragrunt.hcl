@@ -71,6 +71,7 @@ inputs = {
   create_metrics_max_avg_duration     = 10000
   create_metrics_dynamodb_wcu_max     = 65000
   large_payload_split_threshold_bytes = 204800
+  lambda_memory_size                  = 256
 }
 
 terraform {

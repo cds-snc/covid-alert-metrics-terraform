@@ -24,29 +24,30 @@ exports.handler = async (event, context) => {
 
     try {
         // The maximum item size in DynamoDB is 400 KB
-        const payloadLength = new TextEncoder().encode(JSON.stringify(event.body)).length;
+        const payloadLength = new TextEncoder().encode(event.body).length;
         if (payloadLength > process.env.SPLIT_THRESHOLD){
+            const parsedBody = JSON.parse(event.body);
             console.info(`Large payload being split; size: ${payloadLength}`);
 
-            if(!Array.isArray(event.body.payload) || event.body.payload.length === 1){
+            if(!Array.isArray(parsedBody.payload) || parsedBody.payload.length === 1){
                 const key = uuidv4();
                 console.error(`${key} - Upload failed, unable to split large payload: ${payloadLength} > ${process.env.SPLIT_THRESHOLD}`);
-                console.info(`${key} - Payload type: ${typeof event.body.payload}`);
-                console.info(`${key} - Payload isArray: ${Array.isArray(event.body.payload)}`);
+                console.info(`${key} - Payload type: ${typeof parsedBody.payload}`);
+                console.info(`${key} - Payload isArray: ${Array.isArray(parsedBody.payload)}`);
 
-                if (event.body.payload) {
-                  console.info(`${key} - Payload length: ${event.body.payload.length}`);
+                if (parsedBody.payload) {
+                  console.info(`${key} - Payload length: ${parsedBody.payload.length}`);
                 }
-                await saveSample(JSON.stringify(event.body), key);
+                await saveSample(event.body, key);
                 transactionStatus.statusCode = 200;
                 transactionStatus.body= JSON.stringify({ "status" : "RECORD DROPPED" }); 
                 return transactionStatus;
             }
-            const results = splitPayload(event.body.payload);
+            const results = splitPayload(parsedBody);
 
             for(const result of results){
                 let eventBody = {
-                    ...event.body
+                    ...parsedBody
                 };
                 eventBody.payload = result;
                 await writePayload(JSON.stringify(eventBody), ttl);
@@ -65,25 +66,32 @@ exports.handler = async (event, context) => {
     return transactionStatus;
 };
 
-// Recursively splits the payload in half until all chunks are below the limit
-const splitPayload = (payload) => {
+// Splits the payload in half until all chunks are below the limit
+const splitPayload = (body) => {
   const results = [];
-  let chunk_size = payload.length;
+  const eventBody = {
+    ...body
+  };
+  let chunk_size = body.payload.length;
   while (true) {
-    let left = payload.slice(0, chunk_size);
-    if (new TextEncoder().encode(JSON.stringify(left)).length < process.env.SPLIT_THRESHOLD) {
+    let left = body.payload.slice(0, chunk_size);
+    
+    //Include the rest of the body when calculating new split payload length
+    eventBody.payload = left;
+    if (new TextEncoder().encode(JSON.stringify(eventBody)).length < process.env.SPLIT_THRESHOLD) {
      break;
     }
   
     chunk_size /= 2;
     // Can't go smaller then a single element chunk
     if (chunk_size <= 1) {
+      chunk_size = 1;
       break;
     }
   }
-  
-  for (let i = 0; i < payload.length; i += chunk_size) {
-    results.push(payload.slice(i, i + chunk_size));
+
+  for (let i = 0; i < body.payload.length; i += chunk_size) {
+    results.push(body.payload.slice(i, i + chunk_size));
   }
   return results;
 };
