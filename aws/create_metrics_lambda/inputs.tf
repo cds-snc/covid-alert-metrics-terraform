@@ -59,5 +59,8 @@ variable "metrics_error_log_bucket" {
 variable "metrics_error_log_s3_arn" {
   description = "(required) the arn of the bucket that's used to store error samples"
   type        = string
+}
 
+variable "lambda_memory_size" {
+  type = number
 }

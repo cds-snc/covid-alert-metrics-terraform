@@ -11,6 +11,7 @@ resource "aws_lambda_function" "create_metrics" {
   # checkov:skip=CKV_AWS_116:Dead Letter Queue is handled by aggregate_metrics function code
   function_name = "create_metrics"
   filename      = "/tmp/lambda_create_metric.js.zip"
+  memory_size   = var.lambda_memory_size
 
   source_code_hash = data.archive_file.lambda_create_metric.output_base64sha256
 
