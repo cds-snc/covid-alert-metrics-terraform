@@ -31,6 +31,12 @@ exports.handler = async (event, context) => {
             if(!Array.isArray(event.body.payload) || event.body.payload.length === 1){
                 const key = uuidv4();
                 console.error(`${key} - Upload failed, unable to split large payload: ${payloadLength} > ${process.env.SPLIT_THRESHOLD}`);
+                console.info(`${key} - Payload type: ${typeof event.body.payload}`);
+                console.info(`${key} - Payload isArray: ${Array.isArray(event.body.payload)}`);
+
+                if (event.body.payload) {
+                  console.info(`${key} - Payload length: ${event.body.payload.length}`);
+                }
                 await saveSample(JSON.stringify(event.body), key);
                 transactionStatus.statusCode = 200;
                 transactionStatus.body= JSON.stringify({ "status" : "RECORD DROPPED" }); 

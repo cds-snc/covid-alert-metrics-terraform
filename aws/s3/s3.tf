@@ -1,3 +1,4 @@
+data "aws_caller_identity" "current" {}
 resource "random_string" "bucket_random_id" {
   length  = 5
   upper   = false
@@ -31,19 +32,12 @@ module "metrics_error_log" {
     id      = "expire"
     enabled = true
     expiration = {
-      days = 3
+      days = var.error_sampling_lifecycle_days
     }
   }]
   billing_tag_value = var.billing_tag_value
   logging = {
-    "target_bucket" = module.log_bucket.s3_bucket_id
-    "target_prefix" = local.error_sample_bucket_name
+    target_bucket = "cbs-satellite-account-bucket${data.aws_caller_identity.current.account_id}"
+    target_prefix = "${data.aws_caller_identity.current.account_id}/s3_access_logs/${local.error_sample_bucket_name}/"
   }
-}
-
-module "log_bucket" {
-  source            = "github.com/cds-snc/terraform-modules?ref=v0.0.28//S3_log_bucket"
-  bucket_name       = local.log_bucket_name
-  billing_tag_value = var.billing_tag_value
-
 }
