@@ -28,7 +28,7 @@ exports.handler = async (event, context) => {
         if (payloadLength > process.env.SPLIT_THRESHOLD){
             console.info(`Large payload being split; size: ${payloadLength}`);
 
-            if(!Array.isArray(event.body.payload) || event.body.payload.length === 1){
+            if(!Array.isArray(JSON.parse(event.body).payload) || JSON.parse(event.body).payload.length === 1){
                 const key = uuidv4();
                 console.error(`${key} - Upload failed, unable to split large payload: ${payloadLength} > ${process.env.SPLIT_THRESHOLD}`);
                 console.info(`${key} - Payload type: ${typeof event.body.payload}`);
@@ -42,7 +42,7 @@ exports.handler = async (event, context) => {
                 transactionStatus.body= JSON.stringify({ "status" : "RECORD DROPPED" }); 
                 return transactionStatus;
             }
-            const results = splitPayload(event.body.payload);
+            const results = splitPayload(JSON.parse(event.body).payload);
 
             for(const result of results){
                 let eventBody = {
