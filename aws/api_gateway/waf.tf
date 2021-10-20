@@ -13,7 +13,7 @@ resource "aws_wafv2_web_acl" "metrics_collection" {
 
   rule {
     name     = "AWSManagedRulesAmazonIpReputationList"
-    priority = 1
+    priority = 10
 
     override_action {
       none {}
@@ -34,8 +34,58 @@ resource "aws_wafv2_web_acl" "metrics_collection" {
   }
 
   rule {
+    name     = "metrics_collection_rate_limit"
+    priority = 11
+
+    action {
+      block {}
+    }
+
+    statement {
+      rate_based_statement {
+        limit              = 10000
+        aggregate_key_type = "IP"
+      }
+    }
+
+    visibility_config {
+      cloudwatch_metrics_enabled = true
+      metric_name                = "metrics_collection_rate_limit"
+      sampled_requests_enabled   = true
+    }
+  }
+
+  rule {
+    name = "metrics_collection_max_body_size"
+    action {
+      count {}
+    }
+    priority = 12
+
+    statement {
+      size_constraint_statement {
+        comparison_operator = "GT"
+        field_to_match {
+          body {}
+        }
+        size = var.api_gateway_max_body_size
+        text_transformation {
+          priority = 1
+          type     = "NONE"
+        }
+      }
+    }
+
+    visibility_config {
+      cloudwatch_metrics_enabled = true
+      metric_name                = "metrics_collection_max_body_size"
+      sampled_requests_enabled   = true
+    }
+  }
+
+  rule {
     name     = "AWSManagedRulesCommonRuleSet"
-    priority = 2
+    priority = 20
 
     override_action {
       none {}
@@ -61,7 +111,7 @@ resource "aws_wafv2_web_acl" "metrics_collection" {
 
   rule {
     name     = "AWSManagedRulesKnownBadInputsRuleSet"
-    priority = 3
+    priority = 30
 
     override_action {
       none {}
@@ -83,7 +133,7 @@ resource "aws_wafv2_web_acl" "metrics_collection" {
 
   rule {
     name     = "AWSManagedRulesLinuxRuleSet"
-    priority = 4
+    priority = 40
 
     override_action {
       none {}
@@ -105,7 +155,7 @@ resource "aws_wafv2_web_acl" "metrics_collection" {
 
   rule {
     name     = "AWSManagedRulesSQLiRuleSet"
-    priority = 5
+    priority = 50
 
     override_action {
       none {}
@@ -125,55 +175,7 @@ resource "aws_wafv2_web_acl" "metrics_collection" {
     }
   }
 
-  rule {
-    name     = "metrics_collection_rate_limit"
-    priority = 101
 
-    action {
-      block {}
-    }
-
-    statement {
-      rate_based_statement {
-        limit              = 10000
-        aggregate_key_type = "IP"
-      }
-    }
-
-    visibility_config {
-      cloudwatch_metrics_enabled = true
-      metric_name                = "metrics_collection_rate_limit"
-      sampled_requests_enabled   = true
-    }
-  }
-
-  rule {
-    name = "metrics_collection_max_body_size"
-    action {
-      count {}
-    }
-    priority = 102
-
-    statement {
-      size_constraint_statement {
-        comparison_operator = "GT"
-        field_to_match {
-          body {}
-        }
-        size = var.api_gateway_max_body_size
-        text_transformation {
-          priority = 103
-          type     = "NONE"
-        }
-      }
-    }
-
-    visibility_config {
-      cloudwatch_metrics_enabled = true
-      metric_name                = "metrics_collection_max_body_size"
-      sampled_requests_enabled   = true
-    }
-  }
 
   visibility_config {
     cloudwatch_metrics_enabled = true
