@@ -70,7 +70,7 @@ resource "aws_wafv2_web_acl" "metrics_collection" {
         }
         size = var.api_gateway_max_body_size
         text_transformation {
-          priority = 103
+          priority = 1
           type     = "NONE"
         }
       }
