@@ -60,7 +60,7 @@ resource "aws_wafv2_web_acl" "metrics_collection" {
     action {
       block {
         custom_response {
-          response_code = "200"
+          response_code = 200
         }
       }
     }
