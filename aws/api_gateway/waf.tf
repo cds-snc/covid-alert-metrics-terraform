@@ -58,7 +58,11 @@ resource "aws_wafv2_web_acl" "metrics_collection" {
   rule {
     name = "metrics_collection_max_body_size"
     action {
-      count {}
+      block {
+        custom_response {
+          response_code = "200"
+        }
+      }
     }
     priority = 12
 
