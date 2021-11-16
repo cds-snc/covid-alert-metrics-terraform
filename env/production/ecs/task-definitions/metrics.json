@@ -2,6 +2,7 @@
     {
       "name": "${name}",
       "image": "${image}",
+      "ephemeral_storage": 40,
       "portMappings": [
         {
           "containerPort": 8001
