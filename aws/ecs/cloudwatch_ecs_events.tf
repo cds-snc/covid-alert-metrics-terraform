@@ -94,3 +94,33 @@ resource "aws_cloudwatch_log_group" "ecs_events" {
   name              = "/aws/lambda/${aws_lambda_function.ecs_events.function_name}"
   retention_in_days = 14
 }
+
+#
+# Alarm: trigger if a warning or error is detected in the ECS event logs
+#
+resource "aws_cloudwatch_log_metric_filter" "ecs_warn_error_event" {
+  name           = "MetricEcsWarnErrorEvent"
+  pattern        = "?Warn ?Error"
+  log_group_name = aws_cloudwatch_log_group.ecs_events.name
+
+  metric_transformation {
+    name          = "EcsWarnErrorEvent"
+    namespace     = "CovidShieldMetrics"
+    value         = "1"
+    default_value = "0"
+  }
+}
+
+resource "aws_cloudwatch_metric_alarm" "ecs_warn_error_event" {
+  alarm_name          = "MetricEcsWarnErrorEvent"
+  comparison_operator = "GreaterThanThreshold"
+  evaluation_periods  = "1"
+  metric_name         = aws_cloudwatch_log_metric_filter.ecs_warn_error_event.name
+  namespace           = "CovidShieldMetrics"
+  period              = "60"
+  statistic           = "Sum"
+  threshold           = "0"
+
+  alarm_description = "Metrics ECS warning or error event detected"
+  alarm_actions     = [data.aws_sns_topic.alert_warning]
+}
