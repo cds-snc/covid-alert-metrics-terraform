@@ -14,7 +14,7 @@ resource "aws_lambda_function" "ecs_events" {
   handler     = "ecs_events.lambda_handler"
   runtime     = "python3.9"
   timeout     = 30
-  memory_size = 512
+  memory_size = 128
 
   role             = aws_iam_role.ecs_events_lambda.arn
   source_code_hash = filebase64sha256(data.archive_file.ecs_events.output_path)
