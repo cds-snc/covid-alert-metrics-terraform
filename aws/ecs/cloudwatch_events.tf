@@ -76,7 +76,7 @@ resource "aws_cloudwatch_event_rule" "ecs_events" {
   description = "Capture ECS events from the metrics cluster"
   event_pattern = jsonencode({
     "detail" : {
-      "clusterArn" : ["${aws_ecs_cluster.in_app_metrics.arn}"]
+      "clusterArn" : [aws_ecs_cluster.in_app_metrics.arn]
     }
   })
 }
@@ -86,7 +86,11 @@ resource "aws_cloudwatch_event_target" "ecs_events" {
   arn  = aws_lambda_function.ecs_events.arn
 }
 
+#
+# Log group: captures the ECS event logs from the Lambda function
+#
 resource "aws_cloudwatch_log_group" "ecs_events" {
+  # checkov:skip=CKV_AWS_158: Encryption with default service key is acceptable
   name              = "/aws/lambda/${aws_lambda_function.ecs_events.function_name}"
   retention_in_days = 14
 }
