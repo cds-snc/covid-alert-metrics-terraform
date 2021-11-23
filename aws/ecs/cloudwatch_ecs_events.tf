@@ -99,7 +99,7 @@ resource "aws_cloudwatch_log_group" "ecs_events" {
 # Alarm: trigger if a warning or error is detected in the ECS event logs
 #
 resource "aws_cloudwatch_log_metric_filter" "ecs_warn_error_event" {
-  name           = "MetricEcsWarnErrorEvent"
+  name           = "EcsWarnErrorEvent"
   pattern        = "?Warn ?Error"
   log_group_name = aws_cloudwatch_log_group.ecs_events.name
 
