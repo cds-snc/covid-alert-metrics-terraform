@@ -120,6 +120,7 @@ resource "aws_cloudwatch_metric_alarm" "ecs_warn_error_event" {
   period              = "60"
   statistic           = "Sum"
   threshold           = "0"
+  treat_missing_data  = "notBreaching"
 
   alarm_description = "Metrics ECS warning or error event detected"
   alarm_actions     = [data.aws_sns_topic.alert_warning.arn]
