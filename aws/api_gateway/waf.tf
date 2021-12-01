@@ -92,6 +92,10 @@ resource "aws_wafv2_web_acl" "metrics_collection" {
         field_to_match {
           query_string {}
         }
+        text_transformation {
+          priority = 1
+          type     = "NONE"
+        }
       }
     }
 
