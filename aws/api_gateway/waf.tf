@@ -38,7 +38,11 @@ resource "aws_wafv2_web_acl" "metrics_collection" {
     priority = 10
 
     action {
-      block {}
+      block {
+        custom_response {
+          response_code = 200
+        }
+      }
     }
 
     statement {
