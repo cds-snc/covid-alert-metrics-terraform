@@ -75,8 +75,36 @@ resource "aws_wafv2_web_acl" "metrics_collection" {
   }
 
   rule {
-    name     = "metrics_collection_rate_limit"
+    name     = "metrics_collection_query_strings"
     priority = 11
+
+    action {
+      block {
+        custom_response {
+          response_code = 204
+        }
+      }
+    }
+
+    statement {
+      regex_pattern_set_reference_statement {
+        arn = aws_wafv2_regex_pattern_set.anything.arn
+        field_to_match {
+          query_string {}
+        }
+      }
+    }
+
+    visibility_config {
+      cloudwatch_metrics_enabled = true
+      metric_name                = "metrics_collection_query_strings"
+      sampled_requests_enabled   = true
+    }
+  }
+
+  rule {
+    name     = "metrics_collection_rate_limit"
+    priority = 12
 
     action {
       block {}
@@ -109,7 +137,7 @@ resource "aws_wafv2_web_acl" "metrics_collection" {
         }
       }
     }
-    priority = 12
+    priority = 13
 
     statement {
       size_constraint_statement {
@@ -237,4 +265,14 @@ resource "aws_wafv2_web_acl" "metrics_collection" {
 resource "aws_wafv2_web_acl_association" "waf_association" {
   resource_arn = aws_api_gateway_stage.metrics.arn
   web_acl_arn  = aws_wafv2_web_acl.metrics_collection.arn
+}
+
+resource "aws_wafv2_regex_pattern_set" "anything" {
+  name        = "MatchAll"
+  description = "Regex to match all"
+  scope       = "REGIONAL"
+
+  regular_expression {
+    regex_string = ".+"
+  }
 }
