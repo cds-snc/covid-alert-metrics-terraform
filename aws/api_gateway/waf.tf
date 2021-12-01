@@ -13,7 +13,7 @@ resource "aws_wafv2_web_acl" "metrics_collection" {
 
   rule {
     name     = "AWSManagedRulesAmazonIpReputationList"
-    priority = 10
+    priority = 1
 
     override_action {
       none {}
@@ -29,6 +29,47 @@ resource "aws_wafv2_web_acl" "metrics_collection" {
     visibility_config {
       cloudwatch_metrics_enabled = true
       metric_name                = "AWSManagedRulesAmazonIpReputationList"
+      sampled_requests_enabled   = true
+    }
+  }
+
+  rule {
+    name     = "metrics_collection_invalid_path"
+    priority = 10
+
+    action {
+      block {
+        custom_response {
+          response_code = 204
+        }
+      }
+    }
+
+    statement {
+      not_statement {
+        statement {
+          byte_match_statement {
+            positional_constraint = "EXACTLY"
+            field_to_match {
+              uri_path {}
+            }
+            search_string = "/save-metrics"
+            text_transformation {
+              priority = 1
+              type     = "COMPRESS_WHITE_SPACE"
+            }
+            text_transformation {
+              priority = 2
+              type     = "LOWERCASE"
+            }
+          }
+        }
+      }
+    }
+
+    visibility_config {
+      cloudwatch_metrics_enabled = true
+      metric_name                = "metrics_collection_invalid_path"
       sampled_requests_enabled   = true
     }
   }
