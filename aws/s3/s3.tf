@@ -37,7 +37,7 @@ module "metrics_error_log" {
   }]
   billing_tag_value = var.billing_tag_value
   logging = {
-    target_bucket = "cbs-satellite-account-bucket${data.aws_caller_identity.current.account_id}"
-    target_prefix = "${data.aws_caller_identity.current.account_id}/s3_access_logs/${local.error_sample_bucket_name}/"
+    target_bucket = var.cbs_satellite_bucket_name
+    target_prefix = "/s3_access_logs/${local.error_sample_bucket_name}/"
   }
 }
