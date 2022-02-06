@@ -280,3 +280,88 @@ resource "aws_wafv2_regex_pattern_set" "anything" {
     regex_string = ".+"
   }
 }
+
+#
+# Write WAF logs to S3
+#
+resource "aws_wafv2_web_acl_logging_configuration" "covid_metrics_waf_logs" {
+  log_destination_configs = [aws_kinesis_firehose_delivery_stream.covid_metrics_waf_logs.arn]
+  resource_arn            = aws_wafv2_web_acl.metrics_collection.arn
+}
+
+resource "aws_kinesis_firehose_delivery_stream" "covid_metrics_waf_logs" {
+  name        = "aws-waf-logs-covid-metrics"
+  destination = "extended_s3"
+
+  server_side_encryption {
+    enabled = true
+  }
+
+  extended_s3_configuration {
+    role_arn           = aws_iam_role.write_waf_logs.arn
+    prefix             = "waf_acl_logs/AWSLogs/${var.account_id}/covid-metrics/"
+    bucket_arn         = "arn:aws:s3:::${var.cbs_satellite_bucket_name}"
+    compression_format = "GZIP"
+  }
+
+  tags = {
+    CostCenter = var.billing_code
+    Terraform  = true
+  }
+}
+
+resource "aws_iam_role" "write_waf_logs" {
+  name               = "write-waf-logs"
+  assume_role_policy = data.aws_iam_policy_document.firehose_assume_role.json
+
+  tags = {
+    CostCentre = var.billing_code
+    Terraform  = true
+  }
+}
+
+resource "aws_iam_policy" "write_waf_logs" {
+  name        = "write-waf-logs"
+  description = "Allow writing WAF logs to S3"
+  policy      = data.aws_iam_policy_document.write_waf_logs.json
+
+  tags = {
+    CostCentre = var.billing_code
+    Terraform  = true
+  }
+}
+
+resource "aws_iam_role_policy_attachment" "write_waf_logs" {
+  role       = aws_iam_role.write_waf_logs.name
+  policy_arn = aws_iam_policy.write_waf_logs.arn
+}
+
+data "aws_iam_policy_document" "firehose_assume_role" {
+  statement {
+    effect  = "Allow"
+    actions = ["sts:AssumeRole"]
+    principals {
+      type        = "Service"
+      identifiers = ["firehose.amazonaws.com"]
+    }
+  }
+}
+
+data "aws_iam_policy_document" "write_waf_logs" {
+  statement {
+    sid    = "S3PutObjects"
+    effect = "Allow"
+    actions = [
+      "s3:AbortMultipartUpload",
+      "s3:GetBucketLocation",
+      "s3:GetObject",
+      "s3:ListBucket",
+      "s3:ListBucketMultipartUploads",
+      "s3:PutObject"
+    ]
+    resources = [
+      "arn:aws:s3:::${var.cbs_satellite_bucket_name}",
+      "arn:aws:s3:::${var.cbs_satellite_bucket_name}/waf_acl_logs/*"
+    ]
+  }
+}
