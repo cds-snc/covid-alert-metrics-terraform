@@ -40,6 +40,6 @@ module "metrics_error_log" {
   billing_tag_value = var.billing_tag_value
   logging = {
     target_bucket = var.cbs_satellite_bucket_name
-    target_prefix = "/s3_access_logs/${local.error_sample_bucket_name}/"
+    target_prefix = "s3_access_logs/${local.error_sample_bucket_name}/"
   }
 }

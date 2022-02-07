@@ -17,7 +17,7 @@ resource "aws_s3_bucket" "masked_metrics" {
 
   logging {
     target_bucket = var.cbs_satellite_bucket_name
-    target_prefix = "/s3_access_logs/${var.name}/"
+    target_prefix = "s3_access_logs/${var.name}/"
   }
 
 }
