@@ -7,7 +7,8 @@ inputs = merge(
   local.vars.inputs,
   local.secret_vars.inputs,
   {
-    region = "ca-central-1"
+    region                    = "ca-central-1"
+    cbs_satellite_bucket_name = "cbs-satellite-${local.vars.inputs.account_id}"
   }
 )
 
