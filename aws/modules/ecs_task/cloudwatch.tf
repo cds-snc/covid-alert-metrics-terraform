@@ -48,7 +48,6 @@ resource "aws_cloudwatch_metric_alarm" "ecs_task_error_alarm" {
   statistic           = "Sum"
   threshold           = "0"
   alarm_description   = "This monitors for errors in the ECS ${var.name} task"
-  datapoints_to_alarm = 1
 
   alarm_actions = [var.ecs_task_alarm_action]
 }
