@@ -77,8 +77,8 @@ resource "aws_flow_log" "cloud_based_sensor" {
   log_format           = "$${vpc-id} $${version} $${account-id} $${interface-id} $${srcaddr} $${dstaddr} $${srcport} $${dstport} $${protocol} $${packets} $${bytes} $${start} $${end} $${action} $${log-status} $${subnet-id} $${instance-id}"
 
   tags = {
-    (var.billing_tag_key) = var.billing_tag_value
-    Terraform             = true
-    CloudBasedSensor      = true
+    CostCentre       = "CovidShield"
+    Terraform        = true
+    CloudBasedSensor = true
   }
 }
