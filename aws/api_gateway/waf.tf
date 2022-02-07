@@ -305,8 +305,8 @@ resource "aws_kinesis_firehose_delivery_stream" "covid_metrics_waf_logs" {
   }
 
   tags = {
-    CostCenter = var.billing_code
-    Terraform  = true
+    (var.billing_tag_key) = var.billing_tag_value
+    Terraform             = true
   }
 }
 
@@ -315,8 +315,8 @@ resource "aws_iam_role" "write_waf_logs" {
   assume_role_policy = data.aws_iam_policy_document.firehose_assume_role.json
 
   tags = {
-    CostCentre = var.billing_code
-    Terraform  = true
+    (var.billing_tag_key) = var.billing_tag_value
+    Terraform             = true
   }
 }
 
@@ -326,8 +326,8 @@ resource "aws_iam_policy" "write_waf_logs" {
   policy      = data.aws_iam_policy_document.write_waf_logs.json
 
   tags = {
-    CostCentre = var.billing_code
-    Terraform  = true
+    (var.billing_tag_key) = var.billing_tag_value
+    Terraform             = true
   }
 }
 
