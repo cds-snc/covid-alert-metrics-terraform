@@ -16,13 +16,15 @@ locals {
 
 
 module "masked_metrics" {
-  source = "../modules/s3"
-  name   = local.masked_metrics_bucket_name
+  source                    = "../modules/s3"
+  name                      = local.masked_metrics_bucket_name
+  cbs_satellite_bucket_name = var.cbs_satellite_bucket_name
 }
 
 module "unmasked_metrics" {
-  source = "../modules/s3"
-  name   = local.unmasked_metrics_bucket_name
+  source                    = "../modules/s3"
+  name                      = local.unmasked_metrics_bucket_name
+  cbs_satellite_bucket_name = var.cbs_satellite_bucket_name
 }
 
 module "metrics_error_log" {
