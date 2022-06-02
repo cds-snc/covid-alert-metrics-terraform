@@ -49,7 +49,7 @@ inputs = {
   # Server Metrics Inputs
   server_metrics_etl_repository_url   = dependency.ecr.outputs.server_metrics_etl_repository_url
   server_metrics_etl_repository_arn   = dependency.ecr.outputs.server_metrics_etl_repository_arn
-  server_tag                          = "eb4facab8d72aae788eb730a58110417df115547"
+  server_tag                          = "321045c31f01375d0ff1237c4f5efb869343e348"
   masked_server_schedule_expression   = "cron(0 5 * * ? *)"
   unmasked_server_schedule_expression = "cron(0 5 * * ? *)"
   server_events_endpoint              = "https://retrieval.covid-notification.alpha.canada.ca/events"
@@ -57,14 +57,14 @@ inputs = {
   # Appstore Metrics Inputs
   appstore_metrics_etl_repository_url   = dependency.ecr.outputs.appstore_metrics_etl_repository_url
   appstore_metrics_etl_repository_arn   = dependency.ecr.outputs.appstore_metrics_etl_repository_arn
-  appstore_tag                          = "eb4facab8d72aae788eb730a58110417df115547"
+  appstore_tag                          = "321045c31f01375d0ff1237c4f5efb869343e348"
   masked_appstore_schedule_expression   = "cron(0 5 * * ? *)"
   unmasked_appstore_schedule_expression = "cron(0 5 * * ? *)"
 
   # Inapp Metrics Inputs
   inapp_metrics_etl_repository_url   = dependency.ecr.outputs.inapp_metrics_etl_repository_url
   inapp_metrics_etl_repository_arn   = dependency.ecr.outputs.inapp_metrics_etl_repository_arn
-  inapp_tag                          = "eb4facab8d72aae788eb730a58110417df115547"
+  inapp_tag                          = "321045c31f01375d0ff1237c4f5efb869343e348"
   inapp_metrics_cpu_units            = 4096
   inapp_metrics_memory               = 30720
   masked_inapp_schedule_expression   = "cron(0 3 * * ? *)"
