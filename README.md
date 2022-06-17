@@ -2,6 +2,8 @@
 
 # Covid Alert Metrics Terraform
 
+> **COVID Alert is now retired**: For more information, visit the [Government of Canada COVID Alert home page](https://www.canada.ca/en/public-health/services/diseases/coronavirus-disease-covid-19/covid-alert.html).
+
 This is the Terraform and Terragrunt repository used to manage the Metrics Application Programming Interface (API) infrastructure in the Amazon Web Services (AWS) cloud platform.  
 
 The [Covid Alert App](https://github.com/cds-snc/covid-alert-app#covid-alert-mobile-app) sends anonymous usage data to the Metrics API `/save-metrics` endpoint which is then converted to data comma-separated values (CSV) files by the [Covid Alert Metrics ETL](https://github.com/cds-snc/covid-alert-metrics-etl#covid-alert-metrics-extract-transform-and-load-etl) project.
@@ -38,6 +40,8 @@ terragrunt run-all apply
 ```
 
 # Référentiel Terraform pour les mesures de performance d’Alerte COVID
+
+> **Alerte COVID a été mis hors service** : Pour en savoir davantage, visitez la [page d'accueil d’Alerte COVID du gouvernement du Canada](https://www.canada.ca/fr/sante-publique/services/maladies/maladie-coronavirus-covid-19/alerte-covid.html).
 
 Il s’agit du référentiel Terraform et Terragrunt utilisé pour gérer l’infrastructure de l’API des mesures de performance dans la plate-forme d’infonuagique Amazon Web Services (AWS). 
 
