@@ -33,23 +33,6 @@ resource "aws_cloudwatch_metric_alarm" "metrics_api_gateway_500_errors_above_thr
   }
 }
 
-resource "aws_cloudwatch_metric_alarm" "metrics_api_gateway_min_invocations_threshold" {
-  alarm_name          = "metrics-api-gateway-below-minimum-invocations"
-  comparison_operator = "LessThanThreshold"
-  evaluation_periods  = "1"
-  metric_name         = "Count"
-  namespace           = "AWS/ApiGateway"
-  period              = "60"
-  statistic           = "Sum"
-  threshold           = var.api_gateway_min_invocations
-  alarm_description   = "This metric monitors minimum API gateway invocations for the metrics API gateway"
-
-  alarm_actions = [data.aws_sns_topic.alert_critical.arn]
-  dimensions = {
-    ApiName = var.service_name
-  }
-}
-
 resource "aws_cloudwatch_metric_alarm" "metrics_api_gateway_max_invocations_threshold" {
   count               = var.feature_api_alarms ? 1 : 0
   alarm_name          = "metrics-api-gateway-above-maximum-invocations"
