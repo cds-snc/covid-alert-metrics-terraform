@@ -1,6 +1,7 @@
 resource "aws_cloudwatch_event_rule" "event_rule" {
   name                = "${var.name}_event_rule"
   schedule_expression = var.event_rule_schedule_expression
+  is_enabled          = false
   tags = {
     Name = "${var.name}-cw-event-rule"
   }
