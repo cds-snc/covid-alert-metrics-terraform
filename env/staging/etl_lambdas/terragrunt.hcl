@@ -5,5 +5,5 @@ include {
 }
 
 terraform {
-  source = "../../../aws//etl_lambdas"
+  source = "../../../aws//empty"
 }

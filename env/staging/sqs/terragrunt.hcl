@@ -4,5 +4,5 @@ include {
 }
 
 terraform {
-  source = "../../../aws//sqs"
+  source = "../../../aws//empty"
 }
