@@ -41,7 +41,6 @@ resource "aws_subnet" "private" {
   timeouts {
     delete = "40m"
   }
-  depends_on = [data.aws_iam_policy.CovidAlertBackoffRetryLambda]
 }
 
 resource "aws_subnet" "public" {
