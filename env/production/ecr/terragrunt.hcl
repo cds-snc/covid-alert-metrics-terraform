@@ -3,5 +3,5 @@ include {
 }
 
 terraform {
-  source = "git::https://github.com/cds-snc/covid-alert-metrics-terraform//aws/ecr?ref=v${get_env("INFRASTRUCTURE_VERSION")}"
+  source = "../../../aws//empty"
 }
